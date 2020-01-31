@@ -1,0 +1,1 @@
+enum SignState { signedIn, signedFail, signedOut, signingIn }
