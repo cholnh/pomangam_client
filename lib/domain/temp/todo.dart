@@ -1,7 +1,7 @@
 import 'package:pomangam_client/domain/common/entity.dart';
+import 'package:pomangam_client/generated/json/base/json_convert_content.dart';
 
-class Todo extends Entity {
-
+class Todo extends JsonConvert<Todo> {
 
   //━━ class variables ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
   final int idx;

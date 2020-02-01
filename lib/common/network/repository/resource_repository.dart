@@ -9,18 +9,10 @@ import 'package:pomangam_client/common/network/repository/authorization_reposito
 
 class ResourceRepository {
 
-
-  //━━ class variables ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
   final OauthTokenRepository oauthTokenRepository;
-  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-
-  //━━ constructor ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
   ResourceRepository({this.oauthTokenRepository});
-  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-
-  //━━ actions ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
   get({
     @required String url,
     Locale locale,
@@ -76,31 +68,26 @@ class ResourceRepository {
     Options options = Options(headers: {
       'Accept-Language': locale == null ? 'ko' : locale.languageCode,
     });
+    try {
+      var res = await innerFunc(url, options, jsonData);
 
-    var res = await innerFunc(url, options, jsonData)
-        .catchError((err) async {
-      await resourceErrorHandler(err);
-      return await innerFunc(url, options, jsonData);
-    });
-
-    if(res != null && res.statusCode == 200) {
-      return res.data;
-    }
-    return null;
-  }
-
-  resourceErrorHandler(err) async {
-    if(err is DioError) {
-      switch(err.response.statusCode) {
-        case HttpStatus.unauthorized:
-          await oauthTokenRepository.loadToken()
-            ..saveToDioHeader()
-            ..saveToDisk();
-          break;
+      if(res != null && res.statusCode == 200) {
+        return res.data;
       }
-    } else {
+    } on SocketException catch (_) {
       throw OauthNetworkException(OauthExceptionType.serverClosed);
+    } catch (error) {
+      if(error is DioError) {
+        switch(error.response.statusCode) {
+          case HttpStatus.unauthorized:
+            await oauthTokenRepository.loadToken()
+              ..saveToDioHeader()
+              ..saveToDisk();
+            return await innerFunc(url, options, jsonData);
+        }
+      }
+      throw OauthNetworkException(OauthExceptionType.networkError);
     }
   }
-  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
 }

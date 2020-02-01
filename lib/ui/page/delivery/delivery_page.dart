@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
-import 'package:pomangam_client/provider/temp/todo_model.dart';
+import 'package:pomangam_client/provider/store/store_summary_model.dart';
 import 'package:pomangam_client/ui/widget/delivery/delivery_advertisement.dart';
 import 'package:pomangam_client/ui/widget/delivery/delivery_contents.dart';
 import 'package:pomangam_client/ui/widget/delivery/delivery_contents_bar.dart';
@@ -18,16 +18,22 @@ class _DeliveryPageState extends State<DeliveryPage> {
   @override
   void initState() {
     _scrollController.addListener(_onScroll);
-//    Provider.of<TodoModel>(context, listen: false).fetch();
     super.initState();
   }
 
+
+  @override
+  void didChangeDependencies() {
+    Provider.of<StoreSummaryModel>(context, listen: false).fetch();
+    super.didChangeDependencies();
+  }
+
   void _onScroll() {
-//    final maxScroll = _scrollController.position.maxScrollExtent;
-//    final currentScroll = _scrollController.position.pixels;
-//    if (maxScroll - currentScroll <= _scrollThreshold) {
-//      Provider.of<TodoModel>(context, listen: false).fetch();
-//    }
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      Provider.of<StoreSummaryModel>(context, listen: false).fetch();
+    }
   }
 
   @override

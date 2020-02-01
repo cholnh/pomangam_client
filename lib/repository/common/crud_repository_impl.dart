@@ -1,15 +1,15 @@
+import 'package:injector/injector.dart';
 import 'package:pomangam_client/common/network/domain/page_request.dart';
 import 'package:pomangam_client/common/network/service/network_service.dart';
+import 'package:pomangam_client/generated/json/base/json_convert_content.dart';
 import 'package:pomangam_client/repository/common/crud_repository.dart';
-import 'package:pomangam_client/domain/common/entity.dart';
 
-class CrudRepositoryImpl<T extends Entity> implements CrudRepository<T> {
+class CrudRepositoryImpl<T extends JsonConvert> implements CrudRepository<T> {
 
   final String url;
-  final T entityModel;
   final NetworkService networkService;
 
-  CrudRepositoryImpl({this.url, this.entityModel, this.networkService});
+  CrudRepositoryImpl({this.url, this.networkService});
 
   @override
   Future<int> count() async
@@ -21,7 +21,7 @@ class CrudRepositoryImpl<T extends Entity> implements CrudRepository<T> {
 
     List<T> entities = [];
 
-    res.forEach((map) => entities.add(entityModel.fromJson(map)));
+    res.forEach((map) => entities.add((this as T).fromJson(map)));
     return entities;
   }
 
@@ -31,23 +31,23 @@ class CrudRepositoryImpl<T extends Entity> implements CrudRepository<T> {
 
     List<T> entities = [];
 
-    res.forEach((map) => entities.add(entityModel.fromJson(map)));
+    res.forEach((map) => entities.add((this as T).fromJson(map)));
     return entities;
   }
 
   @override
   Future<T> findById(int id) async {
     var res = await networkService.get(url: '/$url/$id');
-    return entityModel.fromJson(res);
+    return (this as T).fromJson(res);
   }
 
   @override
   Future<T> insert(T entity) async
-  => entityModel.fromJson(await networkService.post(url: '/$url', jsonData: entity.toJson()));
+  => (this as T).fromJson(await networkService.post(url: '/$url', jsonData: entity.toJson()));
 
   @override
   Future<T> update(T entity) async
-  => entityModel.fromJson(await networkService.put(url: '/$url', jsonData: entity.toJson()));
+  => (this as T).fromJson(await networkService.put(url: '/$url', jsonData: entity.toJson()));
 
   @override
   delete(int idx) async

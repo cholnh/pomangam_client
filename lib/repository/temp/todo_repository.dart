@@ -3,6 +3,5 @@ import 'package:pomangam_client/repository/common/crud_repository_impl.dart';
 
 class TodoRepository extends CrudRepositoryImpl<Todo> {
 
-  TodoRepository({url, entity, networkService})
-      : super(url: url, entityModel: entity, networkService: networkService);
+  TodoRepository({url}): super(url: url);
 }

@@ -46,16 +46,6 @@ class TodoDto {
   static List<TodoDto> fromEntities(List<Todo> entities)
     => entities.map((entity) => fromEntity(entity)).toList();
 
-  TodoDto copyWith({int idx, String username, String title, String contents, bool completed}) {
-    return TodoDto(
-      idx: idx ?? this.idx,
-      username: username ?? this.username,
-      title: title ?? this.title,
-      contents: contents ?? this.contents,
-      completed: completed ?? this.completed,
-    );
-  }
-
   @override
   String toString() {
     return 'TodoDto{idx: $idx, username: $username, title: $title, contents: $contents, completed: $completed}';
