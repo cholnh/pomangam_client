@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
+import 'package:pomangam_client/common/network/constant/endpoint.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class DeliveryAdvertisement extends StatelessWidget {
   @override
@@ -14,14 +16,14 @@ class DeliveryAdvertisement extends StatelessWidget {
             viewportFraction: 0.9,
             enableInfiniteScroll: true,
             autoPlay: true,
-            autoPlayInterval: Duration(seconds: 3),
+            autoPlayInterval: Duration(seconds: 5),
             autoPlayAnimationDuration: Duration(milliseconds: 800),
             autoPlayCurve: Curves.fastOutSlowIn,
             pauseAutoPlayOnTouch: Duration(seconds: 10),
             enlargeCenterPage: true,
             scrollDirection: Axis.horizontal,
 
-            items: [1,2,3,4,5].map((i) {
+            items: [3,2,1,4,5].map((i) {
               return Builder(
                 builder: (BuildContext context) {
                   return GestureDetector(
@@ -29,10 +31,14 @@ class DeliveryAdvertisement extends StatelessWidget {
                         width: MediaQuery.of(context).size.width,
                         margin: const EdgeInsets.symmetric(horizontal: 5.0),
                         decoration: const BoxDecoration(
-                            color: Colors.amber
+                            color: Colors.white70
                         ),
-                        child: Center(
-                            child: Text('AD$i', style: TextStyle(fontSize: 16.0))
+                        child: FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage,
+                          image: '${Endpoint.serverDomain}/assets/image/advertise/main/$i.png',
+                          width: MediaQuery.of(context).size.width,
+                          height: 200.0,
+                          fit: BoxFit.fill,
                         )
                     ),
                     onTap: () => print('AD$i clicked!'),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/i18n/messages.dart';
-import 'package:pomangam_client/common/router/app_router.dart';
-import 'package:injector/injector.dart';
+import 'package:pomangam_client/common/key/pmg_key.dart';
 
 class ErrorPage extends StatelessWidget {
   final String contents;
@@ -16,6 +15,7 @@ class ErrorPage extends StatelessWidget {
     return WillPopScope(
       onWillPop: () => Future.value(false), // 뒤로가기 방지
       child: Scaffold(
+        key: PmgKeys.errorPage,
         body: Center(
           child: Center(
             child: Column(

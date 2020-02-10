@@ -1,30 +1,24 @@
-import 'package:pomangam_client/common/network/domain/page_request.dart';
-import 'package:pomangam_client/common/network/service/network_service.dart';
-import 'package:pomangam_client/domain/store/store_entity.dart';
-import 'package:pomangam_client/domain/store/store_summary_entity.dart';
-import 'package:pomangam_client/repository/common/crud_repository_impl.dart';
+import 'package:flutter/foundation.dart';
+import 'package:pomangam_client/common/network/api/api.dart';
+import 'package:pomangam_client/domain/common/page_request.dart';
+import 'package:pomangam_client/domain/store/store.dart';
+import 'package:pomangam_client/domain/store/store_summary.dart';
 
-class StoreRepository extends CrudRepositoryImpl<StoreEntity> {
+class StoreRepository {
 
-  final NetworkService networkService;
+  final Api api; // 서버 연결용
 
-  StoreRepository({url, this.networkService})
-      : super(url: url, networkService: networkService);
+  StoreRepository({this.api});
 
-  Future<List<StoreSummaryEntity>> findByType({
-    int deliverySiteIdx,
-    int type,
-    PageRequest pageRequest
-  }) async {
+  Future<Store> findByIdx({
+    @required int sidx
+  }) async => Store.fromJson(
+      (await api.get(url: '/stores/$sidx')).data);
 
-    final path = '/search/findByType';
-    List<StoreSummaryEntity> entities = [];
+  Future<List<StoreSummary>> findAll({
+    @required int didx,
+    @required PageRequest pageRequest
+  }) async => StoreSummary.fromJsonList(
+      (await api.get(url: '/dsites/$didx/stores/search/summaries')).data);
 
-    var res = await networkService.get(
-        url: '/$url$path?deliverySiteIdx=$deliverySiteIdx&type=$type&page=${pageRequest.page}&size=${pageRequest.size}');
-
-    res.forEach((map) => entities.add(StoreSummaryEntity().fromJson(map)));
-
-    return entities;
-  }
 }

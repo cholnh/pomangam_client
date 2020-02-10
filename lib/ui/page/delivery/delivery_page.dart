@@ -21,19 +21,10 @@ class _DeliveryPageState extends State<DeliveryPage> {
     super.initState();
   }
 
-
   @override
   void didChangeDependencies() {
     Provider.of<StoreSummaryModel>(context, listen: false).fetch();
     super.didChangeDependencies();
-  }
-
-  void _onScroll() {
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.position.pixels;
-    if (maxScroll - currentScroll <= _scrollThreshold) {
-      Provider.of<StoreSummaryModel>(context, listen: false).fetch();
-    }
   }
 
   @override
@@ -47,5 +38,13 @@ class _DeliveryPageState extends State<DeliveryPage> {
       ],
       controller: _scrollController,
     );
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      Provider.of<StoreSummaryModel>(context, listen: false).fetch();
+    }
   }
 }

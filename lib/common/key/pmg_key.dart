@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 
 class PmgKeys {
 
+  // Error
+  static final errorPage = GlobalKey();
   // Delivery
   static const deliveryPage = Key('__deliveryPage__');
   static const deliveryAdvertisement = Key('__deliveryAdvertisement__');

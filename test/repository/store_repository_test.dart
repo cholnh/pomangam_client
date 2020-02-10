@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:injector/injector.dart';
-import 'package:pomangam_client/common/network/domain/page_request.dart';
+import 'package:pomangam_client/domain/common/page_request.dart';
 import 'package:pomangam_client/common/network/repository/authorization_repository.dart';
-import 'package:pomangam_client/domain/store/store_summary_entity.dart';
+import 'package:pomangam_client/domain/store/store_summary.dart';
 import 'package:pomangam_client/repository/store/store_repository.dart';
 
 import '../testable.dart';
@@ -23,7 +23,7 @@ class StoreRepositoryTest implements Testable {
   run() {
     test('store summary test', () async {
       // Given
-      List<StoreSummaryEntity> stores;
+      List<StoreSummary> stores;
       int deliverySiteIdx = 1;
       int type = 0;
       PageRequest pageRequest = PageRequest(page: 0, size: 10);
@@ -33,9 +33,8 @@ class StoreRepositoryTest implements Testable {
         ..saveToDioHeader()  // dio http header 추가
         ..saveToDisk();      // shared preference 저장
 
-      stores = await _storeRepository.findByType(
-        deliverySiteIdx: deliverySiteIdx,
-        type: type,
+      stores = await _storeRepository.findAll(
+        didx: deliverySiteIdx,
         pageRequest: pageRequest
       );
       print('$stores');

@@ -1,10 +1,6 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
 import 'package:pomangam_client/common/network/dio/dio_core.dart';
-import 'package:pomangam_client/common/network/exception/oauth_exception.dart';
 import 'package:pomangam_client/common/network/repository/authorization_repository.dart';
 
 class ResourceRepository {
@@ -13,81 +9,52 @@ class ResourceRepository {
 
   ResourceRepository({this.oauthTokenRepository});
 
-  get({
-    @required String url,
-    Locale locale,
-  }) async {
-    return await _httpAction((url, options, formData) async
-    => await DioCore().resource.get(url, options: options),
-        url, locale, null);
+  /// ## _apiAdaptor
+  ///
+  /// 현재 서버 api 연결 용으로 Dio Package 사용 중
+  /// 나중에 네트워크 연결 라이브러리를 변경할 경우 아래 반환문 변경.
+  Dio _apiAdaptor() {
+    return DioCore().resource;
   }
 
-  post({
+  void setResourceLocale(Locale locale) {
+    DioCore().setResourceLocale(locale);
+  }
+
+  /// ## get
+  ///
+  /// 데이터 로드
+  Future<Response> get({
+    @required String url
+  }) => _apiAdaptor().get(url);
+
+  /// ## post
+  ///
+  /// 데이터 입력
+  Future<Response> post({
     @required String url,
-    Locale locale,
     Map jsonData
-  }) async {
+  }) => _apiAdaptor().post(url, data: jsonData);
 
-    return await _httpAction((url, options, formData) async
-    => await DioCore().resource.post(url, options: options, data: formData),
-        url, locale, jsonData);
-  }
-
-  patch({
+  /// ## patch
+  ///
+  /// 데이터 수정
+  Future<Response> patch({
     @required String url,
-    Locale locale,
     Map jsonData
-  }) async {
-    return await _httpAction((url, options, formData) async
-    => await DioCore().resource.patch(url, options: options, data: formData),
-        url, locale, jsonData);
-  }
+  }) => _apiAdaptor().patch(url, data: jsonData);
 
-  put({
+  /// ## put **deprecated** patch 사용 권장
+  @deprecated
+  Future<Response> put({
     @required String url,
-    Locale locale,
     Map jsonData
-  }) async {
+  }) => _apiAdaptor().put(url, data: jsonData);
 
-    return await _httpAction((url, options, formData) async
-    => await DioCore().resource.put(url, options: options, data: formData),
-        url, locale, jsonData);
-  }
-
-  delete({
+  /// ## delete
+  ///
+  /// 데이터 삭제
+  Future<Response> delete({
     @required String url,
-    Locale locale
-  }) async {
-
-    await _httpAction((url, options) async
-      => await DioCore().resource.delete(url, options: options),
-      url, locale, null);
-  }
-
-  _httpAction(Function innerFunc, String url, Locale locale, Map jsonData) async {
-    Options options = Options(headers: {
-      'Accept-Language': locale == null ? 'ko' : locale.languageCode,
-    });
-    try {
-      var res = await innerFunc(url, options, jsonData);
-
-      if(res != null && res.statusCode == 200) {
-        return res.data;
-      }
-    } on SocketException catch (_) {
-      throw OauthNetworkException(OauthExceptionType.serverClosed);
-    } catch (error) {
-      if(error is DioError) {
-        switch(error.response.statusCode) {
-          case HttpStatus.unauthorized:
-            await oauthTokenRepository.loadToken()
-              ..saveToDioHeader()
-              ..saveToDisk();
-            return await innerFunc(url, options, jsonData);
-        }
-      }
-      throw OauthNetworkException(OauthExceptionType.networkError);
-    }
-  }
-
+  }) => _apiAdaptor().delete(url);
 }
