@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:pomangam_client/common/router/app_router.dart';
-import 'package:pomangam_client/provider/common/initializer_model.dart';
+import 'package:pomangam_client/common/initalizer/initializer.dart';
 import 'package:pomangam_client/provider/sign/sign_up_model.dart';
 import 'package:pomangam_client/ui/widget/sign/sign_modal.dart';
 import 'package:provider/provider.dart';

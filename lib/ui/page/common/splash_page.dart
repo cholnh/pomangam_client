@@ -3,8 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:injector/injector.dart';
 import 'package:pomangam_client/common/i18n/i18n.dart';
 import 'package:pomangam_client/common/router/app_router.dart';
-import 'package:pomangam_client/provider/common/initializer_model.dart';
-import 'package:provider/provider.dart';
+import 'package:pomangam_client/common/initalizer/initializer.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -14,17 +13,12 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
 
   final AppRouter _router = Injector.appInstance.getDependency<AppRouter>();
-  String _imgSrc = 'assets/logo3.gif';
-  int _imgDelay = 3000;
-  bool _isNetworkServiceDone = false;
-  bool _isImageDrawDone = false;
-
+  final Initializer _initializer = Injector.appInstance.getDependency<Initializer>();
 
   @override
   void initState() {
     super.initState();
     _readyInitialize(); // 초기화 준비
-    _readyLoadingImage(); // Loading Image 준비
   }
 
   @override
@@ -39,7 +33,7 @@ class _SplashPageState extends State<SplashPage> {
         children: <Widget>[
           Container(
             child: Image(
-              image: AssetImage(_imgSrc),
+              image: const AssetImage('assets/logo3.gif'),
               width: 150,
               height: 150,
             ),
@@ -64,24 +58,17 @@ class _SplashPageState extends State<SplashPage> {
     // addPostFrameCallback 메서드를 통해 build 완료를 통지받음.
     SchedulerBinding.instance.addPostFrameCallback((_) {
       // 초기화 진행
-      Provider.of<InitializerModel>(context, listen: false)
-          .initialize(locale: Localizations.localeOf(context))
-          .catchError((err) => _router.navigateTo(context, '/error/Server Down'));
+      _initializer
+          .initialize(
+            locale: Localizations.localeOf(context),
+            onDone: _onDone,
+            onServerError: _onServerError
+          ).catchError((err) => _onServerError());
     });
-    _isNetworkServiceDone = true;
-    _next(to: '/');
   }
 
-  _readyLoadingImage() async {
-    await Future.delayed(
-        Duration(milliseconds: _imgDelay));
-    _isImageDrawDone = true;
-    _next(to: '/');
-  }
+  void _onDone() => _router.navigateTo(context, '/');
 
-  void _next({String to}) {
-    if(_isNetworkServiceDone && _isImageDrawDone) {
-      _router.navigateTo(context, to);
-    }
-  }
+  void _onServerError() => _router.navigateTo(context, '/error/Server Down');
+
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:injector/injector.dart';
+import 'package:pomangam_client/common/initalizer/initializer.dart';
 import 'package:pomangam_client/common/network/api/api.dart';
 import 'package:pomangam_client/domain/sign/auth_code_result.dart';
 import 'package:pomangam_client/domain/sign/phone_number.dart';
@@ -7,8 +9,9 @@ import 'package:pomangam_client/domain/sign/user.dart';
 class SignRepository {
 
   final Api api; // 서버 연결용
+  final Initializer initializer;
 
-  SignRepository({this.api});
+  SignRepository({this.api, this.initializer});
 
   Future<bool> verifyPhoneNumber({
     @required String phoneNumber
@@ -47,7 +50,7 @@ class SignRepository {
   Future<User> signIn({
     @required String phoneNumber,
     @required String password
-  }) => api.signIn(phoneNumber: phoneNumber, password: password);
+  }) => initializer.initializeToken(phoneNumber: phoneNumber, password: password);
 
   void signOut() => api.signOut();
 }

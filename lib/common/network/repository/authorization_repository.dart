@@ -173,12 +173,14 @@ class OauthTokenRepository {
         String status = jsonDecode(res.data)['status'];
         switch(status) {
           case 'UP': return ServerHealth.UP;
-          case 'MAINTENANCE': return ServerHealth.DOWN;
+          case 'DOWN': return ServerHealth.DOWN;
           case 'MAINTENANCE': return ServerHealth.MAINTENANCE;
           default: return ServerHealth.UNKNOWN;
         }
       }
-    } catch(e) {/* 아래 return 문으로 이동 */}
+    } catch(e) {
+      return ServerHealth.UNKNOWN;
+    }
     return ServerHealth.UNKNOWN;
   }
 }

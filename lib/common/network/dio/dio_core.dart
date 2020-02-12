@@ -1,9 +1,5 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:injector/injector.dart';
-import 'package:pomangam_client/common/network/api/api.dart';
 import 'package:pomangam_client/common/network/constant/endpoint.dart';
 
 class DioCore {
@@ -31,23 +27,23 @@ class DioCore {
     oauth = Dio(options);
     resource = Dio(options);
 
-    InterceptorsWrapper interceptorsWrapper = InterceptorsWrapper(
-      onError: (DioError dioError) async {
-        // 토큰 재 요청
-        switch(dioError.response.statusCode) {
-          case HttpStatus.unauthorized: // 401
-            await Injector.appInstance.getDependency<Api>()
-              .initialize()
-              .catchError((err) => print('[Debug] DioCore.interceptor!!server down..'));
-            break;
-          default:
-            break;
-        }
-        throw dioError;
-      }
-    );
+//    InterceptorsWrapper interceptorsWrapper = InterceptorsWrapper(
+//      onError: (DioError dioError) async {
+//        // 토큰 재 요청
+//        switch(dioError.response.statusCode) {
+//          case HttpStatus.unauthorized: // 401
+//            await Injector.appInstance.getDependency<Api>()
+//              .initialize()
+//              .catchError((err) => print('[Debug] DioCore.interceptor!!server down..'));
+//            break;
+//          default:
+//            break;
+//        }
+//        throw dioError;
+//      }
+//    );
 
-    resource.interceptors.add(interceptorsWrapper);
+//    resource.interceptors.add(interceptorsWrapper);
   }
 
   void setResourceLocale(Locale locale) {

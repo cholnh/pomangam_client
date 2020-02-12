@@ -14,6 +14,7 @@ import 'package:pomangam_client/main.dart';
 import 'package:pomangam_client/repository/store/store_repository.dart';
 
 import 'domain/domain_test.dart';
+import 'provider/model_test.dart';
 import 'repository/repository_test.dart';
 import 'repository/store_repository_test.dart';
 import 'testable.dart';
@@ -21,9 +22,11 @@ import 'testable.dart';
 void main() {
 
   InjectorRegister.register();
+  TestWidgetsFlutterBinding.ensureInitialized();
 
   List<Testable>.from([
-    DomainTest(),
+    ModelTest(),
+    //DomainTest(),
     //StoreRepositoryTest(),
 
   ]).forEach((cls) {

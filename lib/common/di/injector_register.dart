@@ -4,6 +4,7 @@ import 'package:pomangam_client/common/network/api/api.dart';
 import 'package:pomangam_client/common/network/repository/authorization_repository.dart';
 import 'package:pomangam_client/common/network/repository/resource_repository.dart';
 import 'package:pomangam_client/common/router/app_router.dart';
+import 'package:pomangam_client/common/initalizer/initializer.dart';
 import 'package:pomangam_client/repository/sign/sign_repository.dart';
 import 'package:pomangam_client/repository/store/store_repository.dart';
 
@@ -71,7 +72,18 @@ class InjectorRegister {
     ..registerDependency<SignRepository>
       ((injector) => SignRepository(
         api: injector.getDependency<Api>()
+      ))
+
+
+    /// A singleton Initializer provider.
+    ///
+    /// Calling it multiple times will return the same instance.
+    ..registerDependency<Initializer>
+      ((injector) => Initializer(
+        api: injector.getDependency<Api>()
       ));
+
+
 
     }
 }

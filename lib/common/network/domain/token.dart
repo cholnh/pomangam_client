@@ -1,25 +1,19 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:pomangam_client/common/key/shared_preference_key.dart' as s;
 import 'package:pomangam_client/common/network/dio/dio_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:pomangam_client/common/key/shared_preference_key.dart' as s;
 
 enum TokenMode { GUEST, LOGIN }
 
 class Token {
 
-
-  //━━ class variables ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
   String accessToken;
   String tokenType;
   int expiresIn;
   String scope;
   String refreshToken;
   TokenMode tokenMode;
-  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-
-  //━━ constructor ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
   Token({
     @required this.accessToken,
     @required this.tokenType,
@@ -35,10 +29,7 @@ class Token {
     expiresIn = json['expires_in'],
     scope = json['scope'],
     refreshToken = json['refresh_token'];
-  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-
-  //━━ actions ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
   static Future<Token> loadFromDisk() async {
     try {
       String accessToken, tokenType, scope, refreshToken;
@@ -125,5 +116,4 @@ class Token {
   String toString() {
     return 'Token{accessToken: $accessToken, tokenType: $tokenType, expiresIn: $expiresIn, scope: $scope, refreshToken: $refreshToken, tokenMode: $tokenMode}';
   }
-  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 }

@@ -5,11 +5,9 @@ import 'package:injector/injector.dart';
 import 'package:pomangam_client/common/di/injector_register.dart';
 import 'package:pomangam_client/common/i18n/i18n.dart';
 import 'package:pomangam_client/common/router/app_router.dart';
-import 'package:pomangam_client/provider/common/initializer_model.dart';
+import 'package:pomangam_client/common/initalizer/initializer.dart';
 import 'package:pomangam_client/provider/sign/sign_in_model.dart';
 import 'package:pomangam_client/provider/sign/sign_up_model.dart';
-import 'package:pomangam_client/provider/store/store_summary_model.dart';
-import 'package:pomangam_client/provider/tab/tab_model.dart';
 import 'package:pomangam_client/ui/page/common/splash_page.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +23,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => InitializerModel()),
         ChangeNotifierProvider(create: (_) => SignUpModel(), lazy: true),
         ChangeNotifierProvider(create: (_) => SignInModel(), lazy: true)
       ],

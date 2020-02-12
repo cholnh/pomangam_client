@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'store_summary.g.dart';
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(nullable: true)
 class StoreSummary {
 
   int idx;
@@ -31,11 +31,11 @@ class StoreSummary {
 
   int couponValue;  // couponType: 0 -> 쿠폰제공안함 / 1-> 쿠폰제공가격(단위: 원)
 
-  StoreSummary(this.idx, this.title, this.description, this.subDescription,
+  StoreSummary({this.idx, this.title, this.description, this.subDescription,
       this.avgStar, this.cntLike, this.cntComment, this.storeImagePaths,
       this.brandImagePath, this.promotionType, this.promotionValue,
       this.couponType,
-      this.couponValue);
+      this.couponValue});
 
   factory StoreSummary.fromJson(Map<String, dynamic> json) => _$StoreSummaryFromJson(json);
   Map<String, dynamic> toJson() => _$StoreSummaryToJson(this);
