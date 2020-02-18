@@ -39,7 +39,7 @@ class DomainTest implements Testable {
           .catchError((err) => print('server is closed - $err'));
 
       try {
-        Response response = await _api.post(url: '/users', jsonData: user.toJson());
+        Response response = await _api.post(url: '/users', data: user.toJson());
 
         print('response : $response');  // 리스폰스 (데이터로 사용하면 안됨)
         print('statusCode : ${response.statusCode}'); // 상태코드

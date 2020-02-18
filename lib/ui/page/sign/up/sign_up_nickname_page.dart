@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/util/string_utils.dart';
 import 'package:pomangam_client/provider/sign/sign_up_model.dart';
 import 'package:pomangam_client/ui/widget/common/custom_dialog_utils.dart';
@@ -43,7 +44,7 @@ class _SignUpNicknamePageState extends State<SignUpNicknamePage> {
       onWillPop: () => Future.value(false), // 뒤로가기 방지
       child: Scaffold(
         appBar: SignUpAppBar(context, enableBackButton: false),
-        backgroundColor: Colors.white,
+        backgroundColor: backgroundColor,
         body: Padding(
           padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 20.0),
           child: Column(
@@ -97,7 +98,7 @@ class _SignUpNicknamePageState extends State<SignUpNicknamePage> {
                                 padding: EdgeInsets.only(top: 10.0),
                                 child: Text(
                                   '10자 이내의 한글, 알파벳, 숫자만 가능합니다.',
-                                  style: TextStyle(color: Colors.deepOrange),
+                                  style: TextStyle(color: primaryColor),
                                   textAlign: TextAlign.start,
                                 )
                               );

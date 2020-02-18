@@ -168,9 +168,9 @@ class OauthTokenRepository {
   ///
   Future<ServerHealth> serverHealthCheck() async {
     try {
-      var res = await DioCore().oauth.get('/application/healthCheck');
-      if(res != null && res?.statusCode == 200) {
-        String status = jsonDecode(res.data)['status'];
+      var res = await DioCore().oauth.get('/health');
+      if(res != null && res.statusCode == 200) {
+        String status = res.data['status'];
         switch(status) {
           case 'UP': return ServerHealth.UP;
           case 'DOWN': return ServerHealth.DOWN;

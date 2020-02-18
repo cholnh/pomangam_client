@@ -74,7 +74,7 @@ class Token {
     return null;
   }
 
-  saveToDisk() async {
+  Future<Token> saveToDisk() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if(tokenMode == TokenMode.GUEST) {
@@ -91,7 +91,7 @@ class Token {
     return this;
   }
 
-  static clearFromDisk() async {
+  static Future<void> clearFromDisk() async {
     await SharedPreferences.getInstance()
       ..remove(s.tokenMode)
       ..remove(s.refreshToken)
@@ -101,14 +101,14 @@ class Token {
       ..remove(s.scope);
   }
 
-  saveToDioHeader() {
+  Token saveToDioHeader() {
     DioCore().addResourceHeader({
       'Authorization':'Bearer ' + accessToken
     }); // interceptor header 추가
     return this;
   }
 
-  static clearFromDioHeader() {
+  static void clearFromDioHeader() {
     DioCore().resource.interceptors.clear();
   }
 

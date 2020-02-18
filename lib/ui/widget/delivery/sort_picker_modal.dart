@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/i18n/i18n.dart';
 
 class SortPickerModal extends StatelessWidget {
@@ -50,7 +51,7 @@ class SortPickerModal extends StatelessWidget {
                       children: <Widget>[
                         const Text('추천순'),
                         const Padding(padding: EdgeInsets.all(3)),
-                        const Icon(Icons.check, color: Colors.deepOrange)
+                        const Icon(Icons.check, color: primaryColor)
                       ],
                     )
                 ),
@@ -66,7 +67,7 @@ class SortPickerModal extends StatelessWidget {
                       children: <Widget>[
                         const Text('주문많은순'),
                         const Padding(padding: EdgeInsets.all(3)),
-                        const Icon(Icons.check, color: Colors.deepOrange)
+                        const Icon(Icons.check, color: primaryColor)
                       ],
                     )
                 ),
@@ -82,7 +83,7 @@ class SortPickerModal extends StatelessWidget {
                       children: <Widget>[
                         const Text('별점높은순'),
                         const Padding(padding: EdgeInsets.all(3)),
-                        const Icon(Icons.check, color: Colors.deepOrange)
+                        const Icon(Icons.check, color: primaryColor)
                       ],
                     )
                 ),
@@ -98,7 +99,7 @@ class SortPickerModal extends StatelessWidget {
                       children: <Widget>[
                         const Text('리뷰많은순'),
                         const Padding(padding: EdgeInsets.all(3)),
-                        const Icon(Icons.check, color: Colors.deepOrange)
+                        const Icon(Icons.check, color: primaryColor)
                       ],
                     )
                 ),

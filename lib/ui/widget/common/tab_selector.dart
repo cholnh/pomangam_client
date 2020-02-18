@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/i18n/i18n.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/domain/tab/tab_menu.dart';
@@ -18,36 +19,50 @@ class TabSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color selectedItemColor = Colors.black;
+    final Color unselectedItemColor = Colors.grey;
+
     return BottomNavigationBar(
-      backgroundColor: Colors.white,
+
       key: PmgKeys.baseTab,
       type: BottomNavigationBarType.fixed,
       currentIndex: TabMenu.values.indexOf(activeTab),
       onTap: (index) => onTabSelected(TabMenu.values[index]),
       showSelectedLabels: false,
       showUnselectedLabels: false,
-      selectedItemColor: Theme.of(context).accentColor,
-      unselectedItemColor: Colors.grey,
+      selectedFontSize: 0.0,
+      unselectedFontSize: 0.0,
+      backgroundColor: backgroundColor,
+      selectedItemColor: selectedItemColor,
+      unselectedItemColor: unselectedItemColor,
       items: [
         CustomBottomNavBarItem(
             icon: const Icon(Icons.local_dining, key: PmgKeys.tabHomeImg),
             title: Messages.tabHomeTitle,
-            isActive: false
+            isActive: false,
+            selectedItemColor: selectedItemColor,
+            unselectedItemColor: unselectedItemColor
         ),
         CustomBottomNavBarItem(
             icon: const Icon(Icons.fastfood, key: PmgKeys.tabRecommendImg),
             title: Messages.tabRecommendTitle,
-            isActive: false
+            isActive: false,
+            selectedItemColor: selectedItemColor,
+            unselectedItemColor: unselectedItemColor
         ),
         CustomBottomNavBarItem(
             icon: const Icon(Icons.event_note, key: PmgKeys.tabOrderInfoImg),
             title: Messages.tabOrderInfoTitle,
-            isActive: true
+            isActive: true,
+            selectedItemColor: selectedItemColor,
+            unselectedItemColor: unselectedItemColor
         ),
         CustomBottomNavBarItem(
             icon: const Icon(Icons.more_horiz, key: PmgKeys.tabMoreImg),
             title: Messages.tabMoreTitle,
-            isActive: true
+            isActive: true,
+            selectedItemColor: selectedItemColor,
+            unselectedItemColor: unselectedItemColor
         ),
       ]
     );

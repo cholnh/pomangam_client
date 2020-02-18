@@ -3,7 +3,7 @@ import 'package:pomangam_client/domain/delivery/delivery_site.dart';
 
 part 'delivery_detail_site.g.dart';
 
-@JsonSerializable(nullable: true)
+@JsonSerializable(nullable: true, explicitToJson: true)
 class DeliveryDetailSite {
 
     int idx;
@@ -16,7 +16,7 @@ class DeliveryDetailSite {
 
     int sequence;
 
-    DateTime additionalTime;
+    String additionalTime;
 
     double latitude;
 

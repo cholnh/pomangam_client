@@ -7,16 +7,16 @@ abstract class NetworkService {
   });
   Future post({
     @required String url,
-    Map jsonData
+    dynamic data
   });
   Future patch({
     @required String url,
-    Map jsonData
+    dynamic data
   });
   @deprecated
   Future put({
     @required String url,
-    Map jsonData
+    dynamic data
   });
   Future delete({
     @required String url

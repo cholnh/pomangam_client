@@ -33,23 +33,23 @@ class ResourceRepository {
   /// 데이터 입력
   Future<Response> post({
     @required String url,
-    Map jsonData
-  }) => _apiAdaptor().post(url, data: jsonData);
+    dynamic data
+  }) => _apiAdaptor().post(url, data: data);
 
   /// ## patch
   ///
   /// 데이터 수정
   Future<Response> patch({
     @required String url,
-    Map jsonData
-  }) => _apiAdaptor().patch(url, data: jsonData);
+    dynamic data
+  }) => _apiAdaptor().patch(url, data: data);
 
   /// ## put **deprecated** patch 사용 권장
   @deprecated
   Future<Response> put({
     @required String url,
-    Map jsonData
-  }) => _apiAdaptor().put(url, data: jsonData);
+    dynamic data
+  }) => _apiAdaptor().put(url, data: data);
 
   /// ## delete
   ///

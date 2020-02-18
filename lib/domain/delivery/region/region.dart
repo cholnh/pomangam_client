@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'region.g.dart';
 
-@JsonSerializable(nullable: true)
+@JsonSerializable(nullable: true, explicitToJson: true)
 class Region {
   int idx;
 

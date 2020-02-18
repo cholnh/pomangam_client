@@ -41,6 +41,10 @@ dependencies:
 
   sms: ^0.2.4
 
+  sqflite: any
+
+  path: any
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/router/app_router.dart';
 import 'package:pomangam_client/common/util/string_utils.dart';
 import 'package:pomangam_client/domain/sign/enum/auth_code_state.dart';
@@ -66,7 +67,7 @@ class _SignUpAuthCodePageState extends State<SignUpAuthCodePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SignUpAppBar(context),
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       body: Padding(
         padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 20.0),
         child: Column(
@@ -87,9 +88,9 @@ class _SignUpAuthCodePageState extends State<SignUpAuthCodePage> {
                             length: 4,
                             controller: _controller,
                             focusNode: _focusNode,
-                            activeColor: Colors.deepOrange,
+                            activeColor: primaryColor,
                             inactiveColor: Colors.grey,
-                            selectedColor: Colors.deepOrange,
+                            selectedColor: primaryColor,
                             textInputType: TextInputType.number,
                             obsecureText: false,
                             animationType: AnimationType.scale,
@@ -120,7 +121,7 @@ class _SignUpAuthCodePageState extends State<SignUpAuthCodePage> {
                             ? Text(
                                 '인증코드 전송에 실패하였습니다.',
                                 style: TextStyle(
-                                  color: Colors.deepOrange,
+                                  color: primaryColor,
                                 )
                             )
                             : null, // TODO 타이머 구현

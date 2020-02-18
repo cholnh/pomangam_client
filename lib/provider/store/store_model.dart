@@ -13,10 +13,11 @@ class StoreModel with ChangeNotifier {
   }
 
   void fetch({
+    @required int didx,
     @required int sidx
   }) async {
     try {
-      store = await _storeRepository.findByIdx(sidx: sidx);
+      store = await _storeRepository.findByIdx(didx: didx, sidx: sidx);
     } catch (error) {
       print('[Debug] StoreModel.fetch Error - $error');
     }

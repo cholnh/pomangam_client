@@ -1,50 +1,177 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
+import 'package:pomangam_client/common/key/shared_preference_key.dart' as s;
 import 'package:pomangam_client/common/network/api/api.dart';
 import 'package:pomangam_client/common/network/domain/server_health.dart';
 import 'package:pomangam_client/common/network/domain/token.dart';
 import 'package:pomangam_client/domain/sign/user.dart';
+import 'package:pomangam_client/provider/delivery/delivery_site_model.dart';
+import 'package:pomangam_client/provider/delivery/detail/delivery_detail_site_model.dart';
+import 'package:pomangam_client/provider/order/time/order_time_model.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Initializer {
 
   Api api;
+  bool isServerDown = false;
 
   Initializer({this.api});
 
   Future initialize({
-    Locale locale = const Locale('ko'),
+    BuildContext context,
     Function onDone,
     Function onServerError,
   }) async {
-    api.resourceRepository.setResourceLocale(locale); // server 통신 header 에 locale 추가
+    try {
+      log('start initialize', name: 'Initializer.initialize', time: DateTime.now());
 
-    if( await _isServerDown(onServerError: onServerError) ) return;
-    if( !await _hasFcmToken() ) await _fcmTokenNotIssuedHandler();
+      await initializeNetwork(onServerError: onServerError);
+      await initializeLocale(locale: context != null ? Localizations.localeOf(context) : Locale('ko'));
+      await _initializeNotification();
+      await _initializeToken();
+      await _initializeModelData(context: context);
+      if(onDone != null) onDone();
 
-    User user = await initializeToken();
-    if(user != null) {
-      _saveDB(user);
+      log('success', name: 'Initializer.initialize', time: DateTime.now());
+    } catch(error) {
+      log('fail', name: 'Initializer.initialize', time: DateTime.now(), error: error);
     }
-
-    if(onDone != null) onDone();
   }
 
-  Future<User> initializeToken() async {
-    Token token;
-    User user;
+  Future<void> initializeLocale({Locale locale}) async {
+    try {
+      log('start initializeLocale', name: 'Initializer.initializeLocale', time: DateTime.now());
+      api.setResourceLocale(locale: locale); // server 통신 header 에 locale 추가
+      log('success', name: 'Initializer.initializeLocale', time: DateTime.now());
+    } catch(error) {
+      log('fail', name: 'Initializer.initializeLocale', time: DateTime.now(), error: error);
+    }
+  }
 
-    token = await api.oauthTokenRepository.loadToken();
+  Future<bool> initializeNetwork({Function onServerError}) async {
+    try {
+      log('start initializeNetwork', name: 'Initializer.initializeNetwork', time: DateTime.now());
+      isServerDown = await _isServerDown(onServerError: onServerError);
+      log('success', name: 'Initializer.initializeNetwork', time: DateTime.now());
+      return isServerDown;
+    } catch(error) {
+      log('fail', name: 'Initializer.initializeNetwork', time: DateTime.now(), error: error);
+      return false;
+    }
+  }
+
+  Future<void> initializeNotification({Function onServerError}) async {
+    isServerDown = await initializeNetwork(onServerError: onServerError);
+    return _initializeNotification();
+  }
+  Future<void> _initializeNotification() async {
+    try {
+      log('start initializeNotification', name: 'Initializer.initializeNotification', time: DateTime.now());
+      if(isServerDown) return;
+      if( !await _hasFcmToken() ) await _fcmTokenNotIssuedHandler();
+      log('success', name: 'Initializer.initializeNotification', time: DateTime.now());
+    } catch(error) {
+      log('fail', name: 'Initializer.initializeNotification', time: DateTime.now(), error: error);
+    }
+  }
+
+  Future<void> initializeToken({Function onServerError}) async {
+    isServerDown = await initializeNetwork(onServerError: onServerError);
+    _initializeToken();
+  }
+  Future<void> _initializeToken() async {
+    try {
+      log('start initializeToken', name: 'Initializer.initializeToken', time: DateTime.now());
+      if(isServerDown) return;
+
+      Token token = await api.oauthTokenRepository.loadToken();
+      if(token != null) {
+        token
+          ..saveToDisk()        // SharedPreference 내부에 저장
+          ..saveToDioHeader();  // 네트워크 헤더에 저장 : Authorization Bearer {access_token}
+
+        String phoneNumber = await _loadInPrefs(s.userPhoneNumber);
+        if(token.tokenMode == TokenMode.LOGIN && phoneNumber.isNotEmpty) {
+          User.fromJson((await api.get(url: '/users/$phoneNumber')).data)
+            ..saveToDisk();
+        }
+      }
+      log('success', name: 'Initializer.initializeToken', time: DateTime.now());
+    } catch(error) {
+      log('fail', name: 'Initializer.initializeToken', time: DateTime.now(), error: error);
+    }
+  }
+
+  /// ## signIn
+  ///
+  /// [phoneNumber] ID 에 해당하는 핸드폰번호 입력
+  /// [password] 비밀번호
+  /// 유저 계정 서버로 전달 -> 유효성 체크 -> login token 발급 -> return 유저 정보
+  ///
+  Future<User> signIn({
+    @required String phoneNumber,
+    @required String password
+  }) async {
+    User user;
+    Token token = await api.oauthTokenRepository.issueLoginToken(
+        phoneNumber: phoneNumber,
+        password: password);
 
     if(token != null) {
       token
         ..saveToDisk()        // SharedPreference 내부에 저장
         ..saveToDioHeader();  // 네트워크 헤더에 저장 : Authorization Bearer {access_token}
 
-      String phoneNumber = _loadDBString('phoneNumber');
-      if(token.tokenMode == TokenMode.LOGIN && phoneNumber.isNotEmpty) {
-        user = User.fromJson((await api.get(url: '/users/$phoneNumber')).data);
-      }
+      (await SharedPreferences.getInstance()).setString(s.userPhoneNumber, phoneNumber);
+      user = User.fromJson((await api.get(url: '/users/$phoneNumber')).data)
+        ..saveToDisk();
     }
     return user;
+  }
+
+  Future<void> initializeModelData({BuildContext context, Function onServerError}) async {
+    isServerDown = await initializeNetwork(onServerError: onServerError);
+    _initializeModelData(context: context);
+  }
+  Future<void> _initializeModelData({BuildContext context}) async {
+    try {
+      log('start initializeData', name: 'Initializer.initializeData', time: DateTime.now());
+      if(isServerDown || context == null) return;
+
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      int ddidx = pref.getInt(s.idxDeliveryDetailSite);
+      int didx = pref.getInt(s.idxDeliverySite);
+
+      // 배달지 설정
+      Provider.of<DeliverySiteModel>(context, listen: false)
+        ..changeUserDeliverySite(didx: didx);
+
+      // 배달지 상세주소 설정
+      Provider.of<DeliveryDetailSiteModel>(context, listen: false)
+        ..changeUserDeliveryDetailSite(didx: didx, ddidx: ddidx);
+
+      // 배달가능시간 설정
+      Provider.of<OrderTimeModel>(context, listen: false)
+        ..fetch(didx: didx);
+
+      log('success', name: 'Initializer.initializeData', time: DateTime.now());
+    } catch(error) {
+      log('fail', name: 'Initializer.initializeData', time: DateTime.now(), error: error);
+    }
+  }
+
+
+  /// ## signOut
+  ///
+  /// 로그아웃
+  /// SharedPreference 내부 token 값 삭제, Dio Header 내부 token 값 삭제.
+  /// 로그아웃 후 View 단에서 초기화 후, 홈('/') 으로 이동 필요.
+  ///
+  void signOut() {
+    Token.clearFromDisk();
+    Token.clearFromDioHeader();
   }
 
   /// ## _isServerDown
@@ -70,10 +197,8 @@ class Initializer {
   ///
   Future<bool> _hasFcmToken() async {
     try {
-      int fidx = _loadDBInt('__fidx__');
-      String fcmToken =  _loadDBString('__fcmToken__');
-
-      return fidx > 0 && fcmToken.isNotEmpty;
+      return await _loadInPrefs(s.fidx) > 0
+          && (await _loadInPrefs(s.fcmToken)).isNotEmpty;
     } catch(error) {
       return false;
     }
@@ -86,62 +211,42 @@ class Initializer {
   Future _fcmTokenNotIssuedHandler() async {
     String fcmToken;
     try{
-      _saveDB(await _requestFcmToken());  // fcm token 저장
-      _saveDB(await _postFcmToken(fcmToken: fcmToken)); // 서버전송 후 fidx 저장
+      _saveInPrefs(s.fcmToken, await _requestFcmToken());  // fcm token 저장
+      _saveInPrefs(s.fidx, await _postFcmToken(fcmToken: fcmToken)); // 서버전송 후 fidx 저장
     } catch(error) {
       return;
     }
   }
 
+  Future<dynamic> _loadInPrefs(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.get(key);
+  }
 
-  /// ## _issueLoginToken
-  ///
-  Future<Token> _issueLoginToken({String phoneNumber, String password}) async {
-    try {
-      return await api.oauthTokenRepository
-          .issueLoginToken(phoneNumber: phoneNumber, password: password);
-    } catch(error) {
-      return await _issueGuestToken();
+  Future<bool> _saveInPrefs(String key, dynamic value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(value is int) {
+      return prefs.setInt(key, value);
+    } else if(value is double) {
+      return prefs.setDouble(key, value);
+    } else if(value is String) {
+      return prefs.setString(key, value);
+    } else if(value is bool) {
+      return prefs.setBool(key, value);
+    } else if(value is List<String>) {
+      return prefs.setStringList(key, value);
     }
-  }
-
-  /// ## _issueGuestToken
-  ///
-  Future<Token> _issueGuestToken() async {
-    return await api.oauthTokenRepository
-        .issueGuestToken();
-  }
-
-  Future<bool> _isLoginUser() async {
-    // Todo: 내부 db 에 User Info 저장되어 있는지 검사
     return false;
-  }
-
-  int _loadDBInt(dynamic what) {
-    // Todo: 내부 db 값 불러오기 구현
-    print('$what loaded !');
-    return 1212;
-  }
-
-  String _loadDBString(dynamic what) {
-    // Todo: 내부 db 값 불러오기 구현
-    print('$what loaded !');
-    return 'fcm token zz';
-  }
-
-  void _saveDB(dynamic item) {
-    // Todo: 내부 db 값 저장 구현
-    print('$item saved !');
   }
 
   Future<String> _requestFcmToken() {
     // Todo: fcm token 발급 요청 구현.
-    return Future.delayed(Duration(seconds: 1), () => 'fcm token dummy');
+    return Future.delayed(Duration(microseconds: 100), () => 'fcm token dummy');
   }
 
   Future<int> _postFcmToken({String fcmToken}) {
     // Todo: fcmToken -> 서버 전송 -> fidx 반환
     int fidx = 123;
-    return Future.delayed(Duration(seconds: 1), () => fidx);
+    return Future.delayed(Duration(microseconds: 100), () => fidx);
   }
 }

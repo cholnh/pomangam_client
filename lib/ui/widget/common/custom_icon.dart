@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 
 class CustomIcon extends StatelessWidget {
   final Icon icon;
@@ -20,7 +21,7 @@ class CustomIcon extends StatelessWidget {
                 right: 7,
                 child: Stack(
                   children: <Widget>[
-                    const Icon(Icons.brightness_1, size: 7.0, color: Colors.deepOrange)
+                    const Icon(Icons.brightness_1, size: 7.0, color: primaryColor)
                   ],
                 ),
               )

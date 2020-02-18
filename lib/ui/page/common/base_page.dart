@@ -19,7 +19,7 @@ class BasePage extends StatelessWidget {
       onWillPop: () => Future.value(false), // 뒤로가기 방지
       child: Scaffold(
         appBar: BaseAppBar(),
-        body: _selectedPage(tabModel),
+        body: _selectedPage(tabModel.tab),
         bottomNavigationBar: TabSelector(
           activeTab: tabModel.tab,
           onTabSelected: (tab) => tabModel.change(tab),
@@ -28,8 +28,8 @@ class BasePage extends StatelessWidget {
     );
   }
 
-  _selectedPage(tabModel) {
-    switch(tabModel.tab) {
+  _selectedPage(TabMenu tab) {
+    switch(tab) {
       case TabMenu.recommend:
         return RecommendPage();
       case TabMenu.orderInfo:

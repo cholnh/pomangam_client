@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/ui/widget/delivery/sort_picker_modal.dart';
 import 'package:pomangam_client/ui/widget/delivery/time_picker_modal.dart';
@@ -17,7 +18,7 @@ class _DeliveryContentsBarState extends State<DeliveryContentsBar> {
   Widget build(BuildContext context) {
     return SliverAppBar(
       key: PmgKeys.deliveryContentsBar,
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       floating: false,
       pinned: true,
       centerTitle: false,

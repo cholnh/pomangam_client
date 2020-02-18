@@ -11,9 +11,10 @@ class StoreRepository {
   StoreRepository({this.api});
 
   Future<Store> findByIdx({
+    @required int didx,
     @required int sidx
   }) async => Store.fromJson(
-      (await api.get(url: '/stores/$sidx')).data);
+      (await api.get(url: '/dsites/$didx/stores/$sidx')).data);
 
   Future<List<StoreSummary>> findAll({
     @required int didx,

@@ -24,7 +24,6 @@ class AppRouter extends Router {
       handler:  Handler(handlerFunc: (context, params) {
         return MultiProvider(
           providers: [
-            ChangeNotifierProvider(create: (_) => StoreSummaryModel(), lazy: true),
             ChangeNotifierProvider(create: (_) => TabModel(), lazy: true),
           ],
           child: BasePage(),
@@ -46,11 +45,12 @@ class AppRouter extends Router {
     /// A StorePage router path.
     ///
     /// Returns the page specified in the handler.
-    super.define("/stores/:sidx",
+    super.define("/dsites/:didx/stores/:sidx",
       handler: Handler(handlerFunc: (context, params) {
+        int didx = int.parse(params['didx'][0]);
         int sidx = int.parse(params['sidx'][0]);
         return ChangeNotifierProvider<StoreModel>(
-          create: (_) => StoreModel()..fetch(sidx: sidx),
+          create: (_) => StoreModel()..fetch(didx: didx, sidx: sidx),
           child: StorePage(),
           lazy: true
         );

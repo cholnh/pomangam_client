@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/router/app_router.dart';
 import 'package:pomangam_client/domain/sign/user.dart';
 import 'package:pomangam_client/provider/sign/sign_in_model.dart';
@@ -23,7 +24,7 @@ class _SignUpPasswordPageState extends State<SignUpPasswordPage> {
   // Color.fromRGBO(0xF4, 0x7E, 60, 1);  -> 연한 주황색
   // Color.fromRGBO(0xE1, 0x5A, 0x2B, 1); -> 포만감 로고색
   // Color.fromRGBO(0xff, 45, 0, 1); -> 오렌지 레드 -> 쨍함
-  Color mainColor = Colors.deepOrange;
+  Color mainColor = primaryColor;
   TextEditingController _controller;
   FocusNode _focusNode;
 
@@ -68,7 +69,7 @@ class _SignUpPasswordPageState extends State<SignUpPasswordPage> {
               SignUpTitle(
                 title: '보안코드를 설정합니다.',
                 subTitle: '한 번만 입력하니 정확히 입력해주세요.',
-                color: Colors.white,
+                color: backgroundColor,
               ),
               Expanded(
                 child: Padding(
@@ -87,8 +88,8 @@ class _SignUpPasswordPageState extends State<SignUpPasswordPage> {
                                 focusNode: _focusNode,
                                 activeColor: mainColor,
                                 inactiveColor: Colors.deepOrange.shade900,
-                                selectedColor: Colors.white,
-                                textStyle: TextStyle(color: Colors.white, locale: Locale('en')),
+                                selectedColor: backgroundColor,
+                                textStyle: TextStyle(color: backgroundColor, locale: Locale('en')),
                                 textInputType: model.isNumberMode
                                   ? TextInputType.number
                                   : TextInputType.text,
@@ -122,7 +123,7 @@ class _SignUpPasswordPageState extends State<SignUpPasswordPage> {
                                   ? '문자로 설정하기'
                                   : '숫자로 설정하기',
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: backgroundColor,
                                     fontWeight: FontWeight.bold
                                 )
                             ),
@@ -145,7 +146,7 @@ class _SignUpPasswordPageState extends State<SignUpPasswordPage> {
                   return model.isPasswordFilled
                     ? SignUpBottomBtn(
                       isActive: !model.signUpPasswordLock,
-                      backgroundColor: Colors.white,
+                      backgroundColor: backgroundColor,
                       color: mainColor,
                       onTap: () {
                         if(model.isPasswordFilled) {

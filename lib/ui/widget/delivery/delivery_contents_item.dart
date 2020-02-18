@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/network/constant/endpoint.dart';
 import 'package:pomangam_client/domain/store/store_summary.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -9,13 +10,14 @@ class DeliveryContentsItem extends StatelessWidget {
   static const double contentsPaddingValue = 10.0;
 
   final StoreSummary summary;
+  final int didx;
 
-  DeliveryContentsItem({this.summary});
+  DeliveryContentsItem({this.summary, this.didx});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Router.appRouter.navigateTo(context, '/stores/${summary.idx}'),
+      onTap: () => Router.appRouter.navigateTo(context, '/dsites/$didx/stores/${summary.idx}'),
       child: Container(
         padding: const EdgeInsets.only(left: paddingValue, right: paddingValue),
         child: Column(
@@ -33,6 +35,8 @@ class DeliveryContentsItem extends StatelessWidget {
                     width: MediaQuery.of(context).size.width - paddingValue,
                     height: 200.0,
                     fit: BoxFit.fill,
+                    fadeInDuration: Duration(milliseconds: 100),
+                    fadeOutDuration: Duration(milliseconds: 100)
                   ),
                 ),
                 Positioned(
@@ -43,7 +47,7 @@ class DeliveryContentsItem extends StatelessWidget {
                     color: const Color.fromRGBO(0xff, 0, 0, 0.9),
                     child: const Text(
                         '3,000원 할인',
-                        style: TextStyle(color: Colors.white)
+                        style: TextStyle(color: backgroundColor)
                     ),
                   ),
                 )
@@ -64,9 +68,9 @@ class DeliveryContentsItem extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(2),
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.deepOrange, width: 2)
+                        border: Border.all(color: primaryColor, width: 2)
                     ),
-                    child: const Text('2000원 쿠폰', style: TextStyle(color: Colors.deepOrange, fontSize: 11, fontWeight: FontWeight.w600)),
+                    child: const Text('2000원 쿠폰', style: TextStyle(color: primaryColor, fontSize: 11, fontWeight: FontWeight.w600)),
                   ),
                 ],
               ),
@@ -94,7 +98,7 @@ class DeliveryContentsItem extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const Icon(Icons.star, color: Colors.deepOrange, size: 17),
+                  const Icon(Icons.star, color: primaryColor, size: 17),
                   Text(
                       '4.8 ・ 리뷰 ${summary.cntComment}',
                       style: TextStyle()

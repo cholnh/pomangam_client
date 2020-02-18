@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 
 class SignModal extends StatelessWidget {
   final Function onSignIn;
@@ -29,11 +30,11 @@ class SignModal extends StatelessWidget {
                       height: 48.0,
                       padding: EdgeInsets.all(2.0),
                       decoration: BoxDecoration(
-                        color: Colors.deepOrange,
-                        border: Border.all(color: Colors.deepOrange, width: 1.0),
+                        color: primaryColor,
+                        border: Border.all(color: primaryColor, width: 1.0),
                         borderRadius: BorderRadius.all(Radius.circular(5.0))
                       ),
-                      child: Text('간편가입', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      child: Text('간편가입', style: TextStyle(color: backgroundColor, fontWeight: FontWeight.bold)),
                     ),
                     onTap: onSignUp,
                   ),

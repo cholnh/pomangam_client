@@ -39,6 +39,8 @@ class DeliveryAdvertisement extends StatelessWidget {
                           width: MediaQuery.of(context).size.width,
                           height: 200.0,
                           fit: BoxFit.fill,
+                          fadeInDuration: Duration(milliseconds: 100),
+                          fadeOutDuration: Duration(milliseconds: 100)
                         )
                     ),
                     onTap: () => print('AD$i clicked!'),

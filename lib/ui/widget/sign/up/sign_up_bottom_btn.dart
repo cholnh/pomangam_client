@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pomangam_client/common/constants/pomangam_theme.dart' as theme;
 
 class SignUpBottomBtn extends StatelessWidget {
 
@@ -8,7 +9,7 @@ class SignUpBottomBtn extends StatelessWidget {
   final Color color;
   final String title;
 
-  SignUpBottomBtn({this.isActive = true, this.onTap, this.backgroundColor = Colors.deepOrange, this.color = Colors.white, this.title = '확인'});
+  SignUpBottomBtn({this.isActive = true, this.onTap, this.backgroundColor = theme.primaryColor, this.color = theme.backgroundColor, this.title = '확인'});
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,6 @@ import 'package:pomangam_client/common/network/domain/server_health.dart';
 import 'package:pomangam_client/common/network/domain/token.dart';
 import 'package:pomangam_client/common/network/repository/authorization_repository.dart';
 import 'package:pomangam_client/common/network/repository/resource_repository.dart';
-import 'package:pomangam_client/domain/sign/user.dart';
 
 class Api implements NetworkService {
 
@@ -20,7 +19,7 @@ class Api implements NetworkService {
   Api({this.oauthTokenRepository, this.resourceRepository});
 
 
-  /// ## initialize - deprecated
+  /// ## initialize - deprecated(Initializer 사용)
   ///
   /// [locale] 변경할 locale
   /// Oauth2.0 토큰 초기화, resource header 의 locale 변경.
@@ -45,33 +44,6 @@ class Api implements NetworkService {
     }
   }
 
-
-  /// ## signIn - deprecated (Initializer.initializeToken 사용)
-  ///
-  /// [phoneNumber] ID 에 해당하는 핸드폰번호 입력
-  /// [password] 비밀번호
-  /// 유저 계정 서버로 전달 -> 유효성 체크 -> login token 발급 -> return 유저 정보
-  ///
-  @deprecated
-  Future<User> signIn({
-    @required String phoneNumber,
-    @required String password
-  }) async {
-    User user;
-    Token token = await oauthTokenRepository.issueLoginToken(
-        phoneNumber: phoneNumber,
-        password: password);
-
-    if(token != null) {
-      token
-        ..saveToDisk()        // SharedPreference 내부에 저장
-        ..saveToDioHeader();  // 네트워크 헤더에 저장 : Authorization Bearer {access_token}
-      user = User.fromJson((await resourceRepository.get(url: '/users/$phoneNumber')).data);
-    }
-    return user;
-  }
-
-
   /// ## healthCheck
   ///
   /// 서버 health 상태 반환
@@ -79,25 +51,11 @@ class Api implements NetworkService {
   Future<ServerHealth> healthCheck() => oauthTokenRepository.serverHealthCheck();
 
 
-  /// ## signOut - deprecated
-  ///
-  /// 로그아웃
-  /// SharedPreference 내부 token 값 삭제, Dio Header 내부 token 값 삭제.
-  /// 로그아웃 후 View 단에서 초기화 후, 홈('/') 으로 이동 필요.
-  ///
-  @deprecated
-  void signOut() {
-    Token.clearFromDisk();
-    Token.clearFromDioHeader();
-  }
-
-
-  /// ## setResourceLocale - deprecated
+  /// ## setResourceLocale
   ///
   /// [locale] 변경할 locale
   /// resource header 의 locale 변경.
   ///
-  @deprecated
   Api setResourceLocale({Locale locale = const Locale('ko')}) {
     resourceRepository.setResourceLocale(locale); // resource locale 변경
     return this;
@@ -131,9 +89,9 @@ class Api implements NetworkService {
   @override
   Future<Response> post({
     @required String url,
-    Map jsonData
+    dynamic data
   }) {
-    Function logic = () => resourceRepository.post(url: url, jsonData: jsonData);
+    Function logic = () => resourceRepository.post(url: url, data: data);
     return logic().catchError((error) => _errorHandler(error, logic));
   }
 
@@ -149,9 +107,9 @@ class Api implements NetworkService {
   @override
   Future<Response> patch({
     @required String url,
-    Map jsonData
+    dynamic data
   }) {
-    Function logic = () => resourceRepository.patch(url: url, jsonData: jsonData);
+    Function logic = () => resourceRepository.patch(url: url, data: data);
     return logic().catchError((error) => _errorHandler(error, logic));
   }
 
@@ -168,9 +126,9 @@ class Api implements NetworkService {
   @override
   Future<Response> put({
     @required String url,
-    Map jsonData
+    dynamic data
   }) {
-    Function logic = () => resourceRepository.put(url: url, jsonData: jsonData);
+    Function logic = () => resourceRepository.put(url: url, data: data);
     return logic().catchError((error) => _errorHandler(error, logic));
   }
 
@@ -198,7 +156,7 @@ class Api implements NetworkService {
           await Injector.appInstance.getDependency<Initializer>()
             .initialize(
               onDone: logic,
-              onServerDown: () => print('[Debug] DioCore.interceptor!!server down..'),
+              onServerError: () => print('[Debug] DioCore.interceptor!!server down..'),
             );
           break;
         default:

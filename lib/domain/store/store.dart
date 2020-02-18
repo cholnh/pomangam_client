@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'store.g.dart';
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(nullable: true, explicitToJson: true)
 class Store {
 
   int idx;

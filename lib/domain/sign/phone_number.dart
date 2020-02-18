@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'phone_number.g.dart';
 
-@JsonSerializable(nullable: true)
+@JsonSerializable(nullable: true, explicitToJson: true)
 class PhoneNumber {
   String phoneNumber;
   String code;

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 
 class SignUpAppBar extends AppBar {
-  SignUpAppBar(context, {Color backgroundColor = Colors.white, Color backButtonColor = Colors.black, bool enableBackButton = true}) : super(
+  SignUpAppBar(context, {Color backgroundColor = backgroundColor, Color backButtonColor = Colors.black, bool enableBackButton = true}) : super(
     backgroundColor: backgroundColor,
     automaticallyImplyLeading: true,
     leading: enableBackButton

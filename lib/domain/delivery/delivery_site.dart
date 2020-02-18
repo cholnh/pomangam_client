@@ -3,7 +3,7 @@ import 'package:pomangam_client/domain/delivery/region/region.dart';
 
 part 'delivery_site.g.dart';
 
-@JsonSerializable(nullable: true)
+@JsonSerializable(nullable: true, explicitToJson: true)
 class DeliverySite {
     int idx;
 

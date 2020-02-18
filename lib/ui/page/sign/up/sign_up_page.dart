@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
+import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/router/app_router.dart';
 import 'package:pomangam_client/common/util/string_utils.dart';
 import 'package:pomangam_client/domain/sign/enum/sex.dart';
@@ -72,7 +73,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SignUpAppBar(context),
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       body: Consumer<SignUpModel> (
         builder: (_, model, child) {
           return Padding(

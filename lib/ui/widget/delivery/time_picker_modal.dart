@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/i18n/i18n.dart';
 
 class TimePickerModal extends StatelessWidget {
@@ -50,7 +51,7 @@ class TimePickerModal extends StatelessWidget {
                       children: <Widget>[
                         const Text('12시 도착'),
                         const Padding(padding: EdgeInsets.all(3)),
-                        const Icon(Icons.check, color: Colors.deepOrange)
+                        const Icon(Icons.check, color: primaryColor)
                       ],
                     )
                 ),
@@ -66,7 +67,7 @@ class TimePickerModal extends StatelessWidget {
                       children: <Widget>[
                         const Text('13시 도착'),
                         const Padding(padding: EdgeInsets.all(3)),
-                        const Icon(Icons.check, color: Colors.deepOrange)
+                        const Icon(Icons.check, color: primaryColor)
                       ],
                     )
                 ),
@@ -82,7 +83,7 @@ class TimePickerModal extends StatelessWidget {
                       children: <Widget>[
                         const Text('17시 도착'),
                         const Padding(padding: EdgeInsets.all(3)),
-                        const Icon(Icons.check, color: Colors.deepOrange)
+                        const Icon(Icons.check, color: primaryColor)
                       ],
                     )
                 ),
@@ -98,7 +99,7 @@ class TimePickerModal extends StatelessWidget {
                       children: <Widget>[
                         const Text('18시 도착'),
                         const Padding(padding: EdgeInsets.all(3)),
-                        const Icon(Icons.check, color: Colors.deepOrange)
+                        const Icon(Icons.check, color: primaryColor)
                       ],
                     )
                 ),

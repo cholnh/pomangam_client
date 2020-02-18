@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 
 @deprecated
 class SignUpAuthCodeInput extends StatelessWidget {
@@ -34,7 +35,7 @@ class SignUpAuthCodeInput extends StatelessWidget {
           border: focusNode.hasFocus
             ? Border.all(
               width: 1.5,
-              color: Colors.deepOrange,
+              color: primaryColor,
             )
             : Border.all(
               width: 1.0,
