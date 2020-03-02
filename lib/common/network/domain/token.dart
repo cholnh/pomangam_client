@@ -1,24 +1,19 @@
 import 'package:flutter/foundation.dart';
+import 'package:pomangam_client/common/key/shared_preference_key.dart' as s;
 import 'package:pomangam_client/common/network/dio/dio_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:pomangam_client/common/key/shared_preference_key.dart' as s;
 
 enum TokenMode { GUEST, LOGIN }
 
 class Token {
 
-
-  //━━ class variables ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
   String accessToken;
   String tokenType;
   int expiresIn;
   String scope;
   String refreshToken;
   TokenMode tokenMode;
-  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-
-  //━━ constructor ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
   Token({
     @required this.accessToken,
     @required this.tokenType,
@@ -34,10 +29,7 @@ class Token {
     expiresIn = json['expires_in'],
     scope = json['scope'],
     refreshToken = json['refresh_token'];
-  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-
-  //━━ actions ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
   static Future<Token> loadFromDisk() async {
     try {
       String accessToken, tokenType, scope, refreshToken;
@@ -82,7 +74,7 @@ class Token {
     return null;
   }
 
-  saveToDisk() async {
+  Future<Token> saveToDisk() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if(tokenMode == TokenMode.GUEST) {
@@ -99,7 +91,7 @@ class Token {
     return this;
   }
 
-  static clearFromDisk() async {
+  static Future<void> clearFromDisk() async {
     await SharedPreferences.getInstance()
       ..remove(s.tokenMode)
       ..remove(s.refreshToken)
@@ -109,14 +101,14 @@ class Token {
       ..remove(s.scope);
   }
 
-  saveToDioHeader() {
+  Token saveToDioHeader() {
     DioCore().addResourceHeader({
       'Authorization':'Bearer ' + accessToken
     }); // interceptor header 추가
     return this;
   }
 
-  static clearFromDioHeader() {
+  static void clearFromDioHeader() {
     DioCore().resource.interceptors.clear();
   }
 
@@ -124,5 +116,4 @@ class Token {
   String toString() {
     return 'Token{accessToken: $accessToken, tokenType: $tokenType, expiresIn: $expiresIn, scope: $scope, refreshToken: $refreshToken, tokenMode: $tokenMode}';
   }
-  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 }

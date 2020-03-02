@@ -1,0 +1,1 @@
+enum AuthCodeState { ready, success, fail }

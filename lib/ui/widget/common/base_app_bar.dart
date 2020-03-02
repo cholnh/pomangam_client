@@ -9,7 +9,7 @@ class BaseAppBar extends AppBar {
     title :InkWell(
       child: Row(
         children: <Widget>[
-          const Text('한국항공대 기숙사식당', style: TextStyle(fontSize: 16, color: Colors.black)),
+          const Text('한국항공대 기숙사식당', style: TextStyle(fontSize: 18, color: Colors.black)),
           const Icon(Icons.arrow_drop_down, color: Colors.black)
         ],
       ),

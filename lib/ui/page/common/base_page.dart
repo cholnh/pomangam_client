@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/domain/tab/tab_menu.dart';
 import 'package:pomangam_client/provider/tab/tab_model.dart';
-import 'package:pomangam_client/ui/page/delivery/delivery_page.dart';
+import 'package:pomangam_client/ui/page/home/home_page.dart';
 import 'package:pomangam_client/ui/page/more/more_page.dart';
 import 'package:pomangam_client/ui/page/order_info/order_info_page.dart';
 import 'package:pomangam_client/ui/page/recommend/recommend_page.dart';
@@ -19,7 +19,7 @@ class BasePage extends StatelessWidget {
       onWillPop: () => Future.value(false), // 뒤로가기 방지
       child: Scaffold(
         appBar: BaseAppBar(),
-        body: _selectedPage(tabModel),
+        body: _selectedPage(tabModel.tab),
         bottomNavigationBar: TabSelector(
           activeTab: tabModel.tab,
           onTabSelected: (tab) => tabModel.change(tab),
@@ -28,8 +28,8 @@ class BasePage extends StatelessWidget {
     );
   }
 
-  _selectedPage(tabModel) {
-    switch(tabModel.tab) {
+  _selectedPage(TabMenu tab) {
+    switch(tab) {
       case TabMenu.recommend:
         return RecommendPage();
       case TabMenu.orderInfo:
@@ -37,7 +37,7 @@ class BasePage extends StatelessWidget {
       case TabMenu.more:
         return MorePage();
       default:
-        return DeliveryPage();
+        return HomePage();
     }
   }
 }
