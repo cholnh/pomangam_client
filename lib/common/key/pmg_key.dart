@@ -16,4 +16,6 @@ class PmgKeys {
   static const tabRecommendImg = Key('__tabRecommendImg__');
   static const tabOrderInfoImg = Key('__tabOrderInfoImg__');
   static const tabMoreImg = Key('__tabMoreImg__');
+  // Store
+  static const storePage = Key('__storePage__');
 }

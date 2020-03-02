@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/common/network/constant/endpoint.dart';
 import 'package:pomangam_client/domain/store/store.dart';
 import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
@@ -45,8 +46,9 @@ class _StorePageState extends State<StorePage> {
       body: Consumer<StoreModel>(
         builder: (_, model, child) {
           Store store = model.store;
-          return Column(
-            children: <Widget>[
+          return CustomScrollView(
+            key: PmgKeys.storePage,
+            slivers: <Widget>[
               StoreHeader(
                   sIdx: widget.sIdx,
                   brandImagePath: '${Endpoint.serverDomain}${model.brandImagePath}'
