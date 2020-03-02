@@ -13,6 +13,7 @@ class StoreProduct extends StatelessWidget {
       child: Column(
         children: <Widget>[
           StoreProductCategory(),
+          Divider(height: 0.5),
           Expanded(
             child: GridView.count(
               crossAxisCount: 3,
