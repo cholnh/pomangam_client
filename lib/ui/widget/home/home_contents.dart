@@ -14,15 +14,13 @@ class HomeContents extends StatelessWidget {
     return Consumer<StoreSummaryModel>(
       builder: (_, model, child) {
         if(model.stores.length == 0) {
-          return SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Text('주문가능한 업체가 없습니다...', style: TextStyle(color: Colors.grey, fontSize: 14)),
-                ),
-              );
-            }, childCount: 1)
+          return SliverToBoxAdapter(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text('주문가능한 업체가 없습니다...', style: TextStyle(color: Colors.grey, fontSize: 14)),
+              ),
+            ),
           );
         }
         return SliverList(

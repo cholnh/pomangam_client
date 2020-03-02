@@ -163,8 +163,16 @@ class Initializer {
       log('success', name: 'Initializer.initializeData', time: DateTime.now());
     } catch(error) {
       log('fail', name: 'Initializer.initializeData', time: DateTime.now(), error: error);
+      if(fallbackCount-- > 0) {
+        await Future.delayed(Duration(milliseconds: 1000),
+          () => _initializeModelData(
+              context: context,
+              deliverySiteNotIssuedHandler: deliverySiteNotIssuedHandler
+          ));
+      }
     }
   }
+  static int fallbackCount = 5;
 
 
   /// ## signOut

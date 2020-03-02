@@ -13,8 +13,8 @@ class StoreScoreItem extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text('$value', style: TextStyle(fontWeight: FontWeight.bold)),
-        Text('$title')
+        Text('$value', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
+        Text('$title', style: TextStyle(fontSize: 16.0))
       ],
     );
   }

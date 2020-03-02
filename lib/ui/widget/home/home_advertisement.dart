@@ -9,8 +9,7 @@ class HomeAdvertisement extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverList(
       key: PmgKeys.deliveryAdvertisement,
-      delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
+      delegate: SliverChildBuilderDelegate((context, index) {
           return CarouselSlider(
             height: 160.0,
             viewportFraction: 0.9,

@@ -2,13 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/common/network/constant/endpoint.dart';
-import 'package:pomangam_client/domain/store/store.dart';
 import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/provider/store/store_model.dart';
 import 'package:pomangam_client/ui/widget/store/store_app_bar.dart';
+import 'package:pomangam_client/ui/widget/store/store_center_button.dart';
 import 'package:pomangam_client/ui/widget/store/store_description.dart';
 import 'package:pomangam_client/ui/widget/store/store_header.dart';
 import 'package:pomangam_client/ui/widget/store/store_product.dart';
+import 'package:pomangam_client/ui/widget/store/store_product_category.dart';
 import 'package:pomangam_client/ui/widget/store/store_story.dart';
 import 'package:provider/provider.dart';
 
@@ -38,15 +39,14 @@ class _StorePageState extends State<StorePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: StoreAppBar(
-        context,
-        title: '${storeModel.store?.storeInfo?.name ?? ''}',
-      ),
-      body: Consumer<StoreModel>(
-        builder: (_, model, child) {
-          Store store = model.store;
-          return CustomScrollView(
+    return Consumer<StoreModel>(
+      builder: (_, model, child) {
+        return Scaffold(
+          appBar: StoreAppBar(
+            context,
+            title: '${storeModel.store?.storeInfo?.name ?? ''}',
+          ),
+          body: CustomScrollView(
             key: PmgKeys.storePage,
             slivers: <Widget>[
               StoreHeader(
@@ -54,14 +54,14 @@ class _StorePageState extends State<StorePage> {
                   brandImagePath: '${Endpoint.serverDomain}${model.brandImagePath}'
               ), // desc
               StoreDescription(),
-              Divider(height: 0.5),
+              StoreCenterButton(),
               StoreStory(),
-              Divider(height: 0.5),
+              StoreProductCategory(),
               StoreProduct()
             ],
-          );
-        },
-      ),
+          )
+        );
+      }
     );
   }
 }

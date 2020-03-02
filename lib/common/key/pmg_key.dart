@@ -18,4 +18,9 @@ class PmgKeys {
   static const tabMoreImg = Key('__tabMoreImg__');
   // Store
   static const storePage = Key('__storePage__');
+  static const storeHeader = Key('__storeHeader__');
+  static const storeDescription = Key('__storeDescription__');
+  static const storeProductCategory = Key('__storeProductCategory__');
+  static const storeStory = Key('__storeStory__');
+  static const storeProduct = Key('__storeProduct__');
 }

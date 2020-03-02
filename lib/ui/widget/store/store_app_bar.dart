@@ -12,7 +12,7 @@ class StoreAppBar extends AppBar {
     centerTitle: true,
     title: Text(
         '$title',
-        style: TextStyle(color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.w600)),
+        style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w600)),
     actions: <Widget>[
       IconButton(
         icon: const Icon(Icons.favorite_border, color: primaryColor),
