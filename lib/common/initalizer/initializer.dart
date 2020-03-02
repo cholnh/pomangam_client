@@ -150,11 +150,11 @@ class Initializer {
       } else {
         // 배달지 설정
         await Provider.of<DeliverySiteModel>(context, listen: false)
-          .changeUserDeliverySite(dIdx: dIdx);
+          .changeUserDeliverySiteByIdx(dIdx: dIdx);
 
         // 배달지 상세주소 설정
         await Provider.of<DeliveryDetailSiteModel>(context, listen: false)
-          .changeUserDeliveryDetailSite(dIdx: dIdx, ddIdx: ddIdx);
+          .changeUserDeliveryDetailSiteByIdx(dIdx: dIdx, ddIdx: ddIdx);
 
         // 배달가능시간 설정
         await Provider.of<OrderTimeModel>(context, listen: false)

@@ -28,7 +28,7 @@ class DeliverySiteModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> changeUserDeliverySite({
+  Future<void> changeUserDeliverySiteByIdx({
     @required int dIdx
   }) async {
     DeliverySite fetched;
@@ -37,7 +37,11 @@ class DeliverySiteModel with ChangeNotifier {
     } catch (error) {
       print('[Debug] DeliverySiteModel.changeUserDeliverySite Error - $error');
     }
-    userDeliverySite = fetched;
+    changeUserDeliverySite(fetched);
+  }
+
+  void changeUserDeliverySite(DeliverySite deliverySite) {
+    this.userDeliverySite = deliverySite;
     notifyListeners();
   }
 }
