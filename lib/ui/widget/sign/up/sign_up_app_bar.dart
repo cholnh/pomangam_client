@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 
@@ -7,7 +8,7 @@ class SignUpAppBar extends AppBar {
     automaticallyImplyLeading: true,
     leading: enableBackButton
       ? IconButton(
-        icon: Icon(Icons.arrow_back_ios, color: backButtonColor),
+        icon: Icon(CupertinoIcons.back, color: backButtonColor),
         onPressed:() => Navigator.pop(context, false),
       )
       : Container(),

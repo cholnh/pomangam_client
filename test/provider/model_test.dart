@@ -21,7 +21,7 @@ class ModelTest implements Testable {
     test('model api test', () async {
       // Given
       SharedPreferences.setMockInitialValues({
-        s.fidx: 12,
+        s.idxFcmToken: 12,
         s.fcmToken: '!@#@# token #@#@!'
       });
 

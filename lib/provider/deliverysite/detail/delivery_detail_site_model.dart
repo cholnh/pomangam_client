@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:injector/injector.dart';
-import 'package:pomangam_client/domain/delivery/detail/delivery_detail_site.dart';
+import 'package:pomangam_client/domain/deliverysite/detail/delivery_detail_site.dart';
 import 'package:pomangam_client/repository/delivery/detail/delivery_detail_site_repository.dart';
 
 class DeliveryDetailSiteModel with ChangeNotifier {
@@ -15,13 +15,13 @@ class DeliveryDetailSiteModel with ChangeNotifier {
 
   Future<void> fetch({
     bool forceUpdate = false,
-    @required int didx
+    @required int dIdx
   }) async {
-    if(!forceUpdate && deliveryDetailSites.length >= 0) return;
+    if(!forceUpdate && deliveryDetailSites.length > 0) return;
 
     List<DeliveryDetailSite> fetched = [];
     try {
-      fetched = await _deliveryDetailSiteRepository.findAll(didx: didx);
+      fetched = await _deliveryDetailSiteRepository.findAll(dIdx: dIdx);
     } catch (error) {
       print('[Debug] DeliveryDetailSiteModel.fetch Error - $error');
     }
@@ -30,12 +30,12 @@ class DeliveryDetailSiteModel with ChangeNotifier {
   }
 
   Future<void> changeUserDeliveryDetailSite({
-    @required int didx,
-    @required int ddidx
+    @required int dIdx,
+    @required int ddIdx
   }) async {
     DeliveryDetailSite fetched;
     try {
-      fetched = await _deliveryDetailSiteRepository.findByIdx(didx: didx, ddidx: ddidx);
+      fetched = await _deliveryDetailSiteRepository.findByIdx(dIdx: dIdx, ddIdx: ddIdx);
     } catch (error) {
       print('[Debug] DeliveryDetailSiteModel.changeUserDeliveryDetailSite Error - $error');
     }

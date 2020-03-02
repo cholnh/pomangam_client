@@ -5,7 +5,7 @@ class OrderTimeRepository {
   final Api api; // 서버 연결용
   OrderTimeRepository({this.api});
 
-  Future<List<OrderTime>> findByIdxDeliverySite({int didx}) async
-    => OrderTime.fromJsonList((await api.get(url: '/dsites/$didx/ordertimes')).data);
+  Future<List<OrderTime>> findByIdxDeliverySite({int dIdx}) async
+    => OrderTime.fromJsonList((await api.get(url: '/dsites/$dIdx/ordertimes')).data);
 
 }

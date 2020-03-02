@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:injector/injector.dart';
-import 'package:pomangam_client/domain/delivery/detail/delivery_detail_site.dart';
+import 'package:pomangam_client/domain/deliverysite/detail/delivery_detail_site.dart';
 import 'package:pomangam_client/domain/sign/auth_code_result.dart';
 import 'package:pomangam_client/domain/sign/enum/auth_code_state.dart';
 import 'package:pomangam_client/domain/sign/enum/sex.dart';
 import 'package:pomangam_client/domain/sign/enum/sign_view_state.dart';
 import 'package:pomangam_client/domain/sign/user.dart';
 import 'package:pomangam_client/repository/sign/sign_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pomangam_client/common/key/shared_preference_key.dart' as s;
 
 class SignUpModel with ChangeNotifier {
   SignRepository _signRepository;
@@ -180,8 +182,11 @@ class SignUpModel with ChangeNotifier {
 
   Future<User> postUser() async {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int fIdx = prefs.getInt(s.idxFcmToken);
       return await _signRepository.postUser(
         user: User(
+          idxFcmToken: fIdx,
           phoneNumber: phoneNumber,
           name: name,
           birth: birth,

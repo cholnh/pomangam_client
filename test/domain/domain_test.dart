@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:injector/injector.dart';
 import 'package:pomangam_client/common/network/api/api.dart';
-import 'package:pomangam_client/domain/delivery/detail/delivery_detail_site.dart';
+import 'package:pomangam_client/domain/deliverysite/detail/delivery_detail_site.dart';
 import 'package:pomangam_client/domain/sign/user.dart';
 
 import '../testable.dart';

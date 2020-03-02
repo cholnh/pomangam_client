@@ -55,9 +55,9 @@ class _SignUpAuthCodePageState extends State<SignUpAuthCodePage> {
 
   @override
   void dispose() {
-    if(_streamController != null && !_streamController.isClosed) {
-      _streamController.close();
-    }
+//    if(_streamController != null && !_streamController.isClosed) {
+//      _streamController.close();
+//    }
     //_controller?.dispose();
     //_focusNode?.dispose();
     super.dispose();

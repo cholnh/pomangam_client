@@ -1,21 +1,22 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:pomangam_client/domain/delivery/region/region.dart';
+import 'package:pomangam_client/domain/common/entity_auditing.dart';
 
 part 'delivery_site.g.dart';
 
 @JsonSerializable(nullable: true, explicitToJson: true)
-class DeliverySite {
-    int idx;
+class DeliverySite extends EntityAuditing {
 
-    String title;
+    String name;
 
     String location;
 
     String campus;
 
-    Region region;
+    int idxRegion;
 
-    DeliverySite({this.idx, this.title, this.location, this.campus, this.region});
+    DeliverySite({int idx, DateTime registerDate, DateTime modifyDate,
+        this.name, this.location, this.campus, this.idxRegion
+    }): super(idx: idx, registerDate: registerDate, modifyDate: modifyDate);
 
     factory DeliverySite.fromJson(Map<String, dynamic> json) => _$DeliverySiteFromJson(json);
     Map<String, dynamic> toJson() => _$DeliverySiteToJson(this);

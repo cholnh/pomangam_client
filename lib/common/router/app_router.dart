@@ -1,11 +1,9 @@
 import 'package:fluro/fluro.dart';
-import 'package:pomangam_client/provider/sign/sign_up_model.dart';
-import 'package:pomangam_client/provider/store/store_model.dart';
-import 'package:pomangam_client/provider/store/store_summary_model.dart';
 import 'package:pomangam_client/provider/tab/tab_model.dart';
 import 'package:pomangam_client/ui/page/common/base_page.dart';
 import 'package:pomangam_client/ui/page/common/error_page.dart';
 import 'package:pomangam_client/ui/page/common/not_found_page.dart';
+import 'package:pomangam_client/ui/page/deliverysite/delivery_site_page.dart';
 import 'package:pomangam_client/ui/page/sign/in/sign_in_page.dart';
 import 'package:pomangam_client/ui/page/sign/up/sign_up_authcode_page.dart';
 import 'package:pomangam_client/ui/page/sign/up/sign_up_nickname_page.dart';
@@ -45,17 +43,12 @@ class AppRouter extends Router {
     /// A StorePage router path.
     ///
     /// Returns the page specified in the handler.
-    super.define("/dsites/:didx/stores/:sidx",
+    super.define("/stores/:idx",
       handler: Handler(handlerFunc: (context, params) {
-        int didx = int.parse(params['didx'][0]);
-        int sidx = int.parse(params['sidx'][0]);
-        return ChangeNotifierProvider<StoreModel>(
-          create: (_) => StoreModel()..fetch(didx: didx, sidx: sidx),
-          child: StorePage(),
-          lazy: true
-        );
+        int sIdx = int.parse(params['idx'][0]);
+        return StorePage(sIdx: sIdx);
       }),
-      transitionType: TransitionType.material);
+      transitionType: TransitionType.cupertino);
 
 
     /// A SignIn router path.
@@ -85,7 +78,7 @@ class AppRouter extends Router {
       handler: Handler(handlerFunc: (context, params) {
         return SignUpAuthCodePage();
       }),
-      transitionType: TransitionType.material);
+      transitionType: TransitionType.cupertino);
 
 
     /// A SignUpPasswordPage router path.
@@ -95,7 +88,7 @@ class AppRouter extends Router {
       handler: Handler(handlerFunc: (context, params) {
         return SignUpPasswordPage();
       }),
-      transitionType: TransitionType.material);
+      transitionType: TransitionType.cupertino);
 
 
     /// A SignUpNicknamePage router path.
@@ -105,8 +98,17 @@ class AppRouter extends Router {
       handler: Handler(handlerFunc: (context, params) {
         return SignUpNicknamePage();
       }),
-      transitionType: TransitionType.material);
+      transitionType: TransitionType.cupertino);
 
+
+    /// A DeliverySitePage router path.
+    ///
+    /// Returns the page specified in the handler.
+    super.define("/dsites",
+      handler: Handler(handlerFunc: (context, params) {
+        return DeliverySitePage();
+      }),
+      transitionType: TransitionType.material);
 
 
     /// A NotFoundPage router path.

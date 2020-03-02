@@ -33,8 +33,8 @@ class StoreRepositoryTest implements Testable {
         ..saveToDioHeader()  // dio http header 추가
         ..saveToDisk();      // shared preference 저장
 
-      stores = await _storeRepository.findAll(
-        didx: deliverySiteIdx,
+      stores = await _storeRepository.findOpeningStores(
+        dIdx: deliverySiteIdx,
         pageRequest: pageRequest
       );
       print('$stores');

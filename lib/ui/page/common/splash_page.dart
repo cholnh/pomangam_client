@@ -37,7 +37,7 @@ class _SplashPageState extends State<SplashPage> {
             child: RotationTransition(
               turns: AlwaysStoppedAnimation(332 / 360),
               child: Image(
-                image: const AssetImage('assets/logot.png'),
+                image: const AssetImage('assets/logo_transparant.png'),
                 width: 150,
                 height: 150,
               ),
@@ -63,14 +63,15 @@ class _SplashPageState extends State<SplashPage> {
     // addPostFrameCallback 메서드를 통해 build 완료를 통지받음.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       await clearPrefs(); // for test
-      await _initializer.signIn(phoneNumber: '01064784895', password: '1234'); // for test
+      //await _initializer.signIn(phoneNumber: '01064784899#test', password: '1234'); // for test
 
       // 초기화 진행
       _initializer
           .initialize(
             context: context,
             onDone: _onDone,
-            onServerError: _onServerError
+            onServerError: _onServerError,
+            deliverySiteNotIssuedHandler: _deliverySiteNotIssuedHandler
           ).catchError((err) => _onServerError());
 
       await printPrefs();  // for test
@@ -80,6 +81,8 @@ class _SplashPageState extends State<SplashPage> {
   void _onDone() => _router.navigateTo(context, '/');
 
   void _onServerError() => _router.navigateTo(context, '/error/Server Down');
+
+  void _deliverySiteNotIssuedHandler() =>  _router.navigateTo(context, '/dsites');
 
   @visibleForTesting
   Future<void> clearPrefs() async {

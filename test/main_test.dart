@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:injector/injector.dart';
+import 'package:intl/intl.dart';
 import 'package:pomangam_client/common/di/injector_register.dart';
 
 import 'package:pomangam_client/main.dart';
@@ -25,13 +26,17 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   List<Testable>.from([
-    ModelTest(),
+    //ModelTest(),
     //DomainTest(),
     //StoreRepositoryTest(),
-
   ]).forEach((cls) {
     cls.setUp();
     cls.run();
     cls.tearDown();
   });
+
+  DateTime now = DateTime.now();
+  print(now);
+  DateTime dt = DateFormat('yyyy-MM-dd hh:mm:ss').parse('${now.year}-${now.month}-${now.day} 14:22:23');
+  print(dt);
 }

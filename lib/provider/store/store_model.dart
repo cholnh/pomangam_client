@@ -8,20 +8,28 @@ class StoreModel with ChangeNotifier {
   Store store;
   StoreRepository _storeRepository;
 
+  String brandImagePath;
+  bool isStoreFetched = false;
+
   StoreModel() {
     _storeRepository = Injector.appInstance.getDependency<StoreRepository>();
   }
 
   void fetch({
-    @required int didx,
-    @required int sidx
+    @required int dIdx,
+    @required int sIdx
   }) async {
     try {
-      store = await _storeRepository.findByIdx(didx: didx, sidx: sidx);
+      this.store = await _storeRepository.findByIdx(dIdx: dIdx, sIdx: sIdx);
+      this.isStoreFetched = true;
     } catch (error) {
       print('[Debug] StoreModel.fetch Error - $error');
     }
     notifyListeners();
   }
 
+  void changeIsStoreFetched(bool tf) {
+    this.isStoreFetched = tf;
+    notifyListeners();
+  }
 }

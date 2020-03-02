@@ -10,17 +10,16 @@ const String expiresIn = '__oauth_expiresIn__';
 const String scope = '__oauth_scope__';
 
 /// ## Fcm Token 정보
-const String fidx = '__fcm_token_idx__';
+const String idxFcmToken = '__fcm_token_idx__';
 const String fcmToken = '__fcm_token__';
 
 /// ## User 정보
-const String userIdx = '__user_idx__';
+const String idxUser = '__user_idx__';
 const String userPhoneNumber = '__user_phone_number__';
 const String userName = '__user_name__';
 const String userNickname = '__user_nickname__';
 const String userSex = '__user_sex__';
 const String userBirth = '__user_birth__';
-const String userIsActive = '__user_is_active__';
 const String userPoint = '__user_point__';
 
 /// ## 배달지 정보

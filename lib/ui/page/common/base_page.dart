@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/domain/tab/tab_menu.dart';
 import 'package:pomangam_client/provider/tab/tab_model.dart';
-import 'package:pomangam_client/ui/page/delivery/delivery_page.dart';
+import 'package:pomangam_client/ui/page/home/home_page.dart';
 import 'package:pomangam_client/ui/page/more/more_page.dart';
 import 'package:pomangam_client/ui/page/order_info/order_info_page.dart';
 import 'package:pomangam_client/ui/page/recommend/recommend_page.dart';
@@ -37,7 +37,7 @@ class BasePage extends StatelessWidget {
       case TabMenu.more:
         return MorePage();
       default:
-        return DeliveryPage();
+        return HomePage();
     }
   }
 }

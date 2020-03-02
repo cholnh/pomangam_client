@@ -1,14 +1,16 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:pomangam_client/domain/common/entity_auditing.dart';
 
 part 'region.g.dart';
 
 @JsonSerializable(nullable: true, explicitToJson: true)
-class Region {
-  int idx;
+class Region extends EntityAuditing {
 
-  String title;
+  String name;
 
-  Region(this.idx, this.title);
+  Region({
+    int idx, DateTime registerDate, DateTime modifyDate, this.name
+  }): super(idx: idx, registerDate: registerDate, modifyDate: modifyDate);
 
   factory Region.fromJson(Map<String, dynamic> json) => _$RegionFromJson(json);
   Map<String, dynamic> toJson() => _$RegionToJson(this);

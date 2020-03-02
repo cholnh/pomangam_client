@@ -4,7 +4,7 @@ import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/common/network/constant/endpoint.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class DeliveryAdvertisement extends StatelessWidget {
+class HomeAdvertisement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverList(
@@ -35,7 +35,7 @@ class DeliveryAdvertisement extends StatelessWidget {
                         ),
                         child: FadeInImage.memoryNetwork(
                           placeholder: kTransparentImage,
-                          image: '${Endpoint.serverDomain}/assets/image/advertise/main/$i.png',
+                          image: '${Endpoint.serverDomain}/assets/images/dsites/1/advertisements/$i.png',
                           width: MediaQuery.of(context).size.width,
                           height: 200.0,
                           fit: BoxFit.fill,

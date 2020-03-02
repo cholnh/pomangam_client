@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:injector/injector.dart';
-import 'package:pomangam_client/domain/delivery/delivery_site.dart';
+import 'package:pomangam_client/domain/deliverysite/delivery_site.dart';
 import 'package:pomangam_client/repository/delivery/delivery_site_repository.dart';
 
 class DeliverySiteModel with ChangeNotifier {
@@ -16,7 +16,7 @@ class DeliverySiteModel with ChangeNotifier {
   Future<void> fetch({
     bool forceUpdate = false
   }) async {
-    if(!forceUpdate && deliverySites.length >= 0) return;
+    if(!forceUpdate && deliverySites.length > 0) return;
 
     List<DeliverySite> fetched = [];
     try {
@@ -29,11 +29,11 @@ class DeliverySiteModel with ChangeNotifier {
   }
 
   Future<void> changeUserDeliverySite({
-    @required int didx
+    @required int dIdx
   }) async {
     DeliverySite fetched;
     try {
-      fetched = await _deliverySiteRepository.findByIdx(didx: didx);
+      fetched = await _deliverySiteRepository.findByIdx(dIdx: dIdx);
     } catch (error) {
       print('[Debug] DeliverySiteModel.changeUserDeliverySite Error - $error');
     }

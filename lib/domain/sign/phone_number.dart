@@ -5,7 +5,9 @@ part 'phone_number.g.dart';
 
 @JsonSerializable(nullable: true, explicitToJson: true)
 class PhoneNumber {
+
   String phoneNumber;
+
   String code;
 
   PhoneNumber({this.phoneNumber, this.code});

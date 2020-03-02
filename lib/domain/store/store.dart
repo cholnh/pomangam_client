@@ -1,34 +1,56 @@
-
 import 'package:json_annotation/json_annotation.dart';
+import 'package:pomangam_client/domain/common/entity_auditing.dart';
+import 'package:pomangam_client/domain/store/info/production_info.dart';
+import 'package:pomangam_client/domain/store/info/store_info.dart';
+import 'package:pomangam_client/domain/store/schedule/store_schedule.dart';
 
 part 'store.g.dart';
 
 @JsonSerializable(nullable: true, explicitToJson: true)
-class Store {
+class Store extends EntityAuditing {
 
-  int idx;
+  /// 배달지 인덱스
+  int idxDeliverySite;
 
-  String title;
+  /// 업체 분류
+  String storeCategory;
 
-  String foodCategory;
+  /// 업체 정보
+  StoreInfo storeInfo;
 
-  String description;
+  /// 업체 생산량
+  ProductionInfo productionInfo;
 
-  String subDescription;
+  /// 업체 영업 시간
+  StoreSchedule storeSchedule;
 
+  /// 평균 리뷰 평점
   double avgStar;
 
+  /// 총 좋아요 개수
   int cntLike;
 
+  /// 총 리뷰 개수
   int cntComment;
 
-  List<String> productCategories;
+  /// 순서
+  int sequence;
 
+  /// 브랜드(로고) 이미지 경로
   String brandImagePath;
 
-  Store(this.idx, this.title, this.foodCategory, this.description, this.avgStar,
-      this.cntLike, this.cntComment, this.productCategories,
-      this.brandImagePath);
+  /// 업체 대표 이미지 경로
+  String storeImageMainPath;
+
+  /// 업체 서브 이미지 경로 리스트
+  List<String> storeImageSubPaths;
+
+  Store({
+      int idx, DateTime registerDate, DateTime modifyDate,
+      this.storeInfo, this.productionInfo, this.storeSchedule,
+      this.avgStar, this.cntLike, this.cntComment, this.sequence,
+      this.brandImagePath, this.storeImageMainPath, this.storeImageSubPaths
+  }): super(idx: idx, registerDate: registerDate, modifyDate: modifyDate);
 
   factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);
   Map<String, dynamic> toJson() => _$StoreToJson(this);

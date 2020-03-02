@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/i18n/i18n.dart';
 
-class TimePickerModal extends StatelessWidget {
+class HomeSortPickerModal extends StatelessWidget {
 
-  final int time;
+  final int sort;
   final Function onSelected;
 
-  TimePickerModal({this.time, this.onSelected});
+  HomeSortPickerModal({this.sort, this.onSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class TimePickerModal extends StatelessWidget {
                     ),
                     Flexible(
                       child: Text(
-                          '${Messages.timePickerTitle}',
+                          '${Messages.sortPickerTitle}',
                           style: const TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.bold)),
@@ -41,69 +41,69 @@ class TimePickerModal extends StatelessWidget {
                     ),
                   ]
               ),
-              const Divider(height: 0.1),
+              const Divider(height: 0.1, color: Colors.black),
               ListTile(
-                title: time != 12
-                    ? const Center(child: Text('12시 도착'))
-                    : Center(
+                title: sort != 0
+                ? const Center(child: Text('추천순'))
+                : Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        const Text('12시 도착'),
+                        const Text('추천순'),
                         const Padding(padding: EdgeInsets.all(3)),
                         const Icon(Icons.check, color: primaryColor)
                       ],
                     )
                 ),
-                onTap: () => onSelected(12),
+                onTap: () => onSelected(0),
               ),
               const Divider(height: 0.1),
               ListTile(
-                title: time != 13
-                    ? const Center(child: Text('13시 도착'))
-                    : Center(
+                title: sort != 1
+                ? const Center(child: Text('주문많은순'))
+                : Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        const Text('13시 도착'),
+                        const Text('주문많은순'),
                         const Padding(padding: EdgeInsets.all(3)),
                         const Icon(Icons.check, color: primaryColor)
                       ],
                     )
                 ),
-                onTap: () => onSelected(13),
+                onTap: () => onSelected(1),
               ),
               const Divider(height: 0.1),
               ListTile(
-                title: time != 17
-                    ? const Center(child: Text('17시 도착'))
-                    : Center(
+                title: sort != 2
+                ? const Center(child: Text('별점높은순'))
+                : Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        const Text('17시 도착'),
+                        const Text('별점높은순'),
                         const Padding(padding: EdgeInsets.all(3)),
                         const Icon(Icons.check, color: primaryColor)
                       ],
                     )
                 ),
-                onTap: () => onSelected(17),
+                onTap: () => onSelected(2),
               ),
               const Divider(height: 0.1),
               ListTile(
-                title: time != 18
-                    ? const Center(child: Text('18시 도착'))
-                    : Center(
+                title: sort != 3
+                ? const Center(child: Text('리뷰많은순'))
+                : Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        const Text('18시 도착'),
+                        const Text('리뷰많은순'),
                         const Padding(padding: EdgeInsets.all(3)),
                         const Icon(Icons.check, color: primaryColor)
                       ],
                     )
                 ),
-                onTap: () => onSelected(18),
+                onTap: () => onSelected(3),
               ),
               const Divider(height: 0.1),
             ],

@@ -11,15 +11,22 @@ class StoreRepository {
   StoreRepository({this.api});
 
   Future<Store> findByIdx({
-    @required int didx,
-    @required int sidx
+    @required int dIdx,
+    @required int sIdx
   }) async => Store.fromJson(
-      (await api.get(url: '/dsites/$didx/stores/$sidx')).data);
+      (await api.get(url: '/dsites/$dIdx/stores/$sIdx')).data);
 
-  Future<List<StoreSummary>> findAll({
-    @required int didx,
+  Future<List<StoreSummary>> findOpeningStores({
+    @required int dIdx,
+    @required int oIdx,
+    @required String oDate,
     @required PageRequest pageRequest
   }) async => StoreSummary.fromJsonList(
-      (await api.get(url: '/dsites/$didx/stores/search/summaries')).data);
+      (await api.get(url: '/dsites/$dIdx/stores?oIdx=$oIdx&oDate=$oDate')).data);
 
+  Future<int> count({
+    @required int dIdx,
+    @required int oIdx,
+    @required String oDate,
+  }) async => (await api.get(url: '/dsites/$dIdx/stores/search/count?oIdx=$oIdx&oDate=$oDate')).data;
 }

@@ -6,8 +6,8 @@ import 'package:pomangam_client/common/network/api/api.dart';
 import 'package:pomangam_client/common/network/domain/server_health.dart';
 import 'package:pomangam_client/common/network/domain/token.dart';
 import 'package:pomangam_client/domain/sign/user.dart';
-import 'package:pomangam_client/provider/delivery/delivery_site_model.dart';
-import 'package:pomangam_client/provider/delivery/detail/delivery_detail_site_model.dart';
+import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
+import 'package:pomangam_client/provider/deliverysite/detail/delivery_detail_site_model.dart';
 import 'package:pomangam_client/provider/order/time/order_time_model.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +23,7 @@ class Initializer {
     BuildContext context,
     Function onDone,
     Function onServerError,
+    Function deliverySiteNotIssuedHandler,
   }) async {
     try {
       log('start initialize', name: 'Initializer.initialize', time: DateTime.now());
@@ -31,7 +32,7 @@ class Initializer {
       await initializeLocale(locale: context != null ? Localizations.localeOf(context) : Locale('ko'));
       await _initializeNotification();
       await _initializeToken();
-      await _initializeModelData(context: context);
+      await _initializeModelData(context: context, deliverySiteNotIssuedHandler: deliverySiteNotIssuedHandler);
       if(onDone != null) onDone();
 
       log('success', name: 'Initializer.initialize', time: DateTime.now());
@@ -131,31 +132,34 @@ class Initializer {
     return user;
   }
 
-  Future<void> initializeModelData({BuildContext context, Function onServerError}) async {
+  Future<void> initializeModelData({BuildContext context, Function onServerError, Function deliverySiteNotIssuedHandler}) async {
     isServerDown = await initializeNetwork(onServerError: onServerError);
-    _initializeModelData(context: context);
+    _initializeModelData(context: context, deliverySiteNotIssuedHandler: deliverySiteNotIssuedHandler);
   }
-  Future<void> _initializeModelData({BuildContext context}) async {
+  Future<void> _initializeModelData({BuildContext context, Function deliverySiteNotIssuedHandler}) async {
     try {
       log('start initializeData', name: 'Initializer.initializeData', time: DateTime.now());
       if(isServerDown || context == null) return;
 
       SharedPreferences pref = await SharedPreferences.getInstance();
-      int ddidx = pref.getInt(s.idxDeliveryDetailSite);
-      int didx = pref.getInt(s.idxDeliverySite);
+      int ddIdx = pref.getInt(s.idxDeliveryDetailSite) ?? 1;
+      int dIdx = pref.getInt(s.idxDeliverySite) ?? 1;
 
-      // 배달지 설정
-      Provider.of<DeliverySiteModel>(context, listen: false)
-        ..changeUserDeliverySite(didx: didx);
+      if(dIdx == null || ddIdx == null) {
+        deliverySiteNotIssuedHandler();
+      } else {
+        // 배달지 설정
+        await Provider.of<DeliverySiteModel>(context, listen: false)
+          .changeUserDeliverySite(dIdx: dIdx);
 
-      // 배달지 상세주소 설정
-      Provider.of<DeliveryDetailSiteModel>(context, listen: false)
-        ..changeUserDeliveryDetailSite(didx: didx, ddidx: ddidx);
+        // 배달지 상세주소 설정
+        await Provider.of<DeliveryDetailSiteModel>(context, listen: false)
+          .changeUserDeliveryDetailSite(dIdx: dIdx, ddIdx: ddIdx);
 
-      // 배달가능시간 설정
-      Provider.of<OrderTimeModel>(context, listen: false)
-        ..fetch(didx: didx);
-
+        // 배달가능시간 설정
+        await Provider.of<OrderTimeModel>(context, listen: false)
+          .fetch(forceUpdate: true, dIdx: dIdx);
+      }
       log('success', name: 'Initializer.initializeData', time: DateTime.now());
     } catch(error) {
       log('fail', name: 'Initializer.initializeData', time: DateTime.now(), error: error);
@@ -197,7 +201,7 @@ class Initializer {
   ///
   Future<bool> _hasFcmToken() async {
     try {
-      return await _loadInPrefs(s.fidx) > 0
+      return await _loadInPrefs(s.idxFcmToken) > 0
           && (await _loadInPrefs(s.fcmToken)).isNotEmpty;
     } catch(error) {
       return false;
@@ -212,7 +216,7 @@ class Initializer {
     String fcmToken;
     try{
       _saveInPrefs(s.fcmToken, await _requestFcmToken());  // fcm token 저장
-      _saveInPrefs(s.fidx, await _postFcmToken(fcmToken: fcmToken)); // 서버전송 후 fidx 저장
+      _saveInPrefs(s.idxFcmToken, await _postFcmToken(fcmToken: fcmToken)); // 서버전송 후 fidx 저장
     } catch(error) {
       return;
     }
