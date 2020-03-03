@@ -18,6 +18,7 @@ class StoreProductCategory extends StatelessWidget {
         height: 60,
         child: ListView(
           scrollDirection: Axis.horizontal,
+          physics: BouncingScrollPhysics(),
           children: List.generate(5, (int index) {
             return Container(
               child: Card(

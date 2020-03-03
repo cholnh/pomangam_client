@@ -3,7 +3,7 @@ import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 
 class StoreCenterButton extends StatelessWidget {
 
-  final int wPadding = 30;
+  final int wPadding = 40;
 
   @override
   Widget build(BuildContext context) {
