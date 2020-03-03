@@ -47,6 +47,8 @@ dependencies:
 
   time: ^1.2.0
 
+  flutter_calendar_carousel: ^1.4.11
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

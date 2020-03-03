@@ -3,9 +3,9 @@ import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/provider/order/time/order_time_model.dart';
 import 'package:pomangam_client/provider/store/store_summary_model.dart';
-import 'package:pomangam_client/ui/widget/home/home_advertisement.dart';
-import 'package:pomangam_client/ui/widget/home/home_contents.dart';
-import 'package:pomangam_client/ui/widget/home/home_contents_bar.dart';
+import 'package:pomangam_client/ui/widget/home/advertisement/home_advertisement.dart';
+import 'package:pomangam_client/ui/widget/home/contents/home_contents.dart';
+import 'package:pomangam_client/ui/widget/home/contents/home_contents_bar.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {

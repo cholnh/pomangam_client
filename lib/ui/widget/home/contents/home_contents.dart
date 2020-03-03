@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/provider/store/store_summary_model.dart';
-import 'package:pomangam_client/ui/widget/home/home_contents_item.dart';
+import 'package:pomangam_client/ui/widget/home/contents/home_contents_item.dart';
 import 'package:pomangam_client/ui/widget/home/home_bottom_loader.dart';
 import 'package:provider/provider.dart';
 

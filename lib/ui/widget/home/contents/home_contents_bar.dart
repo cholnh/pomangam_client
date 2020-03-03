@@ -5,8 +5,8 @@ import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/provider/order/time/order_time_model.dart';
 import 'package:pomangam_client/provider/store/store_summary_model.dart';
-import 'package:pomangam_client/ui/widget/home/home_sort_picker_modal.dart';
-import 'package:pomangam_client/ui/widget/home/home_time_picker_modal.dart';
+import 'package:pomangam_client/ui/widget/home/sort_picker/home_sort_picker_modal.dart';
+import 'package:pomangam_client/ui/widget/home/time_picker/home_time_picker_modal.dart';
 import 'package:provider/provider.dart';
 
 class HomeContentsBar extends StatefulWidget {
@@ -24,6 +24,7 @@ class _HomeContentsBarState extends State<HomeContentsBar> {
 
   @override
   void initState() {
+    super.initState();
     DeliverySiteModel deliverySiteModel = Provider.of<DeliverySiteModel>(context, listen: false);
     OrderTimeModel orderTimeModel = Provider.of<OrderTimeModel>(context, listen: false);
     dIdx = deliverySiteModel.userDeliverySite?.idx;

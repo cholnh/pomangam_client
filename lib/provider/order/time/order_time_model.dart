@@ -11,6 +11,7 @@ class OrderTimeModel with ChangeNotifier {
   OrderTime userOrderTime;
   DateTime userOrderDate;
 
+  bool isOrderDateMode = false;
   bool isOrderDateChanged = false;
   DateTime viewUserOrderDate;
 
@@ -66,6 +67,11 @@ class OrderTimeModel with ChangeNotifier {
   void changeViewUserOrderDate(DateTime viewUserOrderDate) {
     this.isOrderDateChanged = true;
     this.viewUserOrderDate = viewUserOrderDate;
+    notifyListeners();
+  }
+
+  void changeOrderDateMode(bool tf) {
+    this.isOrderDateMode = tf;
     notifyListeners();
   }
 }
