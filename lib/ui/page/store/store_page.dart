@@ -44,20 +44,17 @@ class _StorePageState extends State<StorePage> {
         return Scaffold(
           appBar: StoreAppBar(
             context,
-            title: '${storeModel.store?.storeInfo?.name ?? ''}',
+            title: '${model.store?.storeInfo?.name ?? ''}',
           ),
           body: CustomScrollView(
             key: PmgKeys.storePage,
             slivers: <Widget>[
-              StoreHeader(
-                  sIdx: widget.sIdx,
-                  brandImagePath: '${Endpoint.serverDomain}${model.brandImagePath}'
-              ), // desc
-              StoreDescription(),
-              StoreCenterButton(),
-              StoreStory(),
-              StoreProductCategory(),
-              StoreProduct()
+              StoreHeader(sIdx: widget.sIdx, storeModel: model), // desc
+              StoreDescription(storeModel: model),
+              StoreCenterButton(storeModel: model),
+              StoreStory(storeModel: model),
+              StoreProductCategory(storeModel: model),
+              StoreProduct(storeModel: model)
             ],
           )
         );

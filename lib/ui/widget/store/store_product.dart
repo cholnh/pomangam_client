@@ -6,10 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/common/network/constant/endpoint.dart';
+import 'package:pomangam_client/provider/store/store_model.dart';
 import 'package:pomangam_client/ui/widget/store/store_product_category.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class StoreProduct extends StatelessWidget {
+
+  final StoreModel storeModel;
+
+  StoreProduct({this.storeModel});
+
   @override
   Widget build(BuildContext context) {
     return SliverGrid(

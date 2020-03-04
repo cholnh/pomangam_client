@@ -3,8 +3,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/common/network/constant/endpoint.dart';
+import 'package:pomangam_client/provider/store/store_model.dart';
 
 class StoreStory extends StatelessWidget {
+
+  final StoreModel storeModel;
+
+  StoreStory({this.storeModel});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +45,7 @@ class StoreStory extends StatelessWidget {
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: NetworkImage('${Endpoint.serverDomain}/assets/images/dsites/1/stores/1/reviews/1/${Random().nextInt(9)+1}.jpg'),
-                                fit: BoxFit.fill,
+                                fit: BoxFit.cover,
                               ),
                               shape: BoxShape.circle,
                             ),

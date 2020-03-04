@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:pomangam_client/domain/store/store.dart';
+import 'package:pomangam_client/domain/store/store_summary.dart';
 import 'package:pomangam_client/repository/store/store_repository.dart';
 
 class StoreModel with ChangeNotifier {
 
   Store store;
+  StoreSummary summary;
   StoreRepository _storeRepository;
 
-  String brandImagePath;
   bool isStoreFetched = false;
 
   StoreModel() {

@@ -96,7 +96,7 @@ class _HomeContentsItemState extends State<HomeContentsItem> {
 
   void _navigateToStorePage() {
     Provider.of<StoreModel>(context, listen: false)
-        .brandImagePath = widget.summary.brandImagePath;
+        .summary = widget.summary;
     _router.navigateTo(context, '/stores/${widget.summary.idx}');
   }
 }

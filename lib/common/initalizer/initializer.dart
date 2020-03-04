@@ -15,7 +15,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Initializer {
 
   Api api;
-  bool isServerDown = false;
+
+  int fallbackTotalCount = 5;
+  bool isServerDown, successNetwork, successLocale, successNotification, successToken, successModelData;
 
   Initializer({this.api});
 
@@ -28,12 +30,48 @@ class Initializer {
     try {
       log('start initialize', name: 'Initializer.initialize', time: DateTime.now());
 
-      await initializeNetwork(onServerError: onServerError);
-      await initializeLocale(locale: context != null ? Localizations.localeOf(context) : Locale('ko'));
-      await _initializeNotification();
-      await _initializeToken();
-      await _initializeModelData(context: context, deliverySiteNotIssuedHandler: deliverySiteNotIssuedHandler);
-      if(onDone != null) onDone();
+      int fallbackCount = 0;
+      isServerDown = false;
+      successNetwork = false;
+      successLocale = false;
+      successNotification = false;
+      successToken = false;
+      successModelData = false;
+
+      do {
+        successNetwork = successNetwork
+          ? true
+          : !await initializeNetwork();
+        successLocale = successLocale
+          ? true
+          : await initializeLocale(
+              locale: context != null ? Localizations.localeOf(context) : Locale('ko')
+            );
+        successNotification = successNotification
+          ? true
+          : await _initializeNotification();
+        successToken = successToken
+          ? true
+          : await _initializeToken();
+        successModelData = successModelData
+          ? true
+          : await _initializeModelData(
+              context: context,
+              deliverySiteNotIssuedHandler: deliverySiteNotIssuedHandler
+            );
+        if(isAllSuccess()) {
+          break;
+        } else {
+          log('fallback try...${fallbackCount+1} (delay: ${fallbackCount*500}millis)', name: 'Initializer.initialize', time: DateTime.now());
+          await Future.delayed(Duration(milliseconds: fallbackCount*500));
+        }
+      } while(++fallbackCount < fallbackTotalCount);
+
+      if(isAllSuccess()) {
+        if(onDone != null) onDone();
+      } else {
+        onServerError();
+      }
 
       log('success', name: 'Initializer.initialize', time: DateTime.now());
     } catch(error) {
@@ -41,20 +79,26 @@ class Initializer {
     }
   }
 
-  Future<void> initializeLocale({Locale locale}) async {
+  bool isAllSuccess() {
+    return successNetwork && successLocale && successNotification && successToken && successModelData;
+  }
+
+  Future<bool> initializeLocale({Locale locale}) async {
     try {
       log('start initializeLocale', name: 'Initializer.initializeLocale', time: DateTime.now());
       api.setResourceLocale(locale: locale); // server 통신 header 에 locale 추가
       log('success', name: 'Initializer.initializeLocale', time: DateTime.now());
+      return true;
     } catch(error) {
       log('fail', name: 'Initializer.initializeLocale', time: DateTime.now(), error: error);
+      return false;
     }
   }
 
-  Future<bool> initializeNetwork({Function onServerError}) async {
+  Future<bool> initializeNetwork() async {
     try {
       log('start initializeNetwork', name: 'Initializer.initializeNetwork', time: DateTime.now());
-      isServerDown = await _isServerDown(onServerError: onServerError);
+      isServerDown = await _isServerDown();
       log('success', name: 'Initializer.initializeNetwork', time: DateTime.now());
       return isServerDown;
     } catch(error) {
@@ -63,29 +107,32 @@ class Initializer {
     }
   }
 
-  Future<void> initializeNotification({Function onServerError}) async {
-    isServerDown = await initializeNetwork(onServerError: onServerError);
+  Future<bool> initializeNotification() async {
+    isServerDown = await initializeNetwork();
     return _initializeNotification();
+
   }
-  Future<void> _initializeNotification() async {
+  Future<bool> _initializeNotification() async {
     try {
       log('start initializeNotification', name: 'Initializer.initializeNotification', time: DateTime.now());
-      if(isServerDown) return;
+      if(isServerDown) return false;
       if( !await _hasFcmToken() ) await _fcmTokenNotIssuedHandler();
       log('success', name: 'Initializer.initializeNotification', time: DateTime.now());
+      return true;
     } catch(error) {
       log('fail', name: 'Initializer.initializeNotification', time: DateTime.now(), error: error);
+      return false;
     }
   }
 
-  Future<void> initializeToken({Function onServerError}) async {
-    isServerDown = await initializeNetwork(onServerError: onServerError);
-    _initializeToken();
+  Future<bool> initializeToken() async {
+    isServerDown = await initializeNetwork();
+    return _initializeToken();
   }
-  Future<void> _initializeToken() async {
+  Future<bool> _initializeToken() async {
     try {
       log('start initializeToken', name: 'Initializer.initializeToken', time: DateTime.now());
-      if(isServerDown) return;
+      if(isServerDown) return false;
 
       Token token = await api.oauthTokenRepository.loadToken();
       if(token != null) {
@@ -100,8 +147,10 @@ class Initializer {
         }
       }
       log('success', name: 'Initializer.initializeToken', time: DateTime.now());
+      return true;
     } catch(error) {
       log('fail', name: 'Initializer.initializeToken', time: DateTime.now(), error: error);
+      return false;
     }
   }
 
@@ -132,14 +181,14 @@ class Initializer {
     return user;
   }
 
-  Future<void> initializeModelData({BuildContext context, Function onServerError, Function deliverySiteNotIssuedHandler}) async {
-    isServerDown = await initializeNetwork(onServerError: onServerError);
-    _initializeModelData(context: context, deliverySiteNotIssuedHandler: deliverySiteNotIssuedHandler);
+  Future<bool> initializeModelData({BuildContext context, Function deliverySiteNotIssuedHandler}) async {
+    isServerDown = await initializeNetwork();
+    return _initializeModelData(context: context, deliverySiteNotIssuedHandler: deliverySiteNotIssuedHandler);
   }
-  Future<void> _initializeModelData({BuildContext context, Function deliverySiteNotIssuedHandler}) async {
+  Future<bool> _initializeModelData({BuildContext context, Function deliverySiteNotIssuedHandler}) async {
     try {
       log('start initializeData', name: 'Initializer.initializeData', time: DateTime.now());
-      if(isServerDown || context == null) return;
+      if(isServerDown || context == null) return false;
 
       SharedPreferences pref = await SharedPreferences.getInstance();
       int ddIdx = pref.getInt(s.idxDeliveryDetailSite) ?? 1;
@@ -161,18 +210,12 @@ class Initializer {
           .fetch(forceUpdate: true, dIdx: dIdx);
       }
       log('success', name: 'Initializer.initializeData', time: DateTime.now());
+      return true;
     } catch(error) {
       log('fail', name: 'Initializer.initializeData', time: DateTime.now(), error: error);
-      if(fallbackCount-- > 0) {
-        await Future.delayed(Duration(milliseconds: 1000),
-          () => _initializeModelData(
-              context: context,
-              deliverySiteNotIssuedHandler: deliverySiteNotIssuedHandler
-          ));
-      }
+      return false;
     }
   }
-  static int fallbackCount = 5;
 
 
   /// ## signOut
@@ -190,7 +233,7 @@ class Initializer {
   ///
   /// 서버 health indicator 가 반환하는 server health status 검사
   ///
-  Future<bool> _isServerDown({Function onServerError}) async {
+  Future<bool> _isServerDown() async {
     ServerHealth health = await api.healthCheck();
     switch(health) {
       case ServerHealth.UP:
@@ -198,7 +241,6 @@ class Initializer {
       case ServerHealth.DOWN:
       case ServerHealth.MAINTENANCE:
       case ServerHealth.UNKNOWN:
-      onServerError();
     }
     return true;
   }
@@ -220,7 +262,7 @@ class Initializer {
   ///
   /// fcm token 요청 후 내부 db 에 저장, 서버 db 에 저장 -> 서버에서 발급한 fidx 내부 db 에 저장.
   ///
-  Future _fcmTokenNotIssuedHandler() async {
+  Future<void> _fcmTokenNotIssuedHandler() async {
     String fcmToken;
     try{
       _saveInPrefs(s.fcmToken, await _requestFcmToken());  // fcm token 저장

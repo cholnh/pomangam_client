@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
+import 'package:pomangam_client/provider/store/store_model.dart';
 
 class StoreProductCategory extends StatelessWidget {
+
+  final StoreModel storeModel;
+
+  StoreProductCategory({this.storeModel});
+
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
