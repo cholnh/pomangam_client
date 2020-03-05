@@ -5,7 +5,9 @@ import 'package:pomangam_client/common/network/constant/endpoint.dart';
 import 'package:pomangam_client/common/router/app_router.dart';
 import 'package:pomangam_client/domain/store/store.dart';
 import 'package:pomangam_client/domain/store/store_summary.dart';
+import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/provider/order/time/order_time_model.dart';
+import 'package:pomangam_client/provider/product/product_summary_model.dart';
 import 'package:pomangam_client/provider/store/store_model.dart';
 import 'package:pomangam_client/ui/widget/home/contents/home_contents_item_image.dart';
 import 'package:pomangam_client/ui/widget/home/contents/home_contents_item_like.dart';
@@ -97,6 +99,16 @@ class _HomeContentsItemState extends State<HomeContentsItem> {
   void _navigateToStorePage() {
     Provider.of<StoreModel>(context, listen: false)
         .summary = widget.summary;
+    int dIdx = Provider.of<DeliverySiteModel>(context, listen: false)
+        .userDeliverySite?.idx;
+    ProductSummaryModel productSummaryModel = Provider.of<ProductSummaryModel>(context, listen: false);
+    productSummaryModel.clear();
+    productSummaryModel.fetch(
+        isForceUpdate: true,
+        dIdx: dIdx,
+        sIdx: widget.summary.idx
+    );
+
     _router.navigateTo(context, '/stores/${widget.summary.idx}');
   }
 }

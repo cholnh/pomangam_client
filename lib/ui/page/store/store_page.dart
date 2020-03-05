@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/common/network/constant/endpoint.dart';
 import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
+import 'package:pomangam_client/provider/product/product_summary_model.dart';
 import 'package:pomangam_client/provider/store/store_model.dart';
+import 'package:pomangam_client/provider/store/store_product_category_model.dart';
 import 'package:pomangam_client/ui/widget/store/store_app_bar.dart';
 import 'package:pomangam_client/ui/widget/store/store_center_button.dart';
 import 'package:pomangam_client/ui/widget/store/store_description.dart';
@@ -25,16 +27,26 @@ class StorePage extends StatefulWidget {
 
 class _StorePageState extends State<StorePage> {
 
-  StoreModel storeModel;
+  ProductSummaryModel _productSummaryModel;
+
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 200.0;
+
+  int _dIdx;
+  int _cIdx;
 
   @override
   void initState() {
     super.initState();
-    int dIdx = Provider.of<DeliverySiteModel>(context, listen: false)
+    _scrollController.addListener(_onScroll);
+    _dIdx = Provider.of<DeliverySiteModel>(context, listen: false)
         .userDeliverySite?.idx;
-    storeModel = Provider.of<StoreModel>(context, listen: false)
+    Provider.of<StoreModel>(context, listen: false)
       ..isStoreFetched = false
-      ..fetch(dIdx: dIdx, sIdx: widget.sIdx);
+      ..fetch(dIdx: _dIdx, sIdx: widget.sIdx);
+    _cIdx = Provider.of<StoreProductCategoryModel>(context, listen: false)
+        .idxSelectedCategory;
+    _productSummaryModel = Provider.of<ProductSummaryModel>(context, listen: false);
   }
 
   @override
@@ -49,16 +61,25 @@ class _StorePageState extends State<StorePage> {
           body: CustomScrollView(
             key: PmgKeys.storePage,
             slivers: <Widget>[
-              StoreHeader(sIdx: widget.sIdx, storeModel: model), // desc
-              StoreDescription(storeModel: model),
-              StoreCenterButton(storeModel: model),
-              StoreStory(storeModel: model),
-              StoreProductCategory(storeModel: model),
-              StoreProduct(storeModel: model)
+              StoreHeader(sIdx: widget.sIdx), // desc
+              StoreDescription(),
+              StoreCenterButton(),
+              StoreStory(),
+              StoreProductCategory(productCategories: model?.store?.productCategories),
+              StoreProduct()
             ],
+            controller: _scrollController,
           )
         );
       }
     );
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      _productSummaryModel.fetch(dIdx: _dIdx, sIdx: widget.sIdx, cIdx: _cIdx);
+    }
   }
 }

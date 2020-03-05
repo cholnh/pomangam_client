@@ -22,7 +22,7 @@ class StoreRepository {
     @required String oDate,
     @required PageRequest pageRequest
   }) async => StoreSummary.fromJsonList(
-      (await api.get(url: '/dsites/$dIdx/stores?oIdx=$oIdx&oDate=$oDate')).data);
+      (await api.get(url: '/dsites/$dIdx/stores?oIdx=$oIdx&oDate=$oDate&page=${pageRequest.page}&size=${pageRequest.size}')).data);
 
   Future<int> count({
     @required int dIdx,

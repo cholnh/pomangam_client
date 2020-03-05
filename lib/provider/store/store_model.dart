@@ -6,9 +6,10 @@ import 'package:pomangam_client/repository/store/store_repository.dart';
 
 class StoreModel with ChangeNotifier {
 
+  StoreRepository _storeRepository;
+
   Store store;
   StoreSummary summary;
-  StoreRepository _storeRepository;
 
   bool isStoreFetched = false;
 

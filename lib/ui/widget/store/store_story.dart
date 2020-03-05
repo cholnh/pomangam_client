@@ -3,14 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/common/network/constant/endpoint.dart';
-import 'package:pomangam_client/provider/store/store_model.dart';
 
 class StoreStory extends StatelessWidget {
-
-  final StoreModel storeModel;
-
-  StoreStory({this.storeModel});
-
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
@@ -23,7 +17,7 @@ class StoreStory extends StatelessWidget {
             child: ListView(
                 scrollDirection: Axis.horizontal,
                 physics: BouncingScrollPhysics(),
-                children: List.generate(10, (int index) {
+                children: List.generate(5, (int index) {
                   return Container(
                     margin: EdgeInsets.only(left: 20.0, right: index == 9 ? 20.0 : 0.0),
                     child: Column(
@@ -44,7 +38,7 @@ class StoreStory extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: NetworkImage('${Endpoint.serverDomain}/assets/images/dsites/1/stores/1/reviews/1/${Random().nextInt(9)+1}.jpg'),
+                                image: NetworkImage('${Endpoint.serverDomain}/assets/images/dsites/1/stores/1/reviews/1/${Random().nextInt(5)+1}.jpg'),
                                 fit: BoxFit.cover,
                               ),
                               shape: BoxShape.circle,

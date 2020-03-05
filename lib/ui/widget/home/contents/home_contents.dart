@@ -29,10 +29,10 @@ class HomeContents extends StatelessWidget {
             return index >= model.stores.length
               ? HomeBottomLoader()
               : HomeContentsItem(summary: model.stores[index]);
-            },
-            childCount: model.hasReachedMax
-              ? model.stores.length
-              : model.stores.length + 1
+          },
+          childCount: model.hasReachedMax
+            ? model.stores.length
+            : model.stores.length + 1
           ),
         );
       }

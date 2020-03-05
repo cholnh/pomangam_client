@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
-import 'package:pomangam_client/provider/store/store_model.dart';
+import 'package:pomangam_client/domain/product/category/product_category.dart';
+import 'package:pomangam_client/provider/store/store_product_category_model.dart';
+import 'package:provider/provider.dart';
 
 class StoreProductCategory extends StatelessWidget {
+  final List<ProductCategory> productCategories;
 
-  final StoreModel storeModel;
-
-  StoreProductCategory({this.storeModel});
+  StoreProductCategory({this.productCategories});
 
   @override
   Widget build(BuildContext context) {
@@ -22,33 +23,70 @@ class StoreProductCategory extends StatelessWidget {
       elevation: 0.8,
       title: Container(
         height: 60,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          physics: BouncingScrollPhysics(),
-          children: List.generate(5, (int index) {
-            return Container(
-              child: Card(
-                semanticContainer: true,
-                color: index == 0 ? primaryColor : backgroundColor,
-                child: Container(
-                    margin: EdgeInsets.only(left: 15.0, right: 15.0),
-                    padding: EdgeInsets.all(5.0),
-                    alignment: Alignment.center,
-                    child: Text(
-                      '${index==0?'전체':index==1?'메인메뉴':index==2?'서브메뉴':index==3?'토핑':'음료'}',
-                      style: TextStyle(color: index==0 ? Colors.white : Colors.black),
+        child: Consumer<StoreProductCategoryModel>(
+          builder: (_, model, child) {
+            int selected = model.idxSelectedCategory;
+            return ListView.builder(
+              scrollDirection: Axis.horizontal,
+              physics: BouncingScrollPhysics(),
+              itemCount: productCategories == null ? 0 : productCategories.length+1,
+              itemBuilder: (context, index) {
+                return index == 0
+                  ? GestureDetector(
+                      onTap: () => _onSelected(model, index, null),
+                      child: Card(
+                        semanticContainer: true,
+                        color: index == selected ? primaryColor : backgroundColor,
+                        child: Container(
+                            margin: EdgeInsets.only(left: 15.0, right: 15.0),
+                            padding: EdgeInsets.all(5.0),
+                            alignment: Alignment.center,
+                            child: Text(
+                              '전체',
+                              style: TextStyle(color: index == selected ? Colors.white : Colors.black),
+                            )
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        elevation: 3,
+                        margin: EdgeInsets.only(left: 20.0, top: 13.0, bottom: 13.0),
+                      ),
                     )
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                elevation: 3,
-                margin: EdgeInsets.only(left: 20.0, right: index == 4 ? 20.0 : 0.0, top: 13.0, bottom: 13.0),
-              ),
+                  : GestureDetector(
+                      onTap: () => _onSelected(model, index, productCategories[index-1].idx),
+                      child: Card(
+                        semanticContainer: true,
+                        color: index == selected ? primaryColor : backgroundColor,
+                        child: Container(
+                            margin: EdgeInsets.only(left: 15.0, right: 15.0),
+                            padding: EdgeInsets.all(5.0),
+                            alignment: Alignment.center,
+                            child: Text(
+                              '${productCategories[index-1].categoryTitle}',
+                              style: TextStyle(color: index == selected ? Colors.white : Colors.black),
+                            )
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        elevation: 3,
+                        margin: EdgeInsets.only(left: 20.0, right: index == productCategories.length ? 20.0 : 0.0, top: 13.0, bottom: 13.0),
+                      ),
+                    );
+              },
             );
-          })
+          }
         ),
       ),
     );
+  }
+
+  void _onSelected(StoreProductCategoryModel storeProductCategoryModel, int idxSelected, int idxProductCategory) {
+    storeProductCategoryModel.changeIdxSelectedCategory(idxSelected);
+
+    if(idxProductCategory != null) {
+      print(idxProductCategory);
+    }
   }
 }

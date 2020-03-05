@@ -1,8 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pomangam_client/domain/common/entity_auditing.dart';
+import 'package:pomangam_client/domain/product/category/product_category.dart';
 import 'package:pomangam_client/domain/store/info/production_info.dart';
 import 'package:pomangam_client/domain/store/info/store_info.dart';
 import 'package:pomangam_client/domain/store/schedule/store_schedule.dart';
+import 'package:pomangam_client/domain/store/story/store_story.dart';
 
 part 'store.g.dart';
 
@@ -45,11 +47,18 @@ class Store extends EntityAuditing {
   /// 업체 서브 이미지 경로 리스트
   List<String> storeImageSubPaths;
 
+  /// 업체 제품 카테고리 리스트
+  List<ProductCategory> productCategories;
+
+  /// 스토리 리스트
+  List<StoreStory> stories;
+
   Store({
-      int idx, DateTime registerDate, DateTime modifyDate,
-      this.storeInfo, this.productionInfo, this.storeSchedule,
-      this.avgStar, this.cntLike, this.cntComment, this.sequence,
-      this.brandImagePath, this.storeImageMainPath, this.storeImageSubPaths
+    int idx, DateTime registerDate, DateTime modifyDate,
+    this.storeInfo, this.productionInfo, this.storeSchedule,
+    this.avgStar, this.cntLike, this.cntComment, this.sequence,
+    this.brandImagePath, this.storeImageMainPath, this.storeImageSubPaths,
+    this.productCategories, this.stories
   }): super(idx: idx, registerDate: registerDate, modifyDate: modifyDate);
 
   factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);

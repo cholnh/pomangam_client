@@ -31,6 +31,7 @@ class _HomeContentsItemImageState extends State<HomeContentsItemImage> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Opacity(
       opacity: widget.isOrderable && widget.isOpening
           ? 1
@@ -38,7 +39,7 @@ class _HomeContentsItemImageState extends State<HomeContentsItemImage> {
       child: Column(
         children: <Widget>[
           CarouselSlider(
-            height: 200.0,
+            height: 250,
             viewportFraction: 1.0,
             enableInfiniteScroll: false,
             autoPlay: false,
@@ -54,7 +55,7 @@ class _HomeContentsItemImageState extends State<HomeContentsItemImage> {
                 builder: (BuildContext context) {
                   return GestureDetector(
                     child: Container(
-                        width: MediaQuery.of(context).size.width,
+                        width: width,
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey, width: 0.3)
                         ),

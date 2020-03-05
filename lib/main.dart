@@ -9,9 +9,12 @@ import 'package:pomangam_client/common/router/app_router.dart';
 import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/provider/deliverysite/detail/delivery_detail_site_model.dart';
 import 'package:pomangam_client/provider/order/time/order_time_model.dart';
+import 'package:pomangam_client/provider/product/product_model.dart';
+import 'package:pomangam_client/provider/product/product_summary_model.dart';
 import 'package:pomangam_client/provider/sign/sign_in_model.dart';
 import 'package:pomangam_client/provider/sign/sign_up_model.dart';
 import 'package:pomangam_client/provider/store/store_model.dart';
+import 'package:pomangam_client/provider/store/store_product_category_model.dart';
 import 'package:pomangam_client/provider/store/store_summary_model.dart';
 import 'package:pomangam_client/ui/page/common/splash_page.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +38,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => OrderTimeModel(), lazy: true),
         ChangeNotifierProvider(create: (_) => StoreSummaryModel(), lazy: true),
         ChangeNotifierProvider(create: (_) => StoreModel(), lazy: true),
+        ChangeNotifierProvider(create: (_) => StoreProductCategoryModel(), lazy: true),
+        ChangeNotifierProvider(create: (_) => ProductModel(), lazy: true),
+        ChangeNotifierProvider(create: (_) => ProductSummaryModel(), lazy: true),
+
       ],
       child: MaterialApp(
         title: '${Messages.appName}',
