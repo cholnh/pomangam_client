@@ -101,14 +101,13 @@ class _HomeContentsItemState extends State<HomeContentsItem> {
         .summary = widget.summary;
     int dIdx = Provider.of<DeliverySiteModel>(context, listen: false)
         .userDeliverySite?.idx;
-    ProductSummaryModel productSummaryModel = Provider.of<ProductSummaryModel>(context, listen: false);
-    productSummaryModel.clear();
-    productSummaryModel.fetch(
+    Provider.of<ProductSummaryModel>(context, listen: false)
+      ..clear()
+      ..fetch(
         isForceUpdate: true,
         dIdx: dIdx,
         sIdx: widget.summary.idx
-    );
-
+      );
     _router.navigateTo(context, '/stores/${widget.summary.idx}');
   }
 }

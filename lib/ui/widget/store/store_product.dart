@@ -30,6 +30,7 @@ class StoreProduct extends StatelessWidget {
           );
         }
         return SliverGrid(
+          key: PmgKeys.storeProduct,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
           ),
@@ -46,5 +47,3 @@ class StoreProduct extends StatelessWidget {
     );
   }
 }
-
-// PmgKeys.storeProduct

@@ -19,7 +19,7 @@ class StoreStory extends StatelessWidget {
                 physics: BouncingScrollPhysics(),
                 children: List.generate(5, (int index) {
                   return Container(
-                    margin: EdgeInsets.only(left: 20.0, right: index == 9 ? 20.0 : 0.0),
+                    margin: EdgeInsets.only(left: 20.0, right: index == 4 ? 20.0 : 0.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[

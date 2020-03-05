@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
-import 'package:pomangam_client/common/network/constant/endpoint.dart';
 import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/provider/product/product_summary_model.dart';
 import 'package:pomangam_client/provider/store/store_model.dart';
@@ -33,19 +32,19 @@ class _StorePageState extends State<StorePage> {
   final _scrollThreshold = 200.0;
 
   int _dIdx;
-  int _cIdx;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
     _dIdx = Provider.of<DeliverySiteModel>(context, listen: false)
-        .userDeliverySite?.idx;
+      .userDeliverySite?.idx;
+    Provider.of<StoreProductCategoryModel>(context, listen: false)
+      ..idxSelectedCategory = 0
+      ..idxProductCategory = 0;
     Provider.of<StoreModel>(context, listen: false)
       ..isStoreFetched = false
       ..fetch(dIdx: _dIdx, sIdx: widget.sIdx);
-    _cIdx = Provider.of<StoreProductCategoryModel>(context, listen: false)
-        .idxSelectedCategory;
     _productSummaryModel = Provider.of<ProductSummaryModel>(context, listen: false);
   }
 
@@ -65,7 +64,11 @@ class _StorePageState extends State<StorePage> {
               StoreDescription(),
               StoreCenterButton(),
               StoreStory(),
-              StoreProductCategory(productCategories: model?.store?.productCategories),
+              StoreProductCategory(
+                dIdx: _dIdx,
+                sIdx: widget.sIdx,
+                productCategories: model?.store?.productCategories
+              ),
               StoreProduct()
             ],
             controller: _scrollController,
@@ -79,7 +82,9 @@ class _StorePageState extends State<StorePage> {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
-      _productSummaryModel.fetch(dIdx: _dIdx, sIdx: widget.sIdx, cIdx: _cIdx);
+      int cIdx = Provider.of<StoreProductCategoryModel>(context, listen: false)
+          .idxProductCategory;
+      _productSummaryModel.fetch(dIdx: _dIdx, sIdx: widget.sIdx, cIdx: cIdx);
     }
   }
 }

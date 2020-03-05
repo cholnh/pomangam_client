@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/domain/product/category/product_category.dart';
+import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
+import 'package:pomangam_client/provider/product/product_summary_model.dart';
 import 'package:pomangam_client/provider/store/store_product_category_model.dart';
 import 'package:provider/provider.dart';
 
 class StoreProductCategory extends StatelessWidget {
+
+  final int dIdx;
+  final int sIdx;
   final List<ProductCategory> productCategories;
 
-  StoreProductCategory({this.productCategories});
+  StoreProductCategory({this.dIdx, this.sIdx, this.productCategories});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +38,7 @@ class StoreProductCategory extends StatelessWidget {
               itemBuilder: (context, index) {
                 return index == 0
                   ? GestureDetector(
-                      onTap: () => _onSelected(model, index, null),
+                      onTap: () => _onSelected(context, index, null),
                       child: Card(
                         semanticContainer: true,
                         color: index == selected ? primaryColor : backgroundColor,
@@ -54,7 +59,7 @@ class StoreProductCategory extends StatelessWidget {
                       ),
                     )
                   : GestureDetector(
-                      onTap: () => _onSelected(model, index, productCategories[index-1].idx),
+                      onTap: () => _onSelected(context, index, productCategories[index-1].idx),
                       child: Card(
                         semanticContainer: true,
                         color: index == selected ? primaryColor : backgroundColor,
@@ -82,11 +87,27 @@ class StoreProductCategory extends StatelessWidget {
     );
   }
 
-  void _onSelected(StoreProductCategoryModel storeProductCategoryModel, int idxSelected, int idxProductCategory) {
-    storeProductCategoryModel.changeIdxSelectedCategory(idxSelected);
-
-    if(idxProductCategory != null) {
-      print(idxProductCategory);
+  void _onSelected(BuildContext context, int idxSelected, int idxProductCategory) {
+    Provider.of<StoreProductCategoryModel>(context, listen: false)
+        .changeIdxSelectedCategory(idxSelected);
+    StoreProductCategoryModel storeProductCategoryModel = Provider.of<StoreProductCategoryModel>(context, listen: false);
+    ProductSummaryModel productSummaryModel = Provider.of<ProductSummaryModel>(context, listen: false)
+      ..clear();
+    if(idxProductCategory == null) {
+      storeProductCategoryModel.idxProductCategory = 0;
+      productSummaryModel.fetch(
+        isForceUpdate: true,
+        dIdx: dIdx,
+        sIdx: sIdx,
+      );
+    } else {
+      storeProductCategoryModel.idxProductCategory = idxProductCategory;
+      productSummaryModel.fetch(
+        isForceUpdate: true,
+        dIdx: dIdx,
+        sIdx: sIdx,
+        cIdx: idxProductCategory
+      );
     }
   }
 }
