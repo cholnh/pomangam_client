@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:intl/intl.dart';
 import 'package:pomangam_client/domain/common/page_request.dart';
+import 'package:pomangam_client/domain/store/store_quantity_orderable.dart';
 import 'package:pomangam_client/domain/store/store_summary.dart';
 import 'package:pomangam_client/repository/store/store_repository.dart';
 
@@ -14,36 +17,33 @@ class StoreSummaryModel with ChangeNotifier {
   int curPage = 0;
   int size = 10;
 
+  bool isFetching = false;
+
   StoreSummaryModel() {
     _storeRepository = Injector.appInstance.getDependency<StoreRepository>();
   }
 
-  void clear() {
-    stores.clear();
-    hasReachedMax = false;
-    curPage = 0;
-    size = 10;
-    notifyListeners();
-  }
-
-  Future fetch({bool isForceUpdate = false, int dIdx, int oIdx, DateTime oDate}) async {
+  Future<void> fetch({bool isForceUpdate = false, int dIdx, int oIdx, DateTime oDate}) async {
     if(!isForceUpdate && hasReachedMax) return;
     hasReachedMax = true; // lock
+    isFetching = true;
 
     List<StoreSummary> fetched = [];
     try {
       fetched = await _storeRepository.findOpeningStores(
-          dIdx: dIdx,
-          oIdx: oIdx,
-          oDate: DateFormat('yyyy-MM-dd').format(oDate),
-          pageRequest: PageRequest(
-              page: curPage++,
-              size: size
-          )
+        dIdx: dIdx,
+        oIdx: oIdx,
+        oDate: DateFormat('yyyy-MM-dd').format(oDate),
+        pageRequest: PageRequest(
+            page: curPage++,
+            size: size
+        )
       );
+      fetched.shuffle();
     } catch(error) {
       print('[Debug] StoreSummaryModel.fetch Error - $error');
       hasReachedMax = true;
+      isFetching = false;
     }
     stores.addAll(fetched);
 
@@ -54,6 +54,48 @@ class StoreSummaryModel with ChangeNotifier {
     );
 
     hasReachedMax = listCount <= stores.length;
+    isFetching = false;
     notifyListeners();
+  }
+
+  Future<List<StoreQuantityOrderable>> fetchQuantityOrderable({int dIdx, int oIdx, DateTime oDate}) async {
+    List<StoreQuantityOrderable> quantities = [];
+    try {
+      quantities = await _storeRepository.findQuantityOrderableByIdxes(
+        dIdx: dIdx,
+        oIdx: oIdx,
+        oDate: DateFormat('yyyy-MM-dd').format(oDate),
+        sIdxes: stores.map((store) => store.idx).toList()
+      );
+    } catch(error) {
+      print('[Debug] StoreSummaryModel.fetchQuantityOrderable Error - $error');
+    }
+    return quantities;
+  }
+
+  void setQuantityOrderable(Object quantities) async {
+    if(quantities is Future<List<StoreQuantityOrderable>>) {
+      for(StoreQuantityOrderable quantity in await quantities) {
+        for(StoreSummary summary in this.stores) {
+          if(summary.idx == quantity.idx) {
+            summary.quantityOrderable = quantity.quantityOrderable;
+            break;
+          }
+        }
+      }
+      notifyListeners();
+    }
+  }
+
+  void clearWithNotify() {
+    clear();
+    notifyListeners();
+  }
+
+  void clear() {
+    stores.clear();
+    hasReachedMax = false;
+    curPage = 0;
+    size = 10;
   }
 }

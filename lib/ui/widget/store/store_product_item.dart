@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/network/constant/endpoint.dart';
@@ -10,13 +8,14 @@ class StoreProductItem extends StatelessWidget {
 
   final ProductSummary summary;
 
-  StoreProductItem({this.summary});
+  StoreProductItem({Key key, this.summary}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: key,
       decoration: BoxDecoration(
-          border: Border.all(width: 0.5, color: backgroundColor)
+          border: Border.all(width: 0.3, color: backgroundColor)
       ),
       child: Stack(
         alignment: Alignment.center,
@@ -45,8 +44,8 @@ class StoreProductItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('${summary.name}', style: TextStyle(color: Colors.white, fontSize: 13.0, fontWeight: FontWeight.w500)),
-                Text('${summary.salePrice}', style: TextStyle(color: Colors.white, fontSize: 13.0, fontWeight: FontWeight.w500)),
+                Text('${summary.name}', style: TextStyle(color: Colors.white, fontSize: subTitleFontSize, fontWeight: FontWeight.w500)),
+                Text('${summary.salePrice}', style: TextStyle(color: Colors.white, fontSize: subTitleFontSize, fontWeight: FontWeight.w500)),
               ],
             ),
           )

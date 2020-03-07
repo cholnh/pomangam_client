@@ -151,7 +151,8 @@ class Api implements NetworkService {
   _errorHandler(error, logic) async {
     // 토큰 재 요청
     if(error is DioError) {
-      switch(error.response.statusCode) {
+      print('[Api _errorHandler] $error');
+      switch(error?.response?.statusCode) {
         case HttpStatus.unauthorized: // 401
           await Injector.appInstance.getDependency<Initializer>()
             .initialize(

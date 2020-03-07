@@ -22,14 +22,9 @@ class HomeContentsItemLike extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(left: HomeContentsItem.contentsPaddingValue, right: HomeContentsItem.contentsPaddingValue),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                    '${summary.cntLike} likes',
-                    style: TextStyle()
-                ),
-              ],
+            child: Text(
+                '좋아요 ${summary.cntLike}개',
+                style: TextStyle(fontSize: titleFontSize, fontWeight: FontWeight.w600)
             ),
           ),
           Padding(

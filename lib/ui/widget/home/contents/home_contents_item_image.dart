@@ -1,9 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
+import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/common/network/constant/endpoint.dart';
 import 'package:pomangam_client/domain/store/store_summary.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:scrolling_page_indicator/scrolling_page_indicator.dart';
+
 class HomeContentsItemImage extends StatefulWidget {
 
   final bool isOpening;
@@ -18,91 +21,70 @@ class HomeContentsItemImage extends StatefulWidget {
 
 class _HomeContentsItemImageState extends State<HomeContentsItemImage> {
 
-  int _current = 0;
-  List<String> _imagePaths;
-
-  @override
-  void initState() {
-    super.initState();
-    _imagePaths = List()
-      ..add(widget.summary.storeImageMainPath)
-      ..addAll(widget.summary.storeImageSubPaths);
-  }
-
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
+    PageController _controller = PageController();
+
+    List<String> imagePaths = List()
+      ..add(widget.summary.storeImageMainPath)
+      ..addAll(widget.summary.storeImageSubPaths);
+
+    List<Widget> items = imagePaths.map((imagePath)
+      => _buildPage(imagePath)).toList();
+
     return Opacity(
       opacity: widget.isOrderable && widget.isOpening
           ? 1
           : 0.5,
-      child: Column(
-        children: <Widget>[
-          CarouselSlider(
-            height: 250,
-            viewportFraction: 1.0,
-            enableInfiniteScroll: false,
-            autoPlay: false,
-            scrollDirection: Axis.horizontal,
-            aspectRatio: MediaQuery.of(context).size.aspectRatio,
-            onPageChanged: (index) {
-              setState(() {
-                _current = index;
-              });
-            },
-            items: _imagePaths.map((imagePath) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return GestureDetector(
-                    child: Container(
-                        width: width,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey, width: 0.3)
-                        ),
-                        child: FadeInImage.memoryNetwork(
-                            placeholder: kTransparentImage,
-                            image: '${Endpoint.serverDomain}$imagePath',
-                            fit: BoxFit.fill,
-                            fadeInDuration: Duration(milliseconds: 100),
-                            fadeOutDuration: Duration(milliseconds: 100)
-                        )
-                    ),
-                  );
-                },
-              );
-            }).toList(),
-          ),
-          _imagePaths.length > 1
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: map<Widget>(
-                  _imagePaths,
-                      (index, url) {
-                    return Container(
-                      width: 6.0,
-                      height: 6.0,
-                      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _current == index
-                              ? primaryColor
-                              : Color.fromRGBO(0, 0, 0, 0.4)),
-                    );
-                  },
+      child: SizedBox(
+        height: 250.0,
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: PageView(
+                children: items,
+                controller: _controller,
+              ),
+            ),
+            imagePaths.length > 1
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 18.0),
+                  child: ScrollingPageIndicator(
+                    dotColor: Colors.black12,
+                    dotSelectedColor: primaryColor,
+                    dotSize: 5,
+                    dotSelectedSize: 6,
+                    dotSpacing: 9,
+                    controller: _controller,
+                    itemCount: imagePaths.length,
+                    orientation: Axis.horizontal
+                  ),
                 )
-              )
-            : Container()
-        ],
+              : Container()
+          ],
+        ),
       ),
     );
   }
 
-  List<T> map<T>(List list, Function handler) {
-    List<T> result = [];
-    for (var i = 0; i < list.length; i++) {
-      result.add(handler(i, list[i]));
-    }
+  Widget _buildPage(String imagePath) {
+    double width = MediaQuery.of(context).size.width;
 
-    return result;
+    return GestureDetector(
+      child: Container(
+          width: width,
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey, width: 0.3)
+          ),
+          child: FadeInImage.memoryNetwork(
+            key: PmgKeys.homeContentsItemImage,
+            placeholder: kTransparentImage,
+            image: '${Endpoint.serverDomain}$imagePath',
+            fit: BoxFit.fill,
+            fadeInDuration: Duration(milliseconds: 100),
+            fadeOutDuration: Duration(milliseconds: 100),
+          )
+      ),
+    );
   }
 }

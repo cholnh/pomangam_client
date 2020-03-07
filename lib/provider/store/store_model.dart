@@ -12,6 +12,7 @@ class StoreModel with ChangeNotifier {
   StoreSummary summary;
 
   bool isStoreFetched = false;
+  bool isStoreDescriptionOpened = false;
 
   StoreModel() {
     _storeRepository = Injector.appInstance.getDependency<StoreRepository>();
@@ -32,6 +33,11 @@ class StoreModel with ChangeNotifier {
 
   void changeIsStoreFetched(bool tf) {
     this.isStoreFetched = tf;
+    notifyListeners();
+  }
+
+  void toggleIsStoreDescriptionOpened() {
+    this.isStoreDescriptionOpened = !this.isStoreDescriptionOpened;
     notifyListeners();
   }
 }

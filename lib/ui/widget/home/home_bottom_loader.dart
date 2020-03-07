@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeBottomLoader extends StatelessWidget {
@@ -7,9 +8,7 @@ class HomeBottomLoader extends StatelessWidget {
       margin: EdgeInsets.all(5),
       alignment: Alignment.center,
       child: Center(
-        child: CircularProgressIndicator(
-          strokeWidth: 2.0,
-        ),
+        child: CupertinoActivityIndicator(),
       ),
     );
   }

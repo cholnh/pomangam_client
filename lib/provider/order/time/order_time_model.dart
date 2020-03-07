@@ -19,6 +19,11 @@ class OrderTimeModel with ChangeNotifier {
     _orderTimeRepository = Injector.appInstance.getDependency<OrderTimeRepository>();
   }
 
+  void clear() {
+    orderTimes.clear();
+    userOrderTime = null;
+  }
+
   Future<void> fetch({
     bool forceUpdate = false,
     @required int dIdx

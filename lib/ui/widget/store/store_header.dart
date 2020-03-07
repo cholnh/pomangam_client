@@ -17,7 +17,7 @@ class StoreHeader extends StatelessWidget {
     return SliverToBoxAdapter(
       key: PmgKeys.storeHeader,
       child: Container(
-        padding: EdgeInsets.only(left: 20.0, right: 10.0, bottom: 20.0),
+        padding: EdgeInsets.only(left: 15.0, right: 10.0, top: 7.0, bottom: 15.0),
         child: Consumer<StoreModel>(
           builder: (_, model, child) {
             return Row(
@@ -27,7 +27,11 @@ class StoreHeader extends StatelessWidget {
                     brandImagePath: '${Endpoint.serverDomain}${model.summary.brandImagePath}'
                 ),
                 Expanded(
-                  child: StoreScore(),
+                  child: StoreScore(
+                    avgStar: model.summary.avgStar,
+                    cntLike: model.summary.cntLike,
+                    cntComment: model.summary.cntComment
+                  ),
                 )
               ],
             );

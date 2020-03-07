@@ -23,8 +23,10 @@ class StoreProduct extends StatelessWidget {
           return SliverToBoxAdapter(
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text('주문가능한 메뉴가 없습니다...', style: TextStyle(color: Colors.grey, fontSize: 14)),
+                padding: EdgeInsets.all(20.0),
+                child: model.isFetching
+                  ? CupertinoActivityIndicator()
+                  : Text('주문가능한 메뉴가 없습니다...', style: TextStyle(color: Colors.grey, fontSize: 14)),
               ),
             ),
           );
@@ -35,13 +37,12 @@ class StoreProduct extends StatelessWidget {
             crossAxisCount: 3,
           ),
           delegate: SliverChildBuilderDelegate((context, index) {
-            return index >= model.productSummaries.length
-              ? HomeBottomLoader()
-              : StoreProductItem(summary: model.productSummaries[index]);
+            return StoreProductItem(
+                key: PmgKeys.storeProductItem(model.productSummaries[index].idx),
+                summary: model.productSummaries[index]
+            );
           },
-          childCount: model.hasReachedMax
-            ? model.productSummaries.length
-            : model.productSummaries.length + 1)
+          childCount: model.productSummaries.length)
         );
       },
     );

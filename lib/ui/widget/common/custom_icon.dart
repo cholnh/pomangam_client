@@ -21,7 +21,7 @@ class CustomIcon extends StatelessWidget {
                 right: 7,
                 child: Stack(
                   children: <Widget>[
-                    const Icon(Icons.brightness_1, size: 7.0, color: primaryColor)
+                    const Icon(Icons.brightness_1, size: 5.0, color: primaryColor)
                   ],
                 ),
               )

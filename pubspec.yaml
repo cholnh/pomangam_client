@@ -49,6 +49,12 @@ dependencies:
 
   flutter_calendar_carousel: ^1.4.11
 
+  pull_to_refresh: ^1.5.7
+
+  url_launcher: 5.1.2
+
+  scrolling_page_indicator: ^0.1.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

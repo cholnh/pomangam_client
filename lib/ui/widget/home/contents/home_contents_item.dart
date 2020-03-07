@@ -1,29 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
-import 'package:pomangam_client/common/constants/pomangam_theme.dart';
-import 'package:pomangam_client/common/network/constant/endpoint.dart';
 import 'package:pomangam_client/common/router/app_router.dart';
-import 'package:pomangam_client/domain/store/store.dart';
 import 'package:pomangam_client/domain/store/store_summary.dart';
-import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/provider/order/time/order_time_model.dart';
-import 'package:pomangam_client/provider/product/product_summary_model.dart';
 import 'package:pomangam_client/provider/store/store_model.dart';
 import 'package:pomangam_client/ui/widget/home/contents/home_contents_item_image.dart';
 import 'package:pomangam_client/ui/widget/home/contents/home_contents_item_like.dart';
-import 'package:pomangam_client/ui/widget/home/contents/home_contents_item_star.dart';
+import 'package:pomangam_client/ui/widget/home/contents/home_contents_item_review.dart';
 import 'package:pomangam_client/ui/widget/home/contents/home_contents_item_sub_title.dart';
 import 'package:pomangam_client/ui/widget/home/contents/home_contents_item_title.dart';
 import 'package:provider/provider.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class HomeContentsItem extends StatefulWidget {
+
   static const double paddingValue = 0.0;
   static const double contentsPaddingValue = 10.0;
 
   final StoreSummary summary;
 
-  HomeContentsItem({this.summary});
+  HomeContentsItem({Key key, this.summary}): super(key: key);
 
   @override
   _HomeContentsItemState createState() => _HomeContentsItemState();
@@ -48,6 +43,7 @@ class _HomeContentsItemState extends State<HomeContentsItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      key: widget.key,
       onTap: () => _isOrderable && _isOpening
           ? _navigateToStorePage()
           : {},
@@ -77,14 +73,14 @@ class _HomeContentsItemState extends State<HomeContentsItem> {
                 isOrderable: _isOrderable,
                 summary: widget.summary
             ),
-            const Padding(padding: EdgeInsets.only(bottom: 5.0)),
-            HomeContentsItemStar(
+            const Padding(padding: EdgeInsets.only(bottom: 7.0)),
+            HomeContentsItemSubTitle(
                 isOpening: _isOpening,
                 isOrderable: _isOrderable,
                 summary: widget.summary
             ),
-            const Padding(padding: EdgeInsets.only(bottom: 5.0)),
-            HomeContentsItemSubTitle(
+            const Padding(padding: EdgeInsets.only(bottom: 7.0)),
+            HomeContentsItemReview(
                 isOpening: _isOpening,
                 isOrderable: _isOrderable,
                 summary: widget.summary
@@ -99,15 +95,6 @@ class _HomeContentsItemState extends State<HomeContentsItem> {
   void _navigateToStorePage() {
     Provider.of<StoreModel>(context, listen: false)
         .summary = widget.summary;
-    int dIdx = Provider.of<DeliverySiteModel>(context, listen: false)
-        .userDeliverySite?.idx;
-    Provider.of<ProductSummaryModel>(context, listen: false)
-      ..clear()
-      ..fetch(
-        isForceUpdate: true,
-        dIdx: dIdx,
-        sIdx: widget.summary.idx
-      );
     _router.navigateTo(context, '/stores/${widget.summary.idx}');
   }
 }

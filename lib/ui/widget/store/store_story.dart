@@ -12,21 +12,21 @@ class StoreStory extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
-            height: 140,
+            padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
+            height: 130,
             child: ListView(
                 scrollDirection: Axis.horizontal,
                 physics: BouncingScrollPhysics(),
                 children: List.generate(5, (int index) {
                   return Container(
-                    margin: EdgeInsets.only(left: 20.0, right: index == 4 ? 20.0 : 0.0),
+                    margin: EdgeInsets.only(left: 15.0, right: index == 4 ? 15.0 : 0.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Container(
                           margin: EdgeInsets.only(bottom: 8.0),
-                          width: 70.0,
-                          height: 70.0,
+                          width: 65.0,
+                          height: 65.0,
                           padding: EdgeInsets.all(4.0),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,

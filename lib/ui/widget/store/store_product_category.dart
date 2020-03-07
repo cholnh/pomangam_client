@@ -9,11 +9,11 @@ import 'package:provider/provider.dart';
 
 class StoreProductCategory extends StatelessWidget {
 
-  final int dIdx;
   final int sIdx;
   final List<ProductCategory> productCategories;
+  final Function onChangedCategory;
 
-  StoreProductCategory({this.dIdx, this.sIdx, this.productCategories});
+  StoreProductCategory({this.sIdx, this.productCategories, this.onChangedCategory});
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +48,14 @@ class StoreProductCategory extends StatelessWidget {
                             alignment: Alignment.center,
                             child: Text(
                               '전체',
-                              style: TextStyle(color: index == selected ? Colors.white : Colors.black),
+                              style: TextStyle(color: index == selected ? Colors.white : Colors.black, fontSize: titleFontSize),
                             )
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         elevation: 3,
-                        margin: EdgeInsets.only(left: 20.0, top: 13.0, bottom: 13.0),
+                        margin: EdgeInsets.only(left: 15.0, top: 13.0, bottom: 13.0),
                       ),
                     )
                   : GestureDetector(
@@ -69,14 +69,14 @@ class StoreProductCategory extends StatelessWidget {
                             alignment: Alignment.center,
                             child: Text(
                               '${productCategories[index-1].categoryTitle}',
-                              style: TextStyle(color: index == selected ? Colors.white : Colors.black),
+                              style: TextStyle(color: index == selected ? Colors.white : Colors.black, fontSize: titleFontSize),
                             )
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         elevation: 3,
-                        margin: EdgeInsets.only(left: 20.0, right: index == productCategories.length ? 20.0 : 0.0, top: 13.0, bottom: 13.0),
+                        margin: EdgeInsets.only(left: 15.0, right: index == productCategories.length ? 15.0 : 0.0, top: 13.0, bottom: 13.0),
                       ),
                     );
               },
@@ -87,27 +87,34 @@ class StoreProductCategory extends StatelessWidget {
     );
   }
 
-  void _onSelected(BuildContext context, int idxSelected, int idxProductCategory) {
+  void _onSelected(BuildContext context, int idxSelected, int idxProductCategory) async {
     Provider.of<StoreProductCategoryModel>(context, listen: false)
         .changeIdxSelectedCategory(idxSelected);
     StoreProductCategoryModel storeProductCategoryModel = Provider.of<StoreProductCategoryModel>(context, listen: false);
     ProductSummaryModel productSummaryModel = Provider.of<ProductSummaryModel>(context, listen: false)
       ..clear();
+
+    DeliverySiteModel deliverySiteModel = Provider.of<DeliverySiteModel>(context, listen: false);
+    int dIdx = deliverySiteModel.userDeliverySite?.idx;
+
     if(idxProductCategory == null) {
       storeProductCategoryModel.idxProductCategory = 0;
-      productSummaryModel.fetch(
+      productSummaryModel.clearWithNotify();
+      await productSummaryModel.fetch(
         isForceUpdate: true,
         dIdx: dIdx,
         sIdx: sIdx,
       );
     } else {
       storeProductCategoryModel.idxProductCategory = idxProductCategory;
-      productSummaryModel.fetch(
+      productSummaryModel.clearWithNotify();
+      await productSummaryModel.fetch(
         isForceUpdate: true,
         dIdx: dIdx,
         sIdx: sIdx,
         cIdx: idxProductCategory
       );
     }
+    this.onChangedCategory();
   }
 }

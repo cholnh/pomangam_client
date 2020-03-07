@@ -25,3 +25,8 @@ const Color secondaryColor = Colors.deepOrange;
 
 /// background color
 const Color backgroundColor = Colors.white;
+
+/// font size
+const double appBarFontSize = 16.0;
+const double titleFontSize = 13.0;
+const double subTitleFontSize = 12.0;

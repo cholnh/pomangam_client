@@ -11,7 +11,9 @@ import 'package:provider/provider.dart';
 
 class HomeContentsBar extends StatefulWidget {
 
-  HomeContentsBar();
+  final Function onChangedTime;
+
+  HomeContentsBar({this.onChangedTime});
 
   @override
   _HomeContentsBarState createState() => _HomeContentsBarState();
@@ -52,7 +54,7 @@ class _HomeContentsBarState extends State<HomeContentsBar> {
           return InkWell(
             child: Row(
               children: <Widget>[
-                Text('$textArrivalTime$textArrivalDate', style: const TextStyle(fontSize: 18, color: Colors.black)),
+                Text('$textArrivalTime$textArrivalDate', style: const TextStyle(fontSize: appBarFontSize, color: Colors.black)),
                 Icon(Icons.arrow_drop_down, color: Colors.black)
               ],
             ),
@@ -63,9 +65,9 @@ class _HomeContentsBarState extends State<HomeContentsBar> {
         }
       ),
       actions: <Widget>[
-        const IconButton(
-          icon: const Icon(Icons.view_module, color: Colors.grey),
-        ),
+//        const IconButton(
+//          icon: const Icon(Icons.view_module, color: Colors.grey),
+//        ),
         IconButton(
           icon: const Icon(Icons.filter_list, color: Colors.grey),
           onPressed: () => _showModal(
@@ -90,14 +92,15 @@ class _HomeContentsBarState extends State<HomeContentsBar> {
 
   _selectTime({int oIdx, DateTime changedOrderDate}) {
     Navigator.pop(context);
-    StoreSummaryModel storeSummaryModel = Provider.of<StoreSummaryModel>(context, listen: false);
-    storeSummaryModel.clear();
-    storeSummaryModel.fetch(
-        isForceUpdate: true,
-        dIdx: dIdx,
-        oIdx: oIdx,
-        oDate: changedOrderDate
-    );
+    Provider.of<StoreSummaryModel>(context, listen: false)
+      ..clearWithNotify()
+      ..fetch(
+          isForceUpdate: true,
+          dIdx: dIdx,
+          oIdx: oIdx,
+          oDate: changedOrderDate
+      );
+    widget.onChangedTime();
   }
 
   _selectSort(sort) {

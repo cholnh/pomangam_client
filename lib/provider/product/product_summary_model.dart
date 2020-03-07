@@ -13,21 +13,16 @@ class ProductSummaryModel with ChangeNotifier {
   int curPage = 0;
   int size = 6;
 
+  bool isFetching = false;
+
   ProductSummaryModel() {
     _productRepository = Injector.appInstance.getDependency<ProductRepository>();
   }
 
-  void clear() {
-    productSummaries.clear();
-    hasReachedMax = false;
-    curPage = 0;
-    size = 6;
-    notifyListeners();
-  }
-
-  Future fetch({bool isForceUpdate = false, int dIdx, int sIdx, int cIdx = 0}) async {
+  Future<void> fetch({bool isForceUpdate = false, int dIdx, int sIdx, int cIdx = 0}) async {
     if(!isForceUpdate && hasReachedMax) return;
     hasReachedMax = true; // lock
+    isFetching = true;
 
     List<ProductSummary> fetched = [];
     try {
@@ -52,7 +47,9 @@ class ProductSummaryModel with ChangeNotifier {
     } catch(error) {
       print('[Debug] StoreSummaryModel.fetch Error - $error');
       hasReachedMax = true;
+      isFetching = false;
     }
+
     productSummaries.addAll(fetched);
 
     int listCount = cIdx == 0
@@ -67,6 +64,19 @@ class ProductSummaryModel with ChangeNotifier {
         );
 
     hasReachedMax = listCount <= productSummaries.length;
+    isFetching = false;
     notifyListeners();
+  }
+
+  void clearWithNotify() {
+    clear();
+    notifyListeners();
+  }
+
+  void clear() {
+    productSummaries.clear();
+    hasReachedMax = false;
+    curPage = 0;
+    size = 6;
   }
 }

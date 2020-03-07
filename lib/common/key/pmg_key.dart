@@ -23,4 +23,9 @@ class PmgKeys {
   static const storeProductCategory = Key('__storeProductCategory__');
   static const storeStory = Key('__storeStory__');
   static const storeProduct = Key('__storeProduct__');
+  static Key storeProductItem(int i) => Key('__storeProduct_${i}__');
+
+  // Home
+  static const homeContentsItemImage = Key('__homeContentsItemImage__');
+  static Key homeContentsItem(int i) => Key('__homeContentsItem_${i}__');
 }
