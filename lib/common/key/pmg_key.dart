@@ -28,4 +28,8 @@ class PmgKeys {
   // Home
   static const homeContentsItemImage = Key('__homeContentsItemImage__');
   static Key homeContentsItem(int i) => Key('__homeContentsItem_${i}__');
+
+  // Product
+  static const productPage = Key('__productPage__');
+  static const productImage = Key('__productImage__');
 }

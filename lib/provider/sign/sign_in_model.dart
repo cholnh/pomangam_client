@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
+import 'package:pomangam_client/common/initalizer/initializer.dart';
 import 'package:pomangam_client/domain/sign/enum/sign_in_state.dart';
 import 'package:pomangam_client/domain/sign/user.dart';
 import 'package:pomangam_client/repository/sign/sign_repository.dart';
@@ -49,4 +50,7 @@ class SignInModel with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<bool> isSignIn() async {
+    return Initializer.isSignIn();
+  }
 }

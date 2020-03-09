@@ -5,23 +5,23 @@ import 'package:pomangam_client/ui/widget/home/contents/home_contents_item.dart'
 
 class HomeContentsItemSubTitle extends StatelessWidget {
 
-  final bool isOpening;
-  final bool isOrderable;
-  final StoreSummary summary;
+  final double opacity;
+  final String title;
+  final String description;
+  final String subDescription;
+  final int maxLines;
 
-  HomeContentsItemSubTitle({this.isOpening, this.isOrderable, this.summary});
+  HomeContentsItemSubTitle({this.opacity = 1.0, this.title, this.description, this.subDescription, this.maxLines = 2});
 
   @override
   Widget build(BuildContext context) {
     return Opacity(
-      opacity: isOrderable && isOpening
-          ? 1
-          : 0.5,
+      opacity: opacity,
       child: Container(
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.only(left: HomeContentsItem.contentsPaddingValue, right: HomeContentsItem.contentsPaddingValue),
         child: RichText(
-          maxLines: 2,
+          maxLines: maxLines,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.left,
           softWrap: true,
@@ -31,8 +31,9 @@ class HomeContentsItemSubTitle extends StatelessWidget {
               color: Colors.black,
             ),
             children: <TextSpan>[
-              TextSpan(text: '${summary.name} ', style: TextStyle(fontWeight: FontWeight.bold)),
-              TextSpan(text: '${summary.description}'),
+              TextSpan(text: '$title ', style: TextStyle(fontWeight: FontWeight.bold)),
+              TextSpan(text: description),
+              TextSpan(text: subDescription)
             ],
           ),
         )

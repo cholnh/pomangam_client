@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart' as theme;
 
@@ -24,10 +25,7 @@ class SignUpBottomBtn extends StatelessWidget {
               child: Center(
                 child: isActive
                   ? Text('$title', style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 17.0))
-                  : CircularProgressIndicator(
-                      backgroundColor: color,
-                      strokeWidth: 2.0,
-                  ),
+                  : CupertinoActivityIndicator(),
               ),
             ),
             onTap: isActive

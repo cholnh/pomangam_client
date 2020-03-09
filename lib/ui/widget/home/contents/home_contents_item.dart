@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
+import 'package:pomangam_client/common/constants/pomangam_theme.dart';
+import 'package:pomangam_client/common/network/constant/endpoint.dart';
 import 'package:pomangam_client/common/router/app_router.dart';
 import 'package:pomangam_client/domain/store/store_summary.dart';
 import 'package:pomangam_client/provider/order/time/order_time_model.dart';
@@ -42,6 +44,12 @@ class _HomeContentsItemState extends State<HomeContentsItem> {
 
   @override
   Widget build(BuildContext context) {
+
+    List<String> imagePaths = List()
+      ..add(widget.summary?.storeImageMainPath)
+      ..addAll(widget.summary?.storeImageSubPaths);
+    double opacity = _isOrderable && _isOpening ? 1 : 0.5;
+
     return GestureDetector(
       key: widget.key,
       onTap: () => _isOrderable && _isOpening
@@ -57,33 +65,36 @@ class _HomeContentsItemState extends State<HomeContentsItem> {
             const Divider(height: 0.1),
             const Padding(padding: EdgeInsets.only(bottom: 10.0)),
             HomeContentsItemTitle(
-              isOpening: _isOpening,
-              isOrderable: _isOrderable,
-              summary: widget.summary
+              heroTag: 'storeImageHero${widget.summary.idx}',
+              brandImagePath: '${Endpoint.serverDomain}/${widget.summary.brandImagePath}',
+              title: widget.summary.name,
+              subTitle: _subTitle(),
+              subTitleColor: widget.summary.quantityOrderable <= 5 ? primaryColor : Colors.grey,
+              avgStar: widget.summary.avgStar
             ),
             const Padding(padding: EdgeInsets.only(bottom: 10.0)),
             HomeContentsItemImage(
-              isOpening: _isOpening,
-              isOrderable: _isOrderable,
-              summary: widget.summary
+              opacity: opacity,
+              height: 250.0,
+              imagePaths: imagePaths
             ),
             const Padding(padding: EdgeInsets.only(bottom: 10.0)),
             HomeContentsItemLike(
-                isOpening: _isOpening,
-                isOrderable: _isOrderable,
-                summary: widget.summary
+              opacity: opacity,
+              cntLike: widget.summary.cntLike,
+              couponType: widget.summary.couponType,
+              couponValue: widget.summary.couponValue
             ),
             const Padding(padding: EdgeInsets.only(bottom: 7.0)),
             HomeContentsItemSubTitle(
-                isOpening: _isOpening,
-                isOrderable: _isOrderable,
-                summary: widget.summary
+              opacity: opacity,
+              title: widget.summary.name,
+              description: widget.summary.description
             ),
             const Padding(padding: EdgeInsets.only(bottom: 7.0)),
             HomeContentsItemReview(
-                isOpening: _isOpening,
-                isOrderable: _isOrderable,
-                summary: widget.summary
+              opacity: opacity,
+              cntComment: widget.summary.cntComment
             ),
             const Padding(padding: EdgeInsets.only(bottom: 26.0)),
           ],
@@ -96,5 +107,15 @@ class _HomeContentsItemState extends State<HomeContentsItem> {
     Provider.of<StoreModel>(context, listen: false)
         .summary = widget.summary;
     _router.navigateTo(context, '/stores/${widget.summary.idx}');
+  }
+
+  String _subTitle() {
+    return _isOpening
+      ? widget.summary.quantityOrderable > 0 && _isOrderable
+        ? widget.summary.quantityOrderable <= 5
+          ? '마감임박 ${widget.summary.quantityOrderable}개'
+          : '주문가능 ${widget.summary.quantityOrderable}개'
+        : '주문마감'
+      : '${widget.summary.storeSchedule.pauseDescription}';
   }
 }

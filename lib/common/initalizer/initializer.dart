@@ -38,6 +38,8 @@ class Initializer {
       successToken = false;
       successModelData = false;
 
+      // await signIn(phoneNumber: '01064784899#test', password: '1234');
+
       do {
         successNetwork = successNetwork
           ? true
@@ -227,6 +229,19 @@ class Initializer {
   void signOut() {
     Token.clearFromDisk();
     Token.clearFromDioHeader();
+  }
+
+  /// ## isSignIn
+  ///
+  /// 로그인 유무 확인
+  ///
+  static Future<bool> isSignIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String strTokenMode = prefs.get(s.tokenMode);
+    if(strTokenMode != null && strTokenMode.toLowerCase() == 'login') {
+      return true;
+    }
+    return false;
   }
 
   /// ## _isServerDown

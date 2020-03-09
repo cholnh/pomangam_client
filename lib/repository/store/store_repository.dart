@@ -39,5 +39,8 @@ class StoreRepository {
   }) async => StoreQuantityOrderable.fromJsonList(
       (await api.get(url: '/dsites/$dIdx/stores?oIdx=$oIdx&oDate=$oDate&sIdxes=${sIdxes.toString().replaceAll('[', '').replaceAll(']', '')}')).data);
 
-
+  Future<bool> likeToggle({
+    @required int dIdx,
+    @required int sIdx
+  }) async => (await api.patch(url: '/dsites/$dIdx/stores/$sIdx/likes/toggle')).data;
 }

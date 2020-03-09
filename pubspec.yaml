@@ -55,6 +55,8 @@ dependencies:
 
   scrolling_page_indicator: ^0.1.2
 
+  cached_network_image: ^2.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

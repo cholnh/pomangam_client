@@ -4,6 +4,7 @@ import 'package:pomangam_client/ui/page/common/base_page.dart';
 import 'package:pomangam_client/ui/page/common/error_page.dart';
 import 'package:pomangam_client/ui/page/common/not_found_page.dart';
 import 'package:pomangam_client/ui/page/deliverysite/delivery_site_page.dart';
+import 'package:pomangam_client/ui/page/product/product_page.dart';
 import 'package:pomangam_client/ui/page/sign/in/sign_in_page.dart';
 import 'package:pomangam_client/ui/page/sign/up/sign_up_authcode_page.dart';
 import 'package:pomangam_client/ui/page/sign/up/sign_up_nickname_page.dart';
@@ -49,6 +50,17 @@ class AppRouter extends Router {
         return StorePage(sIdx: sIdx);
       }),
       transitionType: TransitionType.cupertino);
+
+
+    /// A ProductPage router path.
+    ///
+    /// Returns the page specified in the handler.
+    super.define("/products/:idx",
+        handler: Handler(handlerFunc: (context, params) {
+          int pIdx = int.parse(params['idx'][0]);
+          return ProductPage(pIdx: pIdx);
+        }),
+        transitionType: TransitionType.cupertino);
 
 
     /// A SignIn router path.

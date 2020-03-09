@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
     _init();
     _streamController = StreamController()
       ..addStream(Stream.periodic(
-          Duration(seconds: 10),
+          Duration(seconds: 20),
               (_) => storeSummaryModel.fetchQuantityOrderable(dIdx: dIdx, oIdx: oIdx, oDate: oDate)));
     _streamSubscription = _streamController.stream.listen(storeSummaryModel.setQuantityOrderable);
   }

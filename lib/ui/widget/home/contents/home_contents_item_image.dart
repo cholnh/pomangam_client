@@ -1,43 +1,31 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/common/network/constant/endpoint.dart';
-import 'package:pomangam_client/domain/store/store_summary.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:scrolling_page_indicator/scrolling_page_indicator.dart';
 
-class HomeContentsItemImage extends StatefulWidget {
+class HomeContentsItemImage extends StatelessWidget {
 
-  final bool isOpening;
-  final bool isOrderable;
-  final StoreSummary summary;
+  final PageController _controller = PageController();
 
-  HomeContentsItemImage({this.isOpening, this.isOrderable, this.summary});
+  final double opacity;
+  final double height;
+  final List<String> imagePaths;
 
-  @override
-  _HomeContentsItemImageState createState() => _HomeContentsItemImageState();
-}
-
-class _HomeContentsItemImageState extends State<HomeContentsItemImage> {
+  HomeContentsItemImage({this.opacity, this.height, this.imagePaths});
 
   @override
   Widget build(BuildContext context) {
-    PageController _controller = PageController();
-
-    List<String> imagePaths = List()
-      ..add(widget.summary.storeImageMainPath)
-      ..addAll(widget.summary.storeImageSubPaths);
 
     List<Widget> items = imagePaths.map((imagePath)
-      => _buildPage(imagePath)).toList();
+      => _buildPage(context, imagePath)).toList();
 
     return Opacity(
-      opacity: widget.isOrderable && widget.isOpening
-          ? 1
-          : 0.5,
+      opacity: opacity,
       child: SizedBox(
-        height: 250.0,
+        height: height,
         child: Column(
           children: <Widget>[
             Expanded(
@@ -67,22 +55,20 @@ class _HomeContentsItemImageState extends State<HomeContentsItemImage> {
     );
   }
 
-  Widget _buildPage(String imagePath) {
+  Widget _buildPage(BuildContext context, String imagePath) {
     double width = MediaQuery.of(context).size.width;
-
     return GestureDetector(
       child: Container(
           width: width,
           decoration: BoxDecoration(
               border: Border.all(color: Colors.grey, width: 0.3)
           ),
-          child: FadeInImage.memoryNetwork(
+          child: CachedNetworkImage(
             key: PmgKeys.homeContentsItemImage,
-            placeholder: kTransparentImage,
-            image: '${Endpoint.serverDomain}$imagePath',
+            imageUrl: '${Endpoint.serverDomain}/$imagePath',
             fit: BoxFit.fill,
-            fadeInDuration: Duration(milliseconds: 100),
-            fadeOutDuration: Duration(milliseconds: 100),
+            placeholder: (context, url) => CupertinoActivityIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error_outline),
           )
       ),
     );

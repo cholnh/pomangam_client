@@ -42,4 +42,10 @@ class ProductRepository {
     @required int sIdx,
     @required int cIdx
   }) async => (await api.get(url: '/dsites/$dIdx/stores/$sIdx/products/search/count?cIdx=$cIdx')).data;
+
+  Future<bool> likeToggle({
+    @required int dIdx,
+    @required int sIdx,
+    @required int pIdx
+  }) async => (await api.patch(url: '/dsites/$dIdx/stores/$sIdx/products/$pIdx/likes/toggle')).data;
 }

@@ -53,12 +53,15 @@ class Store extends EntityAuditing {
   /// 스토리 리스트
   List<StoreStory> stories;
 
+  /// 좋아요 유무
+  bool isLike;
+
   Store({
     int idx, DateTime registerDate, DateTime modifyDate,
     this.storeInfo, this.productionInfo, this.storeSchedule,
     this.avgStar, this.cntLike, this.cntComment, this.sequence,
     this.brandImagePath, this.storeImageMainPath, this.storeImageSubPaths,
-    this.productCategories, this.stories
+    this.productCategories, this.stories, this.isLike
   }): super(idx: idx, registerDate: registerDate, modifyDate: modifyDate);
 
   factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);

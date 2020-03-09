@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StoreBrandImage extends StatelessWidget {
@@ -13,11 +15,13 @@ class StoreBrandImage extends StatelessWidget {
         tag: 'storeImageHero$sIdx',
         child: Container(
             child: CircleAvatar(
-                child: Image.network(
-                  '$brandImagePath',
+                child: CachedNetworkImage(
+                  imageUrl: '$brandImagePath',
                   width: 50,
                   height: 50,
                   fit: BoxFit.cover,
+                  placeholder: (context, url) => CupertinoActivityIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.white

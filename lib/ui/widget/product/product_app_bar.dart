@@ -2,31 +2,33 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/initalizer/initializer.dart';
+import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
+import 'package:pomangam_client/provider/product/product_model.dart';
 import 'package:pomangam_client/provider/store/store_model.dart';
 import 'package:pomangam_client/ui/widget/sign/sign_modal.dart';
 import 'package:provider/provider.dart';
 
-class StoreAppBar extends AppBar {
-  StoreAppBar(context) : super(
+class ProductAppBar extends AppBar {
+  ProductAppBar(context) : super(
     automaticallyImplyLeading: true,
     leading: IconButton(
       icon: const Icon(CupertinoIcons.back, color: Colors.black),
       onPressed:() => Navigator.pop(context, false),
     ),
     centerTitle: true,
-    title: Consumer<StoreModel>(
+    title: Consumer<ProductModel>(
       builder: (_, model, child) {
         return Text(
-            '${model?.store?.storeInfo?.name ?? ''}',
+            '${model?.product?.productInfo?.name ?? ''}',
             style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w600)
         );
       },
     ),
     actions: <Widget>[
-      Consumer<StoreModel>(
+      Consumer<ProductModel>(
         builder: (_, model, child) {
           return IconButton(
-            icon: model?.store?.isLike != null &&  model.store.isLike
+            icon: model?.product?.isLike != null &&  model.product.isLike
                 ? const Icon(Icons.favorite, color: primaryColor)
                 : const Icon(Icons.favorite_border, color: primaryColor),
             onPressed: () => _onPressed(context: context, model: model),
@@ -38,12 +40,14 @@ class StoreAppBar extends AppBar {
   );
 }
 
-void _onPressed({BuildContext context, StoreModel model}) async {
+void _onPressed({BuildContext context, ProductModel model}) async {
   bool isSignIn = await Initializer.isSignIn();
   if(isSignIn) {
+    DeliverySiteModel deliverySiteModel = Provider.of<DeliverySiteModel>(context, listen: false);
     model.likeToggle(
-        dIdx: model.store?.idxDeliverySite,
-        sIdx: model.store?.idx
+        dIdx: deliverySiteModel.userDeliverySite?.idx,
+        sIdx: model.product.idxStore,
+        pIdx: model.product?.idx
     );
   } else {
     showModal(context: context);

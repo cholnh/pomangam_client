@@ -23,7 +23,7 @@ class TabSelector extends StatelessWidget {
     final Color unselectedItemColor = Colors.grey;
 
     return SizedBox(
-      height: 49,
+      height: 50.0,
       child: Padding(
         padding: const EdgeInsets.only(top: 0.0),
         child: BottomNavigationBar(

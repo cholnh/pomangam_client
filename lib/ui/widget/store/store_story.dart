@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/common/network/constant/endpoint.dart';
@@ -38,7 +39,9 @@ class StoreStory extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: NetworkImage('${Endpoint.serverDomain}/assets/images/dsites/1/stores/1/reviews/1/${Random().nextInt(5)+1}.jpg'),
+                                image: CachedNetworkImageProvider(
+                                  '${Endpoint.serverDomain}/assets/images/dsites/1/stores/1/reviews/1/${Random().nextInt(5)+1}.jpg',
+                                ),
                                 fit: BoxFit.cover,
                               ),
                               shape: BoxShape.circle,

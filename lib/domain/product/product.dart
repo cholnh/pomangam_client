@@ -12,15 +12,22 @@ class Product extends EntityAuditing {
   ProductInfo productInfo;
   String productCategoryTitle;
   int cntLike;
+  int cntReply;
   int sequence;
 
   // images
   String productImageMainPath;
   List<String> productImageSubPaths;
 
-  Product({this.idxStore, this.salePrice, this.productInfo,
-      this.productCategoryTitle, this.cntLike, this.sequence,
-      this.productImageMainPath, this.productImageSubPaths});
+  // like
+  bool isLike;
+
+  Product({
+    int idx, DateTime registerDate, DateTime modifyDate,
+    this.idxStore, this.salePrice, this.productInfo,
+    this.productCategoryTitle, this.cntLike, this.cntReply, this.sequence,
+    this.productImageMainPath, this.productImageSubPaths, this.isLike
+  }): super(idx: idx, registerDate: registerDate, modifyDate: modifyDate);
 
   factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
   Map<String, dynamic> toJson() => _$ProductToJson(this);

@@ -1,16 +1,20 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
-import 'package:pomangam_client/common/network/constant/endpoint.dart';
-import 'package:pomangam_client/domain/store/store_summary.dart';
 import 'package:pomangam_client/ui/widget/home/contents/home_contents_item.dart';
 
 class HomeContentsItemTitle extends StatelessWidget {
 
-  final bool isOpening;
-  final bool isOrderable;
-  final StoreSummary summary;
+  final String heroTag;
+  final String brandImagePath;
+  final String title;
+  final String subTitle;
+  final Color subTitleColor;
+  final double avgStar;
 
-  HomeContentsItemTitle({this.isOpening, this.isOrderable, this.summary});
+  HomeContentsItemTitle({this.heroTag, this.brandImagePath, this.title,
+      this.subTitle, this.subTitleColor, this.avgStar});
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +26,16 @@ class HomeContentsItemTitle extends StatelessWidget {
           Row(
             children: <Widget>[
               Hero(
-                  tag: 'storeImageHero${summary.idx}',
+                  tag: heroTag,
                   child: Container(
                       child: CircleAvatar(
-                          child: Image.network(
-                            '${Endpoint.serverDomain}${summary.brandImagePath}',
-                            width: 24,
-                            height: 24,
+                          child: CachedNetworkImage(
+                            imageUrl: brandImagePath,
                             fit: BoxFit.fill,
+                            width: 24.0,
+                            height: 24.0,
+                            placeholder: (context, url) => CupertinoActivityIndicator(),
+                            errorWidget: (context, url, error) => Icon(Icons.error_outline),
                           ),
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.white
@@ -48,28 +54,22 @@ class HomeContentsItemTitle extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                      '${summary.name}',
-                      style: TextStyle(fontSize: subTitleFontSize, fontWeight: FontWeight.bold)
+                    title,
+                    style: TextStyle(fontSize: subTitleFontSize, fontWeight: FontWeight.bold)
                   ),
                   Padding(padding: EdgeInsets.only(top: 1.0)),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    children: _star(summary.avgStar),
+                    children: _star(avgStar),
                   ),
                 ],
               ),
             ],
           ),
           Text(
-            isOpening
-              ? summary.quantityOrderable > 0 && isOrderable
-                ? summary.quantityOrderable <= 5
-                  ? '마감임박 ${summary.quantityOrderable}개'
-                  : '주문가능 ${summary.quantityOrderable}개'
-                : '주문마감'
-              : '${summary.storeSchedule.pauseDescription}',
+            subTitle,
             style: TextStyle(
-              color: summary.quantityOrderable <= 5 ? primaryColor : Colors.grey,
+              color: subTitleColor,
               fontSize: subTitleFontSize
             )
           )

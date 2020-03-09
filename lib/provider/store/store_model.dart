@@ -13,6 +13,7 @@ class StoreModel with ChangeNotifier {
 
   bool isStoreFetched = false;
   bool isStoreDescriptionOpened = false;
+  bool isProcessingLikeToggle = false;
 
   StoreModel() {
     _storeRepository = Injector.appInstance.getDependency<StoreRepository>();
@@ -29,6 +30,23 @@ class StoreModel with ChangeNotifier {
       print('[Debug] StoreModel.fetch Error - $error');
     }
     notifyListeners();
+  }
+
+  void likeToggle({
+    @required int dIdx,
+    @required int sIdx
+  }) async {
+    if(isProcessingLikeToggle) return;
+    isProcessingLikeToggle = true;
+    try {
+      bool isLike = await _storeRepository.likeToggle(dIdx: dIdx, sIdx: sIdx);
+      store.isLike = isLike;
+      notifyListeners();
+    } catch (error) {
+      print('[Debug] StoreModel.likeToggle Error - $error');
+    } finally {
+      isProcessingLikeToggle = false;
+    }
   }
 
   void changeIsStoreFetched(bool tf) {

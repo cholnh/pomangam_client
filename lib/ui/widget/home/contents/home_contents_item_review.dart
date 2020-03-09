@@ -5,23 +5,20 @@ import 'package:pomangam_client/ui/widget/home/contents/home_contents_item.dart'
 
 class HomeContentsItemReview extends StatelessWidget {
 
-  final bool isOpening;
-  final bool isOrderable;
-  final StoreSummary summary;
+  final double opacity;
+  final int cntComment;
 
-  HomeContentsItemReview({this.isOpening, this.isOrderable, this.summary});
+  HomeContentsItemReview({this.opacity = 1.0, this.cntComment});
 
   @override
   Widget build(BuildContext context) {
     return Opacity(
-      opacity: isOrderable && isOpening
-          ? 1
-          : 0.5,
+      opacity: opacity,
       child: Container(
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.only(left: HomeContentsItem.contentsPaddingValue, right: HomeContentsItem.contentsPaddingValue),
         child: Text(
-            '리뷰 ${summary.cntComment}개 모두 보기',
+            '리뷰 $cntComment개 모두 보기',
             style: TextStyle(fontSize: subTitleFontSize, color: Colors.grey)
         ),
       ),

@@ -24,7 +24,7 @@ class StoreHeader extends StatelessWidget {
               children: <Widget>[
                 StoreBrandImage(
                     sIdx: sIdx,
-                    brandImagePath: '${Endpoint.serverDomain}${model.summary.brandImagePath}'
+                    brandImagePath: '${Endpoint.serverDomain}/${model.summary.brandImagePath}'
                 ),
                 Expanded(
                   child: StoreScore(
