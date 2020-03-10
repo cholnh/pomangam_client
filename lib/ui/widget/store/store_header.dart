@@ -30,7 +30,7 @@ class StoreHeader extends StatelessWidget {
                   child: StoreScore(
                     avgStar: model.summary.avgStar,
                     cntLike: model.summary.cntLike,
-                    cntComment: model.summary.cntComment
+                    cntComment: model.summary.cntReview
                   ),
                 )
               ],

@@ -1,17 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
-import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/domain/product/product.dart';
+import 'package:pomangam_client/domain/product/review/product_reply_preview.dart';
 import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/provider/product/product_model.dart';
 import 'package:pomangam_client/provider/store/store_model.dart';
 import 'package:pomangam_client/ui/widget/home/contents/home_contents_item_like.dart';
-import 'package:pomangam_client/ui/widget/home/contents/home_contents_item_review.dart';
 import 'package:pomangam_client/ui/widget/home/contents/home_contents_item_sub_title.dart';
 import 'package:pomangam_client/ui/widget/product/product_app_bar.dart';
-import 'package:pomangam_client/ui/widget/product/product_bottom_bar.dart';
+import 'package:pomangam_client/ui/widget/product/product_count.dart';
 import 'package:pomangam_client/ui/widget/product/product_image.dart';
+import 'package:pomangam_client/ui/widget/product/product_price.dart';
+import 'package:pomangam_client/ui/widget/product/product_review.dart';
+import 'package:pomangam_client/ui/widget/store/store_bottom_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -39,16 +41,34 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ProductAppBar(context),
-      bottomNavigationBar: ProductBottomBar(),
+      bottomNavigationBar:  StoreBottomBar(
+        centerText: '카트에 추가',
+        rightText: '3,500원',
+      ),
       body: SmartRefresher(
           physics: BouncingScrollPhysics(),
           enablePullDown: true,
+          enablePullUp: true,
           header: WaterDropMaterialHeader(
             color: primaryColor,
             backgroundColor: backgroundColor,
           ),
+          footer: ClassicFooter(
+            loadStyle: LoadStyle.ShowWhenLoading,
+            noDataText: '',
+            canLoadingText: '',
+            loadingText: '',
+            loadingIcon: Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: CupertinoActivityIndicator(),
+            ),
+            idleText: '',
+            idleIcon: Container(),
+            failedText: '탭하여 다시 시도',
+          ),
           controller: _refreshController,
           onRefresh: _onRefresh,
+          onLoading: _onLoading,
           child: Consumer<ProductModel>(
             builder: (_, model, child) {
               Product product = model.product;
@@ -57,7 +77,7 @@ class _ProductPageState extends State<ProductPage> {
                 child: Column(
                   children: <Widget>[
                     ProductImage(
-                        pIdx: widget.pIdx
+                      pIdx: widget.pIdx
                     ),
                     const Padding(padding: EdgeInsets.only(bottom: 10.0)),
                     HomeContentsItemLike(
@@ -65,14 +85,21 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                     const Padding(padding: EdgeInsets.only(bottom: 7.0)),
                     HomeContentsItemSubTitle(
-                        title: product?.productInfo?.name ?? '',
-                        description: product?.productInfo?.description ?? ''
+                      title: product?.productInfo?.name ?? '',
+                      description: product?.productInfo?.description ?? ''
                     ),
                     const Padding(padding: EdgeInsets.only(bottom: 7.0)),
-                    HomeContentsItemReview(
-                        cntComment: product?.cntReply ?? 0
+                    ProductReview(
+                      cntComment: product?.cntReply ?? 0,
+                      previews: _dummyData(),
                     ),
-                    const Padding(padding: EdgeInsets.only(bottom: 26.0))
+                    const Padding(padding: EdgeInsets.only(bottom: 10.0)),
+                    Divider(height: 0.5),
+                    const Padding(padding: EdgeInsets.only(bottom: 15.0)),
+                    ProductPrice(),
+                    const Padding(padding: EdgeInsets.only(bottom: 7.0)),
+                    ProductCount(),
+                    const Padding(padding: EdgeInsets.only(bottom: 15.0)),
                   ],
                 ),
               );
@@ -80,6 +107,15 @@ class _ProductPageState extends State<ProductPage> {
           )
       )
     );
+  }
+  
+  List<ProductReplyPreview> _dummyData() {
+    List<ProductReplyPreview> previews = List();
+
+    previews.add(ProductReplyPreview(isLike: false, idxUser: 1, nickname: 'momstouch', idxProductReply: 1, replyContents: '맛이 좋습니다ㅋㅋ맛이 좋습니다ㅋㅋ맛이 좋습니다ㅋㅋ맛이 좋습니다ㅋㅋ맛이 좋습니다ㅋㅋ맛이 좋습니다ㅋㅋ맛이 좋습니다ㅋㅋ'));
+    previews.add(ProductReplyPreview(isLike: true, idxUser: 2, nickname: 'graceful9801', idxProductReply: 1, replyContents: '이딴걸 돈주고 사먹다니 참...'));
+
+    return previews;
   }
 
   void _init() async {
@@ -100,5 +136,10 @@ class _ProductPageState extends State<ProductPage> {
   void _onRefresh() async {
     _init();
     _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+
+    _refreshController.loadComplete();
   }
 }

@@ -41,7 +41,11 @@ class _StorePageState extends State<StorePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: StoreAppBar(context),
-      bottomNavigationBar: true ? StoreBottomBar() : null,
+      bottomNavigationBar: true ? StoreBottomBar(
+        centerCount: 1,
+        centerText: '카트',
+        rightText: '3,500원',
+      ) : null,
       body: SmartRefresher(
         physics: BouncingScrollPhysics(),
         enablePullDown: true,

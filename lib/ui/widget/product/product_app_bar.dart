@@ -18,9 +18,17 @@ class ProductAppBar extends AppBar {
     centerTitle: true,
     title: Consumer<ProductModel>(
       builder: (_, model, child) {
-        return Text(
-            '${model?.product?.productInfo?.name ?? ''}',
-            style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w600)
+        return Column(
+          children: <Widget>[
+            Text(
+              '${model?.product?.productInfo?.name ?? ''}',
+              style: TextStyle(color: Colors.black, fontSize: 15.0, fontWeight: FontWeight.w600)
+            ),
+            Text(
+                '${model?.product?.productCategoryTitle ?? ''}',
+                style: TextStyle(color: Colors.black45, fontSize: subTitleFontSize)
+            ),
+          ],
         );
       },
     ),

@@ -94,7 +94,7 @@ class _HomeContentsItemState extends State<HomeContentsItem> {
             const Padding(padding: EdgeInsets.only(bottom: 7.0)),
             HomeContentsItemReview(
               opacity: opacity,
-              cntComment: widget.summary.cntComment
+              cntComment: widget.summary.cntReview
             ),
             const Padding(padding: EdgeInsets.only(bottom: 26.0)),
           ],

@@ -32,7 +32,7 @@ class ProductImage extends StatelessWidget {
 
         return SizedBox(
           key: PmgKeys.productImage,
-          height: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.width - 70,
           child: Column(
             children: <Widget>[
               Expanded(
@@ -43,17 +43,20 @@ class ProductImage extends StatelessWidget {
               ),
               Opacity(
                 opacity: (imagePaths.length + 1) > 1 ? 1 : 0,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 18.0),
-                  child: ScrollingPageIndicator(
-                      dotColor: Colors.black12,
-                      dotSelectedColor: primaryColor,
-                      dotSize: 5,
-                      dotSelectedSize: 6,
-                      dotSpacing: 9,
-                      controller: _controller,
-                      itemCount: (imagePaths.length + 1),
-                      orientation: Axis.horizontal
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 18.0),
+                    child: ScrollingPageIndicator(
+                        dotColor: Colors.black12,
+                        dotSelectedColor: primaryColor,
+                        dotSize: 5,
+                        dotSelectedSize: 6,
+                        dotSpacing: 9,
+                        controller: _controller,
+                        itemCount: (imagePaths.length + 1),
+                        orientation: Axis.horizontal
+                    ),
                   ),
                 ),
               )
