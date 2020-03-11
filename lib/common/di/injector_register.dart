@@ -12,6 +12,7 @@ import 'package:pomangam_client/repository/delivery/detail/delivery_detail_site_
 import 'package:pomangam_client/repository/order/order_repository.dart';
 import 'package:pomangam_client/repository/order/time/order_time_repository.dart';
 import 'package:pomangam_client/repository/product/product_repository.dart';
+import 'package:pomangam_client/repository/product/sub/product_sub_repository.dart';
 import 'package:pomangam_client/repository/sign/sign_repository.dart';
 import 'package:pomangam_client/repository/store/store_repository.dart';
 
@@ -133,8 +134,16 @@ class InjectorRegister {
       /// A singleton ProductRepository provider.
       ///
       /// Calling it multiple times will return the same instance.
-      ..registerDependency<ProductRepository>
+        ..registerDependency<ProductRepository>
           ((injector) => ProductRepository(
+            api: injector.getDependency<Api>()
+        ))
+
+      /// A singleton ProductSubRepository provider.
+      ///
+      /// Calling it multiple times will return the same instance.
+        ..registerDependency<ProductSubRepository>
+          ((injector) => ProductSubRepository(
             api: injector.getDependency<Api>()
         ));
 

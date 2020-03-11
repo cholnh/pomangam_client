@@ -12,23 +12,29 @@ class ProductModel with ChangeNotifier {
   ProductSummary summary;
 
   bool isProductFetched = false;
+  bool isProductFetching = false;
   bool isProcessingLikeToggle = false;
+
+  int idxProductSubCategory = 0;
 
   ProductModel() {
     _productRepository = Injector.appInstance.getDependency<ProductRepository>();
   }
 
-  void fetch({
+  Future<void> fetch({
     @required int dIdx,
     @required int sIdx,
     @required int pIdx
   }) async {
+    isProductFetching = true;
     try {
       this.product = await _productRepository.findByIdx(dIdx: dIdx, sIdx: sIdx, pIdx: pIdx);
       this.isProductFetched = true;
     } catch (error) {
       print('[Debug] ProductModel.fetch Error - $error');
+      isProductFetching = false;
     }
+    isProductFetching = false;
     notifyListeners();
   }
 
@@ -52,6 +58,11 @@ class ProductModel with ChangeNotifier {
 
   void changeIsProductFetched(bool tf) {
     this.isProductFetched = tf;
+    notifyListeners();
+  }
+
+  void changeIdxProductSubCategory(int idxProductSubCategory) {
+    this.idxProductSubCategory = idxProductSubCategory;
     notifyListeners();
   }
 }

@@ -88,7 +88,7 @@ class _StorePageState extends State<StorePage> {
     );
   }
 
-  void _init() async {
+  void _init({bool isBuild = false}) async {
     StoreModel storeModel = Provider.of<StoreModel>(context, listen: false);
     DeliverySiteModel deliverySiteModel = Provider.of<DeliverySiteModel>(context, listen: false);
     StoreProductCategoryModel categoryModel = Provider.of<StoreProductCategoryModel>(context, listen: false);
@@ -98,12 +98,15 @@ class _StorePageState extends State<StorePage> {
     int dIdx = deliverySiteModel.userDeliverySite?.idx;
 
     // store category
-    categoryModel
-    ..idxSelectedCategory = 0
-    ..idxProductCategory = 0;
+    if(isBuild) {
+      categoryModel.clearWithNotifier();
+    } else {
+      categoryModel.clear();
+    }
 
     // store fetch
     storeModel
+    ..store = null
     ..isStoreFetched = false
     ..isStoreDescriptionOpened = false
     ..fetch(dIdx: dIdx, sIdx: widget.sIdx);
@@ -133,7 +136,7 @@ class _StorePageState extends State<StorePage> {
 
   void _onRefresh() async {
     _refreshController.loadComplete();
-    _init();
+    _init(isBuild: true);
     _refreshController.refreshCompleted();
   }
 

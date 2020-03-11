@@ -19,7 +19,12 @@ class ProductSummaryModel with ChangeNotifier {
     _productRepository = Injector.appInstance.getDependency<ProductRepository>();
   }
 
-  Future<void> fetch({bool isForceUpdate = false, int dIdx, int sIdx, int cIdx = 0}) async {
+  Future<void> fetch({
+    bool isForceUpdate = false,
+    int dIdx,
+    int sIdx,
+    int cIdx = 0
+  }) async {
     if(!isForceUpdate && hasReachedMax) return;
     hasReachedMax = true; // lock
     isFetching = true;

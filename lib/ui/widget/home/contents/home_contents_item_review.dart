@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
-import 'package:pomangam_client/domain/product/review/product_reply_preview.dart';
+import 'package:pomangam_client/domain/product/review/product_reply.dart';
 import 'package:pomangam_client/domain/store/store_summary.dart';
 import 'package:pomangam_client/ui/widget/home/contents/home_contents_item.dart';
 

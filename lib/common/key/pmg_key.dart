@@ -32,4 +32,5 @@ class PmgKeys {
   // Product
   static const productPage = Key('__productPage__');
   static const productImage = Key('__productImage__');
+  static const productSubCategory = Key('__productSubCategory__');
 }

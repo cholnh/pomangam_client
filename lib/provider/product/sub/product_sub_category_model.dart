@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
 
-class StoreProductCategoryModel with ChangeNotifier {
+class ProductSubCategoryModel with ChangeNotifier {
   int idxSelectedCategory = 0;
-  int idxProductCategory = 0;
+  int idxProductSubCategory = 0;
 
   void changeIdxSelectedCategory(int idxSelectedCategory) {
     this.idxSelectedCategory = idxSelectedCategory;
+    notifyListeners();
+  }
+
+  void changeIdxProductSubCategory(int idxProductSubCategory) {
+    this.idxProductSubCategory = idxProductSubCategory;
     notifyListeners();
   }
 
@@ -16,6 +21,6 @@ class StoreProductCategoryModel with ChangeNotifier {
 
   void clear() {
     this.idxSelectedCategory = 0;
-    this.idxProductCategory = 0;
+    this.idxProductSubCategory = 0;
   }
 }

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
-import 'package:pomangam_client/domain/product/review/product_reply_preview.dart';
-import 'package:pomangam_client/domain/store/store_summary.dart';
+import 'package:pomangam_client/domain/product/review/product_reply.dart';
 import 'package:pomangam_client/ui/widget/home/contents/home_contents_item.dart';
 
 class ProductReview extends StatelessWidget {
 
   final double opacity;
   final int cntComment;
-  final List<ProductReplyPreview> previews;
+  final List<ProductReply> previews;
 
   ProductReview({this.opacity = 1.0, this.cntComment, this.previews});
 
@@ -39,7 +38,7 @@ class ProductReview extends StatelessWidget {
     );
   }
 
-  Widget _buildWidget(ProductReplyPreview preview) {
+  Widget _buildWidget(ProductReply preview) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 7.0),
       child: Row(
@@ -58,7 +57,7 @@ class ProductReview extends StatelessWidget {
                 ),
                 children: <TextSpan>[
                   TextSpan(text: '${preview.nickname} ', style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: '${preview.replyContents}'),
+                  TextSpan(text: '${preview.contents}'),
                 ],
               ),
             ),

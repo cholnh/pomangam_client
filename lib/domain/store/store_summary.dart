@@ -91,11 +91,4 @@ class StoreSummary {
   bool isOpenTime() {
     return storeSchedule.isOpenTime();
   }
-
-  @override
-  String toString() {
-    return 'StoreSummary{idx: $idx, name: $name}';
-  }
-
-
 }

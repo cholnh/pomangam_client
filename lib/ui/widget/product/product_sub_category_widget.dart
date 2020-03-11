@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
-import 'package:pomangam_client/domain/product/category/product_category.dart';
+import 'package:pomangam_client/domain/product/sub/category/product_sub_category.dart';
 import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
-import 'package:pomangam_client/provider/product/product_summary_model.dart';
-import 'package:pomangam_client/provider/store/store_model.dart';
-import 'package:pomangam_client/provider/store/store_product_category_model.dart';
+import 'package:pomangam_client/provider/product/product_model.dart';
+import 'package:pomangam_client/provider/product/sub/product_sub_category_model.dart';
 import 'package:provider/provider.dart';
 
-class StoreProductCategory extends StatelessWidget {
+class ProductSubCategoryWidget extends StatelessWidget {
 
-  final int sIdx;
-  final Function onChangedCategory;
+  final int pIdx;
+  final Function(double) onCategoryChanged;
 
-  StoreProductCategory({this.sIdx, this.onChangedCategory});
+  ProductSubCategoryWidget({this.pIdx, this.onCategoryChanged});
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      key: PmgKeys.storeProductCategory,
+      key: PmgKeys.productSubCategory,
       backgroundColor: backgroundColor,
       floating: true,
       pinned: true,
@@ -28,16 +27,16 @@ class StoreProductCategory extends StatelessWidget {
       elevation: 0.8,
       title: Container(
         height: 60,
-        child: Consumer<StoreProductCategoryModel>(
+        child: Consumer<ProductSubCategoryModel>(
           builder: (_, categoryModel, child) {
             int selected = categoryModel.idxSelectedCategory;
-            return Consumer<StoreModel>(
-              builder: (_, storeModel, child) {
-                List<ProductCategory> productCategories = storeModel?.store?.productCategories;
+            return Consumer<ProductModel>(
+              builder: (_, productModel, child) {
+                List<ProductSubCategory> subCategories = productModel?.product?.productSubCategories;
                 return ListView.builder(
                   scrollDirection: Axis.horizontal,
                   physics: BouncingScrollPhysics(),
-                  itemCount: productCategories == null ? 0 : productCategories.length+1,
+                  itemCount: subCategories == null ? 0 : subCategories.length+1,
                   itemBuilder: (context, index) {
                     if (index == 0) {
                       return GestureDetector(
@@ -63,7 +62,7 @@ class StoreProductCategory extends StatelessWidget {
                       );
                     } else {
                       return GestureDetector(
-                        onTap: () => _onSelected(context, index, productCategories[index-1].idx),
+                        onTap: () => _onSelected(context, index, subCategories[index-1].idx),
                         child: Card(
                           semanticContainer: true,
                           color: index == selected ? primaryColor : backgroundColor,
@@ -72,7 +71,7 @@ class StoreProductCategory extends StatelessWidget {
                             padding: EdgeInsets.all(5.0),
                             alignment: Alignment.center,
                             child: Text(
-                              '${productCategories[index-1].categoryTitle}',
+                              '${subCategories[index-1].categoryTitle}',
                               style: TextStyle(color: index == selected ? Colors.white : Colors.black, fontSize: titleFontSize),
                             )
                           ),
@@ -80,7 +79,7 @@ class StoreProductCategory extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           elevation: 3,
-                          margin: EdgeInsets.only(left: 15.0, right: index == productCategories.length ? 15.0 : 0.0, top: 13.0, bottom: 13.0),
+                          margin: EdgeInsets.only(left: 15.0, right: index == subCategories.length ? 15.0 : 0.0, top: 13.0, bottom: 13.0),
                         ),
                       );
                     }
@@ -94,33 +93,9 @@ class StoreProductCategory extends StatelessWidget {
     );
   }
 
-  void _onSelected(BuildContext context, int idxSelected, int idxProductCategory) async {
-    StoreProductCategoryModel storeProductCategoryModel = Provider.of<StoreProductCategoryModel>(context, listen: false)
-    ..changeIdxSelectedCategory(idxSelected);
-    ProductSummaryModel productSummaryModel = Provider.of<ProductSummaryModel>(context, listen: false)
-    ..clear();
-
-    DeliverySiteModel deliverySiteModel = Provider.of<DeliverySiteModel>(context, listen: false);
-    int dIdx = deliverySiteModel.userDeliverySite?.idx;
-
-    if(idxProductCategory == null) {
-      storeProductCategoryModel.idxProductCategory = 0;
-      productSummaryModel.clearWithNotify();
-      await productSummaryModel.fetch(
-        isForceUpdate: true,
-        dIdx: dIdx,
-        sIdx: sIdx,
-      );
-    } else {
-      storeProductCategoryModel.idxProductCategory = idxProductCategory;
-      productSummaryModel.clearWithNotify();
-      await productSummaryModel.fetch(
-        isForceUpdate: true,
-        dIdx: dIdx,
-        sIdx: sIdx,
-        cIdx: idxProductCategory
-      );
-    }
-    this.onChangedCategory();
+  void _onSelected(BuildContext context, int idxSelected, int idxProductSubCategory) async {
+    Provider.of<ProductSubCategoryModel>(context, listen: false).changeIdxSelectedCategory(idxSelected);
+    Provider.of<ProductModel>(context, listen: false).changeIdxProductSubCategory(idxProductSubCategory == null ? 0 : idxProductSubCategory);
+    this.onCategoryChanged(300);
   }
 }
