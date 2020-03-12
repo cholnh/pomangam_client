@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pomangam_client/provider/order/time/order_time_model.dart';
 import 'package:pomangam_client/ui/widget/home/time_picker/home_date_picker_modal.dart';
-import 'package:pomangam_client/ui/widget/home/time_picker/home_time_picker_modal_header.dart';
-import 'package:pomangam_client/ui/widget/home/time_picker/home_time_picker_modal_item.dart';
+import 'package:pomangam_client/ui/widget/home/time_picker/home_time_picker_modal_header_widget.dart';
+import 'package:pomangam_client/ui/widget/home/time_picker/home_time_picker_modal_item_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
@@ -43,12 +43,12 @@ class _HomeTimePickerModalState extends State<HomeTimePickerModal> {
               )
             : Column(
                 children: <Widget>[
-                  HomeTimePickerModalHeader(
+                  HomeTimePickerModalHeaderWidget(
                     textOrderDate: '$textOrderDate',
                     onSelectedDatePicker: () => model.changeOrderDateMode(true),
                   ),
                   const Divider(height: 0.1, color: Colors.black),
-                  HomeTimePickerModalItem(
+                  HomeTimePickerModalItemWidget(
                       model: model, 
                       onSelected: widget.onSelected
                   ),

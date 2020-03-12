@@ -5,8 +5,8 @@ import 'package:pomangam_client/common/util/string_utils.dart';
 import 'package:pomangam_client/provider/sign/sign_up_model.dart';
 import 'package:pomangam_client/ui/widget/common/custom_dialog_utils.dart';
 import 'package:pomangam_client/ui/widget/sign/up/sign_up_app_bar.dart';
-import 'package:pomangam_client/ui/widget/sign/up/sign_up_bottom_btn.dart';
-import 'package:pomangam_client/ui/widget/sign/up/sign_up_title.dart';
+import 'package:pomangam_client/ui/widget/sign/up/sign_up_bottom_btn_widget.dart';
+import 'package:pomangam_client/ui/widget/sign/up/sign_up_title_widget.dart';
 import 'package:provider/provider.dart';
 
 class SignUpNicknamePage extends StatefulWidget {
@@ -51,7 +51,7 @@ class _SignUpNicknamePageState extends State<SignUpNicknamePage> {
             children: <Widget>[
               Align(
                 alignment: Alignment.centerLeft,
-                child: SignUpTitle(
+                child: SignUpTitleWidget(
                   title: '포만이가 되신것을 환영합니다.',
                   subTitle: '아래 닉네임으로 활동하시게 됩니다.',
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,7 +110,7 @@ class _SignUpNicknamePageState extends State<SignUpNicknamePage> {
               ),
               Consumer<SignUpModel>(
                 builder: (_, model, child) {
-                  return  SignUpBottomBtn(
+                  return  SignUpBottomBtnWidget(
                     isActive: !model.signUpNicknameLock,
                     title: '완료',
                     onTap: () {

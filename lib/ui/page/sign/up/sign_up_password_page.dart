@@ -8,8 +8,8 @@ import 'package:pomangam_client/provider/sign/sign_in_model.dart';
 import 'package:pomangam_client/provider/sign/sign_up_model.dart';
 import 'package:pomangam_client/ui/widget/common/custom_dialog_utils.dart';
 import 'package:pomangam_client/ui/widget/sign/up/sign_up_app_bar.dart';
-import 'package:pomangam_client/ui/widget/sign/up/sign_up_bottom_btn.dart';
-import 'package:pomangam_client/ui/widget/sign/up/sign_up_title.dart';
+import 'package:pomangam_client/ui/widget/sign/up/sign_up_bottom_btn_widget.dart';
+import 'package:pomangam_client/ui/widget/sign/up/sign_up_title_widget.dart';
 import 'package:provider/provider.dart';
 
 class SignUpPasswordPage extends StatefulWidget {
@@ -66,7 +66,7 @@ class _SignUpPasswordPageState extends State<SignUpPasswordPage> {
           padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 20.0),
           child: Column(
             children: <Widget>[
-              SignUpTitle(
+              SignUpTitleWidget(
                 title: '보안코드를 설정합니다.',
                 subTitle: '한 번만 입력하니 정확히 입력해주세요.',
                 color: backgroundColor,
@@ -144,7 +144,7 @@ class _SignUpPasswordPageState extends State<SignUpPasswordPage> {
               Consumer<SignUpModel>(
                 builder: (_, model, child) {
                   return model.isPasswordFilled
-                    ? SignUpBottomBtn(
+                    ? SignUpBottomBtnWidget(
                       isActive: !model.signUpPasswordLock,
                       backgroundColor: backgroundColor,
                       color: mainColor,

@@ -12,8 +12,8 @@ import 'package:pomangam_client/domain/sign/enum/auth_code_state.dart';
 import 'package:pomangam_client/provider/sign/sign_up_model.dart';
 import 'package:pomangam_client/ui/widget/common/custom_dialog_utils.dart';
 import 'package:pomangam_client/ui/widget/sign/up/sign_up_app_bar.dart';
-import 'package:pomangam_client/ui/widget/sign/up/sign_up_bottom_btn.dart';
-import 'package:pomangam_client/ui/widget/sign/up/sign_up_title.dart';
+import 'package:pomangam_client/ui/widget/sign/up/sign_up_bottom_btn_widget.dart';
+import 'package:pomangam_client/ui/widget/sign/up/sign_up_title_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:sms/sms.dart';
 
@@ -72,7 +72,7 @@ class _SignUpAuthCodePageState extends State<SignUpAuthCodePage> {
         padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 20.0),
         child: Column(
           children: <Widget>[
-            SignUpTitle(title: '인증코드를 입력해주세요.'),
+            SignUpTitleWidget(title: '인증코드를 입력해주세요.'),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(top: 40.0),
@@ -150,7 +150,7 @@ class _SignUpAuthCodePageState extends State<SignUpAuthCodePage> {
             Consumer<SignUpModel>(
               builder: (_, model, child) {
                 return model.isAuthCodeFilled
-                  ? SignUpBottomBtn(
+                  ? SignUpBottomBtnWidget(
                     isActive: !model.signUpAuthCodeLock,
                     onTap: () {
                       if(model.isAuthCodeFilled) {

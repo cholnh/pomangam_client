@@ -7,13 +7,13 @@ import 'package:pomangam_client/provider/product/product_summary_model.dart';
 import 'package:pomangam_client/provider/store/store_model.dart';
 import 'package:pomangam_client/provider/store/store_product_category_model.dart';
 import 'package:pomangam_client/ui/widget/store/store_app_bar.dart';
-import 'package:pomangam_client/ui/widget/store/store_bottom_bar.dart';
-import 'package:pomangam_client/ui/widget/store/store_center_button.dart';
-import 'package:pomangam_client/ui/widget/store/store_description.dart';
-import 'package:pomangam_client/ui/widget/store/store_header.dart';
-import 'package:pomangam_client/ui/widget/store/store_product.dart';
-import 'package:pomangam_client/ui/widget/store/store_product_category.dart';
-import 'package:pomangam_client/ui/widget/store/store_story.dart';
+import 'package:pomangam_client/ui/widget/store/store_bottom_bar_widget.dart';
+import 'package:pomangam_client/ui/widget/store/store_center_button_widget.dart';
+import 'package:pomangam_client/ui/widget/store/store_description_widget.dart';
+import 'package:pomangam_client/ui/widget/store/store_header_widget.dart';
+import 'package:pomangam_client/ui/widget/store/store_product_widget.dart';
+import 'package:pomangam_client/ui/widget/store/store_product_category_widget.dart';
+import 'package:pomangam_client/ui/widget/store/store_story_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -41,7 +41,7 @@ class _StorePageState extends State<StorePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: StoreAppBar(context),
-      bottomNavigationBar: true ? StoreBottomBar(
+      bottomNavigationBar: true ? StoreBottomBarWidget(
         centerCount: 1,
         centerText: '카트',
         rightText: '3,500원',
@@ -73,15 +73,15 @@ class _StorePageState extends State<StorePage> {
         child: CustomScrollView(
           key: PmgKeys.storePage,
           slivers: <Widget>[
-            StoreHeader(sIdx: widget.sIdx), // desc
-            StoreDescription(),
-            StoreCenterButton(),
-            StoreStory(),
-            StoreProductCategory(
+            StoreHeaderWidget(sIdx: widget.sIdx), // desc
+            StoreDescriptionWidget(),
+            StoreCenterButtonWidget(),
+            StoreStoryWidget(),
+            StoreProductCategoryWidget(
               sIdx: widget.sIdx,
               onChangedCategory: _onChangedCategory
             ),
-            StoreProduct()
+            StoreProductWidget()
           ],
         )
       )

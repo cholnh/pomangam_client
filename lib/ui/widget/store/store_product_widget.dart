@@ -1,0 +1,50 @@
+import 'dart:math';
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:pomangam_client/common/constants/pomangam_theme.dart';
+import 'package:pomangam_client/common/key/pmg_key.dart';
+import 'package:pomangam_client/common/network/constant/endpoint.dart';
+import 'package:pomangam_client/provider/product/product_summary_model.dart';
+import 'package:pomangam_client/provider/store/store_model.dart';
+import 'package:pomangam_client/ui/widget/home/home_bottom_loader_widget.dart';
+import 'package:pomangam_client/ui/widget/store/store_product_category_widget.dart';
+import 'package:pomangam_client/ui/widget/store/store_product_item_widget.dart';
+import 'package:provider/provider.dart';
+import 'package:transparent_image/transparent_image.dart';
+
+class StoreProductWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ProductSummaryModel>(
+      builder: (_, model, child) {
+        if(model.productSummaries.length == 0) {
+          return SliverToBoxAdapter(
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: model.isFetching
+                  ? CupertinoActivityIndicator()
+                  : Text('주문가능한 메뉴가 없습니다...', style: TextStyle(color: Colors.grey, fontSize: 14)),
+              ),
+            ),
+          );
+        }
+        return SliverGrid(
+          key: PmgKeys.storeProduct,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+          ),
+          delegate: SliverChildBuilderDelegate((context, index) {
+            return StoreProductItemWidget(
+                key: PmgKeys.storeProductItem(model.productSummaries[index].idx),
+                summary: model.productSummaries[index]
+            );
+          },
+          childCount: model.productSummaries.length)
+        );
+      },
+    );
+  }
+}

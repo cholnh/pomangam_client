@@ -9,9 +9,9 @@ import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/provider/order/time/order_time_model.dart';
 import 'package:pomangam_client/provider/store/store_summary_model.dart';
 import 'package:pomangam_client/provider/tab/tab_model.dart';
-import 'package:pomangam_client/ui/widget/home/advertisement/home_advertisement.dart';
-import 'package:pomangam_client/ui/widget/home/contents/home_contents.dart';
-import 'package:pomangam_client/ui/widget/home/contents/home_contents_bar.dart';
+import 'package:pomangam_client/ui/widget/home/advertisement/home_advertisement_widget.dart';
+import 'package:pomangam_client/ui/widget/home/contents/home_contents_widget.dart';
+import 'package:pomangam_client/ui/widget/home/contents/home_contents_bar_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -91,11 +91,11 @@ class _HomePageState extends State<HomePage> {
       child: CustomScrollView(
         key: PmgKeys.deliveryPage,
         slivers: <Widget>[
-          HomeAdvertisement(),
-          HomeContentsBar(
+          HomeAdvertisementWidget(),
+          HomeContentsBarWidget(
             onChangedTime: _onChangedTime
           ),
-          HomeContents(),
+          HomeContentsWidget(),
         ],
       ),
     );

@@ -8,11 +8,11 @@ import 'package:pomangam_client/domain/sign/enum/sign_view_state.dart';
 import 'package:pomangam_client/provider/sign/sign_up_model.dart';
 import 'package:pomangam_client/ui/widget/common/custom_dialog_utils.dart';
 import 'package:pomangam_client/ui/widget/sign/up/sign_up_app_bar.dart';
-import 'package:pomangam_client/ui/widget/sign/up/sign_up_bottom_btn.dart';
-import 'package:pomangam_client/ui/widget/sign/up/sign_up_first_item.dart';
-import 'package:pomangam_client/ui/widget/sign/up/sign_up_second_item.dart';
-import 'package:pomangam_client/ui/widget/sign/up/sign_up_third_item.dart';
-import 'package:pomangam_client/ui/widget/sign/up/sign_up_title.dart';
+import 'package:pomangam_client/ui/widget/sign/up/sign_up_bottom_btn_widget.dart';
+import 'package:pomangam_client/ui/widget/sign/up/sign_up_first_item_widget.dart';
+import 'package:pomangam_client/ui/widget/sign/up/sign_up_second_item_widget.dart';
+import 'package:pomangam_client/ui/widget/sign/up/sign_up_third_item_widget.dart';
+import 'package:pomangam_client/ui/widget/sign/up/sign_up_title_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pomangam_client/common/key/shared_preference_key.dart' as s;
@@ -80,7 +80,7 @@ class _SignUpPageState extends State<SignUpPage> {
             padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 20.0),
             child: Column(
               children: <Widget>[
-                SignUpTitle(
+                SignUpTitleWidget(
                   title: '${model.title}',
                 ),
                 Expanded(
@@ -97,7 +97,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               itemBuilder: (context, index, animation) {
                                 switch (index) {
                                   case 0:
-                                    return SignUpFirstItem(
+                                    return SignUpFirstItemWidget(
                                       controller: _nameController,
                                       animation: animation,
                                       focusNode: _nameNode,
@@ -116,7 +116,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       },
                                     );
                                   case 1:
-                                    return SignUpSecondItem(
+                                    return SignUpSecondItemWidget(
                                       animation: animation,
                                       birthController: _birthController,
                                       sexController: _sexController,
@@ -156,7 +156,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       },
                                     );
                                   case 2:
-                                    return SignUpThirdItem(
+                                    return SignUpThirdItemWidget(
                                       controller: _phoneController,
                                       animation: animation,
                                       focusNode: _phoneNode,
@@ -185,7 +185,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 model.state == SignViewState.name || model.state == SignViewState.finish
-                  ? SignUpBottomBtn(
+                  ? SignUpBottomBtnWidget(
                     isActive: !model.signUpLock,
                     onTap: () {
                       _isAllFilled()

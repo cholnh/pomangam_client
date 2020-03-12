@@ -9,10 +9,10 @@ import 'package:pomangam_client/provider/product/sub/product_sub_category_model.
 import 'package:pomangam_client/provider/product/sub/product_sub_model.dart';
 import 'package:pomangam_client/provider/store/store_model.dart';
 import 'package:pomangam_client/ui/widget/product/product_app_bar.dart';
-import 'package:pomangam_client/ui/widget/product/product_contents.dart';
+import 'package:pomangam_client/ui/widget/product/product_contents_widget.dart';
 import 'package:pomangam_client/ui/widget/product/product_sub_widget.dart';
 import 'package:pomangam_client/ui/widget/product/product_sub_category_widget.dart';
-import 'package:pomangam_client/ui/widget/store/store_bottom_bar.dart';
+import 'package:pomangam_client/ui/widget/store/store_bottom_bar_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -41,7 +41,7 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ProductAppBar(context),
-      bottomNavigationBar:  StoreBottomBar(
+      bottomNavigationBar:  StoreBottomBarWidget(
         centerText: '카트에 추가',
         rightText: '3,500원',
       ),
@@ -57,7 +57,7 @@ class _ProductPageState extends State<ProductPage> {
           child: CustomScrollView(
             controller: _scrollController,
             slivers: <Widget>[
-              ProductContents(),
+              ProductContentsWidget(),
               ProductSubCategoryWidget(pIdx: widget.pIdx, onCategoryChanged: _onCategoryChanged),
               ProductSubWidget()
             ],
@@ -83,20 +83,12 @@ class _ProductPageState extends State<ProductPage> {
     productModel
     ..product = null
     ..isProductFetched = false
+    ..idxProductSubCategory = 0
     ..fetch(
         dIdx: deliverySiteModel.userDeliverySite?.idx,
         sIdx: storeModel.store.idx,
         pIdx: widget.pIdx
     );
-//    .then((res) {
-//      // product sub 전달
-//      List<ProductSub> subs = List();
-//
-//      productModel.product.productSubCategories.forEach((ProductSubCategory subCategory) {
-//        subs.addAll(subCategory.productSubs);
-//      });
-//      subModel.changeProductSubs(subs);
-//    });
   }
 
   void _onRefresh() async {

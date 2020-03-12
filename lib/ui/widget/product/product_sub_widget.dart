@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/domain/product/sub/category/product_sub_category.dart';
 import 'package:pomangam_client/provider/product/product_model.dart';
-import 'package:pomangam_client/ui/widget/product/product_sub_item.dart';
+import 'package:pomangam_client/ui/widget/product/product_sub_item_widget.dart';
 import 'package:provider/provider.dart';
 
 class ProductSubWidget extends StatelessWidget {
@@ -28,13 +28,13 @@ class ProductSubWidget extends StatelessWidget {
         return SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
             if(model.idxProductSubCategory == 0) {
-              return ProductSubItem(
+              return ProductSubItemWidget(
                   productSubCategory: subCategories[index]
               );
             } else {
               ProductSubCategory subCategory = subCategories[index];
               if(model.idxProductSubCategory == subCategory.idx) {
-                return ProductSubItem(
+                return ProductSubItemWidget(
                     productSubCategory: subCategory
                 );
               } else {
