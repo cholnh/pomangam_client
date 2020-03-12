@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pomangam_client/domain/common/entity_auditing.dart';
 import 'package:pomangam_client/domain/product/info/product_info.dart';
+import 'package:pomangam_client/domain/product/product_type.dart';
 import 'package:pomangam_client/domain/product/review/product_reply.dart';
 import 'package:pomangam_client/domain/product/sub/category/product_sub_category.dart';
 
@@ -30,12 +31,14 @@ class Product extends EntityAuditing {
   // product sub category
   List<ProductSubCategory> productSubCategories = List();
 
+  ProductType productType;
+
   Product({
     int idx, DateTime registerDate, DateTime modifyDate,
     this.idxStore, this.salePrice, this.productInfo,
     this.productCategoryTitle, this.cntLike, this.cntReply, this.sequence,
     this.productImageMainPath, this.productImageSubPaths, this.isLike, this.replies,
-    this.productSubCategories
+    this.productSubCategories, this.productType
   }): super(idx: idx, registerDate: registerDate, modifyDate: modifyDate);
 
   factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);

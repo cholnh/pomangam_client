@@ -24,7 +24,7 @@ class ProductContentsWidget extends StatelessWidget {
           return Column(
             children: <Widget>[
               ProductImageWidget(
-                  pIdx: pIdx
+                pIdx: pIdx
               ),
               const Padding(padding: EdgeInsets.only(bottom: 10.0)),
               HomeContentsItemLikeWidget(

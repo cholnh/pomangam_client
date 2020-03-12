@@ -21,9 +21,13 @@ class ProductSub extends EntityAuditing {
 
   int numberMaximum;
 
+  String productImageMainPath;
+  List<String> productImageSubPaths;
+
   ProductSub({
     this.idxStore, this.salePrice, this.productSubInfo, this.sequence,
-    this.productSubCategory, this.numberMinimum, this.numberMaximum
+    this.productSubCategory, this.numberMinimum, this.numberMaximum,
+    this.productImageMainPath, this.productImageSubPaths
   });
 
   factory ProductSub.fromJson(Map<String, dynamic> json) => _$ProductSubFromJson(json);
