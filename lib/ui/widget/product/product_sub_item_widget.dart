@@ -35,6 +35,7 @@ class ProductSubItemWidget extends StatelessWidget {
     if(type == ProductSubType.CHECKBOX) {
       return CheckboxGroup(
         orientation: GroupedButtonsOrientation.VERTICAL,
+
         labels: names,
         onSelected: (List selected) => print(selected),
         labelStyle: TextStyle(fontSize: titleFontSize),

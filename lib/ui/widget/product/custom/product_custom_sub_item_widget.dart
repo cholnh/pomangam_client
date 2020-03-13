@@ -20,7 +20,8 @@ class ProductCustomSubItemWidget extends StatelessWidget {
         onTap: () {
           Provider.of<ProductModel>(context, listen: false).toggleProductSubIsSelected(
             productSubCategory: productSubCategory,
-            subIdx: sub.idx
+            subIdx: sub.idx,
+            isRadio: true
           );
         },
         child: SizedBox(

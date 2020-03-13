@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/network/constant/endpoint.dart';
 import 'package:pomangam_client/domain/product/sub/category/product_sub_category.dart';
+import 'package:pomangam_client/domain/product/sub/product_sub.dart';
 import 'package:pomangam_client/provider/product/product_model.dart';
 import 'package:pomangam_client/provider/product/sub/product_sub_category_model.dart';
 import 'package:provider/provider.dart';
@@ -42,6 +43,10 @@ class ProductCustomImage3Widget extends StatelessWidget {
             ProductSubCategory secondCategory = subCategories[1];
             ProductSubCategory thirdCategory = subCategories[2];
 
+            ProductSub firstSub = firstCategory.selectedProductSub.isNotEmpty ? firstCategory.selectedProductSub?.first : null;
+            ProductSub secondSub = secondCategory.selectedProductSub.isNotEmpty ? secondCategory.selectedProductSub?.first : null;
+            ProductSub thirdSub = thirdCategory.selectedProductSub.isNotEmpty ? thirdCategory.selectedProductSub?.first : null;
+
             return Container(
               height: 180,
               margin: EdgeInsets.only(bottom: 0.0),
@@ -63,7 +68,9 @@ class ProductCustomImage3Widget extends StatelessWidget {
                               child: Container(
                                 height: 70,
                                 decoration: BoxDecoration(
-                                  color: secondCategory.selectedProductSub?.productImageMainPath != null ? bottomColor : Colors.white.withOpacity(1-filterOpacity),
+                                  color: secondSub?.productImageMainPath != null
+                                      ? bottomColor
+                                      : Colors.white.withOpacity(1-filterOpacity),
                                   borderRadius: BorderRadius.only(
                                       topLeft: const Radius.circular(10.0)
                                   ),
@@ -71,18 +78,18 @@ class ProductCustomImage3Widget extends StatelessWidget {
                                       color: selected == 2 ? primaryColor : borderColor,
                                       width: borderWidth
                                   ),
-                                  image: secondCategory.selectedProductSub?.productImageMainPath != null
+                                  image: secondSub?.productImageMainPath != null
                                     ? DecorationImage(
                                         fit: BoxFit.cover,
                                         colorFilter: ColorFilter.mode(Colors.black.withOpacity(filterOpacity), BlendMode.darken),
                                         image: CachedNetworkImageProvider(
-                                          '${Endpoint.serverDomain}/${secondCategory.selectedProductSub?.productImageMainPath}',
+                                          '${Endpoint.serverDomain}/${secondSub.productImageMainPath}',
                                         )
                                       )
                                     : null
                                 ),
                                 child: Center(
-                                  child: secondCategory.selectedProductSub?.productSubInfo?.name == null
+                                  child: secondSub?.productSubInfo?.name == null
                                     ? Text(
                                       '${secondCategory.categoryTitle}',
                                       style: TextStyle(fontSize: titleFontSize, fontWeight: FontWeight.bold, color: Colors.white),
@@ -93,13 +100,13 @@ class ProductCustomImage3Widget extends StatelessWidget {
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: <Widget>[
                                             Text(
-                                              '${secondCategory.selectedProductSub?.productSubInfo?.name}',
+                                              '${secondSub?.productSubInfo?.name}',
                                               style: TextStyle(fontSize: titleFontSize, fontWeight: FontWeight.bold, color: Colors.white),
                                             ),
-                                            (secondCategory.selectedProductSub?.salePrice ?? 0) == 0
+                                            (secondSub?.salePrice ?? 0) == 0
                                                 ? Container()
                                                 : Text(
-                                              '+${secondCategory.selectedProductSub?.salePrice}원',
+                                              '+${secondSub?.salePrice}원',
                                               style: TextStyle(fontSize: subTitleFontSize, color: Colors.white),
                                             ),
                                           ],
@@ -115,7 +122,9 @@ class ProductCustomImage3Widget extends StatelessWidget {
                               child: Container(
                                 height: 70,
                                 decoration: BoxDecoration(
-                                  color: thirdCategory.selectedProductSub?.productImageMainPath != null ? bottomColor : Colors.white.withOpacity(1-filterOpacity),
+                                  color: thirdSub?.productImageMainPath != null
+                                    ? bottomColor
+                                    : Colors.white.withOpacity(1-filterOpacity),
                                   borderRadius: BorderRadius.only(
                                       topRight: const Radius.circular(10.0)
                                   ),
@@ -123,17 +132,17 @@ class ProductCustomImage3Widget extends StatelessWidget {
                                       color: selected == 3 ? primaryColor : borderColor,
                                       width: borderWidth
                                   ),
-                                  image: thirdCategory.selectedProductSub?.productImageMainPath != null
+                                  image: thirdSub?.productImageMainPath != null
                                     ? DecorationImage(
                                         fit: BoxFit.cover,
                                         colorFilter: ColorFilter.mode(Colors.black.withOpacity(filterOpacity), BlendMode.darken),
                                         image: CachedNetworkImageProvider(
-                                          '${Endpoint.serverDomain}/${thirdCategory.selectedProductSub?.productImageMainPath}',
+                                          '${Endpoint.serverDomain}/${thirdSub?.productImageMainPath}',
                                         )
                                       )
                                     : null
                                 ),
-                                child: thirdCategory.selectedProductSub?.productSubInfo?.name == null
+                                child: thirdSub?.productSubInfo?.name == null
                                   ? Center(
                                       child: Text(
                                         '${thirdCategory.categoryTitle}',
@@ -146,13 +155,13 @@ class ProductCustomImage3Widget extends StatelessWidget {
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            '${thirdCategory.selectedProductSub?.productSubInfo?.name}',
+                                            '${thirdSub?.productSubInfo?.name}',
                                             style: TextStyle(fontSize: titleFontSize, fontWeight: FontWeight.bold, color: Colors.white),
                                           ),
-                                          (thirdCategory.selectedProductSub?.salePrice ?? 0) == 0
+                                          (thirdSub?.salePrice ?? 0) == 0
                                               ? Container()
                                               : Text(
-                                            '+${thirdCategory.selectedProductSub?.salePrice}원',
+                                            '+${thirdSub?.salePrice}원',
                                             style: TextStyle(fontSize: subTitleFontSize, color: Colors.white),
                                           ),
                                         ],
@@ -168,7 +177,9 @@ class ProductCustomImage3Widget extends StatelessWidget {
                       child: Container(
                         height: 70,
                         decoration: BoxDecoration(
-                          color: firstCategory.selectedProductSub?.productImageMainPath != null ? bottomColor : Colors.white.withOpacity(1-filterOpacity),
+                          color: firstSub?.productImageMainPath != null
+                            ? bottomColor
+                            : Colors.white.withOpacity(1-filterOpacity),
                           borderRadius: BorderRadius.only(
                               bottomLeft: const Radius.circular(10.0),
                               bottomRight: const Radius.circular(10.0)
@@ -177,17 +188,17 @@ class ProductCustomImage3Widget extends StatelessWidget {
                               color: selected == 1 ? primaryColor : borderColor,
                               width: borderWidth
                           ),
-                          image: firstCategory.selectedProductSub?.productImageMainPath != null
+                          image: firstSub?.productImageMainPath != null
                             ? DecorationImage(
                                 fit: BoxFit.cover,
                                 colorFilter: ColorFilter.mode(Colors.black.withOpacity(filterOpacity), BlendMode.darken),
                                 image: CachedNetworkImageProvider(
-                                  '${Endpoint.serverDomain}/${firstCategory.selectedProductSub?.productImageMainPath}',
+                                  '${Endpoint.serverDomain}/${firstSub?.productImageMainPath}',
                                 )
                               )
                             : null
                         ),
-                        child: firstCategory.selectedProductSub?.productSubInfo?.name == null
+                        child: firstSub?.productSubInfo?.name == null
                           ? Center(
                               child: Text(
                                 '${firstCategory.categoryTitle}',
@@ -200,13 +211,13 @@ class ProductCustomImage3Widget extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    '${firstCategory.selectedProductSub?.productSubInfo?.name}',
+                                    '${firstSub?.productSubInfo?.name}',
                                     style: TextStyle(fontSize: titleFontSize, fontWeight: FontWeight.bold, color: Colors.white),
                                   ),
-                                  (firstCategory.selectedProductSub?.salePrice ?? 0) == 0
+                                  (firstSub?.salePrice ?? 0) == 0
                                     ? Container()
                                     : Text(
-                                      '+${firstCategory.selectedProductSub?.salePrice}원',
+                                      '+${firstSub?.salePrice}원',
                                       style: TextStyle(fontSize: subTitleFontSize, color: Colors.white),
                                     ),
                                 ],

@@ -68,17 +68,27 @@ class ProductModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleProductSubIsSelected({ProductSubCategory productSubCategory, int subIdx}) {
+  void toggleProductSubIsSelected({ProductSubCategory productSubCategory, int subIdx, bool isRadio = false}) {
     productSubCategory.productSubs.forEach((sub) {
       if(sub.idx == subIdx) {
-        sub.isSelected = !sub.isSelected;
-        if(sub.isSelected) {
-          productSubCategory.selectedProductSub = sub;
+        if(isRadio) {
+          if(!sub.isSelected) {
+            productSubCategory.selectedProductSub.add(sub);
+          }
+          sub.isSelected = true;
         } else {
-          productSubCategory.selectedProductSub = null;
+          sub.isSelected = !sub.isSelected;
+          if(sub.isSelected) {
+            productSubCategory.selectedProductSub.add(sub);
+          } else {
+            productSubCategory.selectedProductSub.removeWhere((el) => el.idx == subIdx);
+          }
         }
       } else {
-        sub.isSelected = false;
+        if(isRadio) {
+          sub.isSelected = false;
+          productSubCategory.selectedProductSub.removeWhere((el) => el.idx == sub.idx);
+        }
       }
     });
     notifyListeners();

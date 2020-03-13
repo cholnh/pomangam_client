@@ -14,7 +14,7 @@ class ProductSubCategory extends EntityAuditing {
 
   ProductSubType productSubType;
 
-  ProductSub selectedProductSub;
+  List<ProductSub> selectedProductSub = List();
 
   ProductSubCategory({this.categoryTitle, this.productSubs, this.productSubType});
 
