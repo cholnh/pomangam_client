@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/network/constant/endpoint.dart';
 import 'package:pomangam_client/domain/product/sub/category/product_sub_category.dart';
+import 'package:pomangam_client/provider/product/product_model.dart';
+import 'package:provider/provider.dart';
 
 class ProductCustomSubItemWidget extends StatelessWidget {
 
@@ -14,22 +16,31 @@ class ProductCustomSubItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> widgets = productSubCategory.productSubs.map((sub) {
-      return SizedBox(
-        height: 65,
-        child: ListTile(
-          contentPadding: EdgeInsets.only(left: 0.0, right: 15.0),
-          leading: CachedNetworkImage(
-            imageUrl: '${Endpoint.serverDomain}/${sub.productImageMainPath}',
-            width: 90,
-            fit: BoxFit.fill,
-            placeholder: (context, url) => CupertinoActivityIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error_outline),
-          ),
-          subtitle: sub?.productSubInfo?.description != null
+      return GestureDetector(
+        onTap: () {
+          Provider.of<ProductModel>(context, listen: false).toggleProductSubIsSelected(
+            productSubCategory: productSubCategory,
+            subIdx: sub.idx
+          );
+        },
+        child: SizedBox(
+          height: 65,
+          child: ListTile(
+            selected: sub.isSelected,
+            contentPadding: EdgeInsets.only(left: 0.0, right: 15.0),
+            leading: CachedNetworkImage(
+              imageUrl: '${Endpoint.serverDomain}/${sub.productImageMainPath}',
+              width: 90,
+              fit: BoxFit.fill,
+              placeholder: (context, url) => CupertinoActivityIndicator(),
+              errorWidget: (context, url, error) => Icon(Icons.error_outline),
+            ),
+            subtitle: sub?.productSubInfo?.description != null
               ? Text('${sub.productSubInfo.description} ${sub.productSubInfo?.subDescription ?? ''}', style: TextStyle(fontSize: subTitleFontSize))
               : null,
-          title: Text('${sub.productSubInfo.name}', style: TextStyle(fontSize: titleFontSize)),
-          trailing: Text('+ ${sub?.salePrice ?? 0}원', style: TextStyle(fontSize: titleFontSize))
+            title: Text('${sub.productSubInfo.name}', style: TextStyle(fontSize: titleFontSize)),
+            trailing: Text('+ ${sub?.salePrice ?? 0}원', style: TextStyle(fontSize: titleFontSize))
+          ),
         ),
       );
     }).toList();

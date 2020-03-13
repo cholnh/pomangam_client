@@ -18,7 +18,7 @@ class ProductCustomSubWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(20.0),
                 child: model.isProductFetching
                   ? CupertinoActivityIndicator()
-                  : Text('서브메뉴가 없습니다...', style: TextStyle(color: Colors.grey, fontSize: 14)),
+                  : Text('메뉴가 없습니다...', style: TextStyle(color: Colors.grey, fontSize: 14)),
               ),
             ),
           );
@@ -29,7 +29,7 @@ class ProductCustomSubWidget extends StatelessWidget {
           delegate: SliverChildBuilderDelegate((context, index) {
             if(model.idxProductSubCategory == 0) {
               return ProductCustomSubItemWidget(
-                  productSubCategory: subCategories[index]
+                productSubCategory: subCategories[index]
               );
             } else {
               ProductSubCategory subCategory = subCategories[index];

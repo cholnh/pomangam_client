@@ -9,9 +9,10 @@ import 'package:provider/provider.dart';
 class ProductSubCategoryWidget extends StatelessWidget {
 
   final int pIdx;
-  final Function(double) onCategoryChanged;
+  final Function(int, int) onSelected;
+  final GlobalKey keyProductSubCategory;
 
-  ProductSubCategoryWidget({this.pIdx, this.onCategoryChanged});
+  ProductSubCategoryWidget({this.keyProductSubCategory, this.pIdx, this.onSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +34,14 @@ class ProductSubCategoryWidget extends StatelessWidget {
               builder: (_, productModel, child) {
                 List<ProductSubCategory> subCategories = productModel?.product?.productSubCategories;
                 return ListView.builder(
+                  key: keyProductSubCategory,
                   scrollDirection: Axis.horizontal,
                   physics: BouncingScrollPhysics(),
                   itemCount: subCategories == null ? 0 : subCategories.length+1,
                   itemBuilder: (context, index) {
                     if (index == 0) {
                       return GestureDetector(
-                        onTap: () => _onSelected(context, index, null),
+                        onTap: () => _onSelected(index, null),
                         child: Card(
                           semanticContainer: true,
                           color: index == selected ? primaryColor : backgroundColor,
@@ -61,7 +63,7 @@ class ProductSubCategoryWidget extends StatelessWidget {
                       );
                     } else {
                       return GestureDetector(
-                        onTap: () => _onSelected(context, index, subCategories[index-1].idx),
+                        onTap: () => _onSelected(index, subCategories[index-1].idx),
                         child: Card(
                           semanticContainer: true,
                           color: index == selected ? primaryColor : backgroundColor,
@@ -92,9 +94,7 @@ class ProductSubCategoryWidget extends StatelessWidget {
     );
   }
 
-  void _onSelected(BuildContext context, int idxSelected, int idxProductSubCategory) async {
-    Provider.of<ProductSubCategoryModel>(context, listen: false).changeIdxSelectedCategory(idxSelected);
-    Provider.of<ProductModel>(context, listen: false).changeIdxProductSubCategory(idxProductSubCategory == null ? 0 : idxProductSubCategory);
-    this.onCategoryChanged(300);
+  void _onSelected(int idxSelected, int idxProductSubCategory) {
+    this.onSelected(idxSelected, idxProductSubCategory);
   }
 }

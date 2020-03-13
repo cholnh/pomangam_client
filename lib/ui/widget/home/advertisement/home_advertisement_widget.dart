@@ -33,7 +33,7 @@ class HomeAdvertisementWidget extends StatelessWidget {
                       color: Colors.white70
                   ),
                   child: CachedNetworkImage(
-                    imageUrl: '${Endpoint.serverDomain}/assets/images/dsites/1/advertisements/$i.png',
+                    imageUrl: '${Endpoint.serverDomain}/assets/images/dsites/1/advertisements/$i/1.png',
                     fit: BoxFit.fill,
                     width: MediaQuery.of(context).size.width,
                     height: 200.0,

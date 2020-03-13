@@ -14,6 +14,8 @@ class ProductSubCategory extends EntityAuditing {
 
   ProductSubType productSubType;
 
+  ProductSub selectedProductSub;
+
   ProductSubCategory({this.categoryTitle, this.productSubs, this.productSubType});
 
   factory ProductSubCategory.fromJson(Map<String, dynamic> json) => _$ProductSubCategoryFromJson(json);

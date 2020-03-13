@@ -15,17 +15,18 @@ class StoreBrandImageWidget extends StatelessWidget {
         tag: 'storeImageHero$sIdx',
         child: Container(
             child: CircleAvatar(
-                child: CachedNetworkImage(
-                  imageUrl: '$brandImagePath',
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => CupertinoActivityIndicator(),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                ),
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.white
+              child: CachedNetworkImage(
+                imageUrl: '$brandImagePath',
+                width: 50,
+                height: 50,
+                fit: BoxFit.fill,
+                placeholder: (context, url) => CupertinoActivityIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.white,
             ),
+
             width: 75.0,
             height: 75.0,
             padding: const EdgeInsets.all(0.5),

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:injector/injector.dart';
 import 'package:pomangam_client/domain/product/product.dart';
 import 'package:pomangam_client/domain/product/product_summary.dart';
+import 'package:pomangam_client/domain/product/sub/category/product_sub_category.dart';
+import 'package:pomangam_client/domain/product/sub/product_sub.dart';
 import 'package:pomangam_client/repository/product/product_repository.dart';
 
 class ProductModel with ChangeNotifier {
@@ -63,6 +65,22 @@ class ProductModel with ChangeNotifier {
 
   void changeIdxProductSubCategory(int idxProductSubCategory) {
     this.idxProductSubCategory = idxProductSubCategory;
+    notifyListeners();
+  }
+
+  void toggleProductSubIsSelected({ProductSubCategory productSubCategory, int subIdx}) {
+    productSubCategory.productSubs.forEach((sub) {
+      if(sub.idx == subIdx) {
+        sub.isSelected = !sub.isSelected;
+        if(sub.isSelected) {
+          productSubCategory.selectedProductSub = sub;
+        } else {
+          productSubCategory.selectedProductSub = null;
+        }
+      } else {
+        sub.isSelected = false;
+      }
+    });
     notifyListeners();
   }
 }

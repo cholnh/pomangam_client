@@ -24,6 +24,8 @@ class ProductSub extends EntityAuditing {
   String productImageMainPath;
   List<String> productImageSubPaths;
 
+  bool isSelected = false;
+
   ProductSub({
     this.idxStore, this.salePrice, this.productSubInfo, this.sequence,
     this.productSubCategory, this.numberMinimum, this.numberMaximum,

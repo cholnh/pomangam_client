@@ -7,6 +7,7 @@ import 'package:pomangam_client/provider/product/product_model.dart';
 import 'package:pomangam_client/provider/product/sub/product_sub_category_model.dart';
 import 'package:pomangam_client/provider/store/store_model.dart';
 import 'package:pomangam_client/ui/widget/product/custom/product_custom_contents_widget.dart';
+import 'package:pomangam_client/ui/widget/product/custom/product_custom_image_widget.dart';
 import 'package:pomangam_client/ui/widget/product/custom/product_custom_sub_widget.dart';
 import 'package:pomangam_client/ui/widget/product/product_app_bar.dart';
 import 'package:pomangam_client/ui/widget/product/product_contents_widget.dart';
@@ -30,6 +31,7 @@ class _ProductPageState extends State<ProductPage> {
 
   final RefreshController _refreshController = RefreshController(initialRefresh: false);
   final ScrollController _scrollController = ScrollController();
+  final GlobalKey keyProductSubCategory = GlobalKey();
 
   @override
   void initState() {
@@ -62,13 +64,22 @@ class _ProductPageState extends State<ProductPage> {
               } else if(type != ProductType.NORMAL) {
                 return Column(
                   children: <Widget>[
-                    ProductCustomContentsWidget(productType: type),
+                    ProductCustomImageWidget(
+                      productType: type,
+                      onSelected: _onSelected
+                    ),
                     Divider(height: 0.5),
                     Flexible(
                       child: CustomScrollView(
                         controller: _scrollController,
                         physics: BouncingScrollPhysics(),
                         slivers: <Widget>[
+                          ProductCustomContentsWidget(),
+                          ProductSubCategoryWidget(
+                            keyProductSubCategory: keyProductSubCategory,
+                            pIdx: widget.pIdx,
+                            onSelected: _onSelected,
+                          ),
                           ProductCustomSubWidget()
                         ],
                       ),
@@ -80,7 +91,11 @@ class _ProductPageState extends State<ProductPage> {
                   controller: _scrollController,
                   slivers: <Widget>[
                     ProductContentsWidget(),
-                    ProductSubCategoryWidget(pIdx: widget.pIdx, onCategoryChanged: _onCategoryChanged),
+                    ProductSubCategoryWidget(
+                      keyProductSubCategory: keyProductSubCategory,
+                      pIdx: widget.pIdx,
+                      onSelected: _onSelected,
+                    ),
                     ProductSubWidget()
                   ],
                 );
@@ -89,6 +104,12 @@ class _ProductPageState extends State<ProductPage> {
           )
       )
     );
+  }
+
+  void _onSelected(int idxSelected, int idxProductSubCategory) {
+    Provider.of<ProductSubCategoryModel>(context, listen: false).changeIdxSelectedCategory(idxSelected);
+    Provider.of<ProductModel>(context, listen: false).changeIdxProductSubCategory(idxProductSubCategory == null ? 0 : idxProductSubCategory);
+    Scrollable.ensureVisible(keyProductSubCategory.currentContext, duration: Duration(milliseconds: 500), curve: Curves.ease);
   }
 
   void _init({bool isBuild = false}) async {
@@ -120,25 +141,4 @@ class _ProductPageState extends State<ProductPage> {
     _init(isBuild: true);
     _refreshController.refreshCompleted();
   }
-
-  void _onCategoryChanged(double position) {
-    _scrollController.animateTo(position, duration: Duration(milliseconds: 500), curve: Curves.ease);
-  }
-
-//  Widget _contentsWidget(ProductType type) {
-//    switch(type) {
-//      case ProductType.CUSTOMIZING_2:
-//        return ;
-//      case ProductType.CUSTOMIZING_3:
-//        return ProductContentsWidget();
-//      case ProductType.CUSTOMIZING_4:
-//        return ProductContentsWidget();
-//      case ProductType.CUSTOMIZING_5:
-//        return ProductContentsWidget();
-//      case ProductType.CUSTOMIZING_6:
-//        return ProductContentsWidget();
-//      default:
-//        return ProductContentsWidget();
-//    }
-//  }
 }
