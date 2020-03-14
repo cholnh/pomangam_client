@@ -1,0 +1,22 @@
+import 'package:flutter/material.dart';
+import 'package:pomangam_client/common/constants/pomangam_theme.dart';
+import 'package:pomangam_client/domain/product/sub/product_sub.dart';
+
+class ProductSubItemReadOnlyWidget extends StatelessWidget {
+
+  final ProductSub sub;
+
+  ProductSubItemReadOnlyWidget({this.sub});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+        contentPadding: EdgeInsets.only(left: 20.0, right: 15.0),
+        subtitle: sub?.productSubInfo?.description != null
+            ? Text('${sub.productSubInfo.description} ${sub.productSubInfo?.subDescription ?? ''}', style: TextStyle(fontSize: subTitleFontSize))
+            : null,
+        title: Text('${sub.productSubInfo.name}', style: TextStyle(fontSize: titleFontSize)),
+        trailing: Text('+ ${sub?.salePrice ?? 0}원', style: TextStyle(fontSize: titleFontSize))
+    );
+  }
+}

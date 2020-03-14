@@ -15,37 +15,6 @@ class ProductCustomSubItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> widgets = productSubCategory.productSubs.map((sub) {
-      return GestureDetector(
-        onTap: () {
-          Provider.of<ProductModel>(context, listen: false).toggleProductSubIsSelected(
-            productSubCategory: productSubCategory,
-            subIdx: sub.idx,
-            isRadio: true
-          );
-        },
-        child: SizedBox(
-          height: 65,
-          child: ListTile(
-            selected: sub.isSelected,
-            contentPadding: EdgeInsets.only(left: 0.0, right: 15.0),
-            leading: CachedNetworkImage(
-              imageUrl: '${Endpoint.serverDomain}/${sub.productImageMainPath}',
-              width: 90,
-              fit: BoxFit.fill,
-              placeholder: (context, url) => CupertinoActivityIndicator(),
-              errorWidget: (context, url, error) => Icon(Icons.error_outline),
-            ),
-            subtitle: sub?.productSubInfo?.description != null
-              ? Text('${sub.productSubInfo.description} ${sub.productSubInfo?.subDescription ?? ''}', style: TextStyle(fontSize: subTitleFontSize))
-              : null,
-            title: Text('${sub.productSubInfo.name}', style: TextStyle(fontSize: titleFontSize)),
-            trailing: Text('+ ${sub?.salePrice ?? 0}원', style: TextStyle(fontSize: titleFontSize))
-          ),
-        ),
-      );
-    }).toList();
-
     return Column(
       children: <Widget>[
         Container(
@@ -55,9 +24,42 @@ class ProductCustomSubItemWidget extends StatelessWidget {
           child: Text('${productSubCategory.categoryTitle}', style: TextStyle(fontSize: titleFontSize, fontWeight: FontWeight.bold))
         ),
         Column(
-          children: widgets
+          children: _subButtonGroup(context)
         )
       ],
     );
+  }
+
+  List<Widget> _subButtonGroup(BuildContext context) {
+    return productSubCategory.productSubs.map((sub) {
+      return GestureDetector(
+        onTap: () {
+          Provider.of<ProductModel>(context, listen: false).toggleProductSubIsSelected(
+              productSubCategory: productSubCategory,
+              subIdx: sub.idx,
+              isRadio: true
+          );
+        },
+        child: SizedBox(
+          height: 65,
+          child: ListTile(
+              selected: sub.isSelected,
+              contentPadding: EdgeInsets.only(left: 0.0, right: 15.0),
+              leading: CachedNetworkImage(
+                imageUrl: '${Endpoint.serverDomain}/${sub.productImageMainPath}',
+                width: 90,
+                fit: BoxFit.fill,
+                placeholder: (context, url) => CupertinoActivityIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error_outline),
+              ),
+              subtitle: sub?.productSubInfo?.description != null
+                  ? Text('${sub.productSubInfo.description} ${sub.productSubInfo?.subDescription ?? ''}', style: TextStyle(fontSize: subTitleFontSize))
+                  : null,
+              title: Text('${sub.productSubInfo.name}', style: TextStyle(fontSize: titleFontSize)),
+              trailing: Text('+ ${sub?.salePrice ?? 0}원', style: TextStyle(fontSize: titleFontSize))
+          ),
+        ),
+      );
+    }).toList();
   }
 }
