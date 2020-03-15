@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
+import 'package:pomangam_client/common/util/string_utils.dart';
+import 'package:pomangam_client/provider/product/product_model.dart';
+import 'package:provider/provider.dart';
 
 class ProductPriceWidget extends StatelessWidget {
   @override
@@ -14,12 +17,17 @@ class ProductPriceWidget extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: titleFontSize)
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(right: 20.0),
-          child: Text(
-              '3,500원',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: titleFontSize)
-          ),
+        Consumer<ProductModel>(
+          builder: (_, model, child) {
+            int totalPrice = model.totalPrice();
+            return Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: Text(
+                  totalPrice == 0 ? '' : '${StringUtils.comma(totalPrice)}원',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: titleFontSize)
+              ),
+            );
+          },
         )
       ],
     );

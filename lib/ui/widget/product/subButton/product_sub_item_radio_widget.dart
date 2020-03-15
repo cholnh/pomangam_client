@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
+import 'package:pomangam_client/common/util/string_utils.dart';
 import 'package:pomangam_client/domain/product/sub/category/product_sub_category.dart';
 import 'package:pomangam_client/domain/product/sub/product_sub.dart';
 import 'package:pomangam_client/provider/product/product_model.dart';
@@ -31,8 +32,8 @@ class ProductSubItemRadioWidget extends StatelessWidget {
           groupValue: true,
           value: sub.isSelected,
         ),
-        title: Text('${sub.productSubInfo.name}', style: TextStyle(fontSize: titleFontSize)),
-        trailing: Text('+ ${sub?.salePrice}원', style: TextStyle(fontSize: titleFontSize)),
+        title: Text('${sub.productSubInfo?.name ?? ''}', style: TextStyle(fontSize: titleFontSize)),
+        trailing: Text('+ ${StringUtils.comma(sub?.salePrice)}원', style: TextStyle(fontSize: titleFontSize)),
       ),
     );
   }

@@ -6,6 +6,7 @@ import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/di/injector_register.dart';
 import 'package:pomangam_client/common/i18n/i18n.dart';
 import 'package:pomangam_client/common/router/app_router.dart';
+import 'package:pomangam_client/provider/advertisement/advertisement_model.dart';
 import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/provider/deliverysite/detail/delivery_detail_site_model.dart';
 import 'package:pomangam_client/provider/order/time/order_time_model.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ProductModel(), lazy: true),
         ChangeNotifierProvider(create: (_) => ProductSummaryModel(), lazy: true),
         ChangeNotifierProvider(create: (_) => ProductSubCategoryModel(), lazy: true),
+        ChangeNotifierProvider(create: (_) => AdvertisementModel(), lazy: true),
 
       ],
       child: MaterialApp(

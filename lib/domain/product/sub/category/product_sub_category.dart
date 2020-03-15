@@ -26,8 +26,11 @@ class ProductSubCategory extends EntityAuditing {
     return entities;
   }
 
-  @override
-  String toString() {
-    return 'ProductSubCategory{categoryTitle: $categoryTitle, productSubs: $productSubs}';
+  int totalSubPrice() {
+    int total = 0;
+    selectedProductSub?.forEach((sub) {
+      total += sub?.salePrice ?? 0;
+    });
+    return total;
   }
 }

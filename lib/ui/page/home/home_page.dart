@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/key/pmg_key.dart';
 import 'package:pomangam_client/domain/tab/tab_menu.dart';
+import 'package:pomangam_client/provider/advertisement/advertisement_model.dart';
 import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/provider/order/time/order_time_model.dart';
 import 'package:pomangam_client/provider/store/store_summary_model.dart';
@@ -127,6 +128,7 @@ class _HomePageState extends State<HomePage> {
   void _init() async {
     DeliverySiteModel deliverySiteModel = Provider.of<DeliverySiteModel>(context, listen: false);
     OrderTimeModel orderTimeModel = Provider.of<OrderTimeModel>(context, listen: false);
+    AdvertisementModel advertisementModel = Provider.of<AdvertisementModel>(context, listen: false);
 
     // index
     dIdx = deliverySiteModel.userDeliverySite?.idx;
@@ -146,5 +148,10 @@ class _HomePageState extends State<HomePage> {
     if(storeSummaryModel.hasReachedMax) {
       _refreshController.loadNoData();
     }
+
+    // advertisement fetch
+    advertisementModel
+    ..clear()
+    ..fetch(dIdx: dIdx);
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
 import 'package:pomangam_client/common/network/constant/endpoint.dart';
+import 'package:pomangam_client/common/util/string_utils.dart';
 import 'package:pomangam_client/domain/product/sub/category/product_sub_category.dart';
 import 'package:pomangam_client/provider/product/product_model.dart';
 import 'package:provider/provider.dart';
@@ -55,8 +56,9 @@ class ProductCustomSubItemWidget extends StatelessWidget {
               subtitle: sub?.productSubInfo?.description != null
                   ? Text('${sub.productSubInfo.description} ${sub.productSubInfo?.subDescription ?? ''}', style: TextStyle(fontSize: subTitleFontSize))
                   : null,
-              title: Text('${sub.productSubInfo.name}', style: TextStyle(fontSize: titleFontSize)),
-              trailing: Text('+ ${sub?.salePrice ?? 0}원', style: TextStyle(fontSize: titleFontSize))
+
+              title: Text('${sub.productSubInfo?.name ?? ''}', style: TextStyle(fontSize: titleFontSize)),
+              trailing: Text('+ ${StringUtils.comma(sub?.salePrice)}원', style: TextStyle(fontSize: titleFontSize)),
           ),
         ),
       );

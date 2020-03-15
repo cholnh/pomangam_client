@@ -6,7 +6,6 @@ import 'package:pomangam_client/domain/product/sub/product_sub.dart';
 import 'package:pomangam_client/domain/product/sub/product_sub_type.dart';
 import 'package:pomangam_client/provider/product/product_model.dart';
 import 'package:pomangam_client/ui/widget/product/subButton/product_sub_item_checkbox_widget.dart';
-import 'package:pomangam_client/ui/widget/product/subButton/product_sub_item_number_widget.dart';
 import 'package:pomangam_client/ui/widget/product/subButton/product_sub_item_radio_widget.dart';
 import 'package:pomangam_client/ui/widget/product/subButton/product_sub_item_readonly_widget.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +33,29 @@ class ProductSubItemWidget extends StatelessWidget {
     );
   }
 
+  void _setRadioFirstElement(BuildContext context) {
+    if(productSubCategory.productSubType == ProductSubType.RADIO) {
+      bool isFirst = true;
+      for(ProductSub sub in productSubCategory.productSubs) {
+        if(sub.isSelected) {
+          isFirst = false;
+          break;
+        }
+      }
+      if(isFirst && productSubCategory.productSubs.isNotEmpty) {
+        Provider.of<ProductModel>(context, listen: false).toggleProductSubIsSelected(
+          productSubCategory: productSubCategory,
+          subIdx: productSubCategory.productSubs.first.idx,
+          isRadio: true,
+          isNotify: false
+        );
+      }
+    }
+  }
+
   List<Widget> _subButtonGroup(BuildContext context) {
+    _setRadioFirstElement(context);
+
     return productSubCategory.productSubs.map((sub) {
       return SizedBox(
         height: 65,
@@ -51,7 +72,8 @@ class ProductSubItemWidget extends StatelessWidget {
     } else if(type == ProductSubType.RADIO) {
       return ProductSubItemRadioWidget(sub: sub, productSubCategory: productSubCategory);
     } else if(type == ProductSubType.NUMBER) {
-      return ProductSubItemNumberWidget(sub: sub);
+      return ProductSubItemCheckBoxWidget(sub: sub, productSubCategory: productSubCategory);
+      // return ProductSubItemNumberWidget(sub: sub);
     } else if(type == ProductSubType.READONLY) {
       return ProductSubItemReadOnlyWidget(sub: sub);
     } else {

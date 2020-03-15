@@ -5,6 +5,7 @@ class StringUtils {
   static final RegExp regExpKoreaPhoneNumber = RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)');
   static final RegExp regNum = RegExp(r'[^0-9]');
   static final RegExp regExpNickname = RegExp(r'^[가-힣A-Za-z0-9]{2,10}$');
+  static final RegExp regComma = new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
 
   static String removeEmojiAndSymbol(String content) {
     content = content.replaceAll(regExp, '');
@@ -32,6 +33,10 @@ class StringUtils {
       return regExpNickname.hasMatch(content);
     }
     return false;
+  }
+
+  static String comma(int number) {
+    return number == null ? 0 : number.toString().replaceAllMapped(regComma, (Match match) => '${match[1]},');
   }
 }
 

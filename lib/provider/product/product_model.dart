@@ -3,7 +3,6 @@ import 'package:injector/injector.dart';
 import 'package:pomangam_client/domain/product/product.dart';
 import 'package:pomangam_client/domain/product/product_summary.dart';
 import 'package:pomangam_client/domain/product/sub/category/product_sub_category.dart';
-import 'package:pomangam_client/domain/product/sub/product_sub.dart';
 import 'package:pomangam_client/repository/product/product_repository.dart';
 
 class ProductModel with ChangeNotifier {
@@ -12,6 +11,7 @@ class ProductModel with ChangeNotifier {
 
   Product product;
   ProductSummary summary;
+  int quantity = 1;
 
   bool isProductFetched = false;
   bool isProductFetching = false;
@@ -68,7 +68,7 @@ class ProductModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleProductSubIsSelected({ProductSubCategory productSubCategory, int subIdx, bool isRadio = false}) {
+  void toggleProductSubIsSelected({ProductSubCategory productSubCategory, int subIdx, bool isRadio = false, bool isNotify = true}) {
     productSubCategory.productSubs.forEach((sub) {
       if(sub.idx == subIdx) {
         if(isRadio) {
@@ -91,6 +91,30 @@ class ProductModel with ChangeNotifier {
         }
       }
     });
+    if(isNotify) {
+      notifyListeners();
+    }
+  }
+
+  void changeUpQuantity() {
+    ++quantity;
     notifyListeners();
+  }
+
+  void changeDownQuantity() {
+    if(quantity > 1) {
+      --quantity;
+      notifyListeners();
+    } else {
+      quantity = 1;
+    }
+  }
+
+  int totalPrice() {
+    int total = product?.salePrice ?? 0;
+    product?.productSubCategories?.forEach((category) {
+      total += category.totalSubPrice();
+    });
+    return total * quantity;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
+import 'package:pomangam_client/common/util/string_utils.dart';
 import 'package:pomangam_client/domain/product/product_type.dart';
 import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/provider/product/product_model.dart';
@@ -30,7 +31,6 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
 
   final RefreshController _refreshController = RefreshController(initialRefresh: false);
-  final ScrollController _scrollController = ScrollController();
   final GlobalKey keyProductSubCategory = GlobalKey();
 
   @override
@@ -43,67 +43,72 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ProductAppBar(context),
-      bottomNavigationBar:  StoreBottomBarWidget(
-        centerText: '카트에 추가',
-        rightText: '3,500원',
+      bottomNavigationBar: Consumer<ProductModel>(
+        builder: (_, model, child) {
+          int totalPrice = model.totalPrice();
+          return StoreBottomBarWidget(
+            centerText: '카트에 추가',
+            rightText: totalPrice == 0 ? '' : '${StringUtils.comma(totalPrice)}원',
+          );
+        },
       ),
       body: SmartRefresher(
-          physics: BouncingScrollPhysics(),
-          enablePullDown: true,
-          header: WaterDropMaterialHeader(
-            color: primaryColor,
-            backgroundColor: backgroundColor,
-          ),
-          controller: _refreshController,
-          onRefresh: _onRefresh,
-          child: Consumer<ProductModel>(
-            builder: (_, model, child) {
-              ProductType type = model.product?.productType;
-              if(type == null) {
-                return CupertinoActivityIndicator();
-              } else if(type != ProductType.NORMAL) {
-                return Column(
-                  children: <Widget>[
-                    ProductCustomImageWidget(
-                      productType: type,
-                      onSelected: _onSelected
-                    ),
-                    Divider(height: 0.5),
-                    Flexible(
-                      child: CustomScrollView(
-                        controller: _scrollController,
-                        physics: BouncingScrollPhysics(),
-                        slivers: <Widget>[
-                          ProductCustomContentsWidget(),
-                          ProductSubCategoryWidget(
-                            keyProductSubCategory: keyProductSubCategory,
-                            pIdx: widget.pIdx,
-                            onSelected: _onSelected,
-                          ),
-                          ProductCustomSubWidget()
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              } else {
-                return CustomScrollView(
-                  controller: _scrollController,
-                  slivers: <Widget>[
-                    ProductContentsWidget(),
-                    ProductSubCategoryWidget(
-                      keyProductSubCategory: keyProductSubCategory,
-                      pIdx: widget.pIdx,
-                      onSelected: _onSelected,
-                    ),
-                    ProductSubWidget()
-                  ],
-                );
-              }
-            },
-          )
+        physics: BouncingScrollPhysics(),
+        enablePullDown: true,
+        header: WaterDropMaterialHeader(
+          color: primaryColor,
+          backgroundColor: backgroundColor,
+        ),
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        child: _body(),
       )
     );
+  }
+
+  Widget _body() {
+    ProductType type = Provider.of<ProductModel>(context).product?.productType;
+    if(type == null) {
+      return CupertinoActivityIndicator();
+    } else if(type != ProductType.NORMAL) {
+      return Column(
+        children: <Widget>[
+          ProductCustomImageWidget(
+              productType: type,
+              onSelected: _onSelected
+          ),
+          Divider(height: 0.5),
+          Flexible(
+            child: CustomScrollView(
+              physics: BouncingScrollPhysics(),
+              slivers: <Widget>[
+                ProductCustomContentsWidget(),
+                ProductSubCategoryWidget(
+                  keyProductSubCategory: keyProductSubCategory,
+                  pIdx: widget.pIdx,
+                  onSelected: _onSelected,
+                ),
+                ProductCustomSubWidget()
+              ],
+            ),
+          ),
+        ],
+      );
+    } else if(type == ProductType.NORMAL){
+      return CustomScrollView(
+        slivers: <Widget>[
+          ProductContentsWidget(),
+          ProductSubCategoryWidget(
+            keyProductSubCategory: keyProductSubCategory,
+            pIdx: widget.pIdx,
+            onSelected: _onSelected,
+          ),
+          ProductSubWidget()
+        ],
+      );
+    } else {
+      return Container();
+    }
   }
 
   void _onSelected(int idxSelected, int idxProductSubCategory) {
@@ -128,6 +133,7 @@ class _ProductPageState extends State<ProductPage> {
     // product fetch
     productModel
     ..product = null
+    ..quantity = 1
     ..isProductFetched = false
     ..idxProductSubCategory = 0
     ..fetch(

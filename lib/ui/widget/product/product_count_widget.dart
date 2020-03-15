@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
+import 'package:pomangam_client/provider/product/product_model.dart';
+import 'package:provider/provider.dart';
 
 class ProductCountWidget extends StatelessWidget {
   @override
@@ -22,35 +24,45 @@ class ProductCountWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Container(
-                  margin: EdgeInsets.all(5.0),
-                  padding: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    color: primaryColor,
-                    border: Border.all(
-                      width: 1.5,
-                      color: primaryColor
+                GestureDetector(
+                  onTap: () => _onSelected(context, isUp: true),
+                  child: Container(
+                    margin: EdgeInsets.all(5.0),
+                    padding: EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      border: Border.all(
+                        width: 1.5,
+                        color: primaryColor
+                      ),
+                      shape: BoxShape.circle,
                     ),
-                    shape: BoxShape.circle,
+                    child: Icon(Icons.add, color: backgroundColor, size: titleFontSize),
                   ),
-                  child: Icon(Icons.add, color: backgroundColor, size: titleFontSize),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Text('1', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0))
+                Consumer<ProductModel>(
+                  builder: (_, model, child) {
+                    return Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Text('${model?.quantity ?? ''}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0))
+                    );
+                  },
                 ),
-                Container(
-                  margin: EdgeInsets.all(5.0),
-                  padding: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    color: primaryColor,
-                    border: Border.all(
-                      width: 1.5,
-                      color: primaryColor
+                GestureDetector(
+                  onTap: () => _onSelected(context, isUp: false),
+                  child: Container(
+                    margin: EdgeInsets.all(5.0),
+                    padding: EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      border: Border.all(
+                        width: 1.5,
+                        color: primaryColor
+                      ),
+                      shape: BoxShape.circle,
                     ),
-                    shape: BoxShape.circle,
+                    child: Icon(Icons.remove, color: backgroundColor, size: titleFontSize),
                   ),
-                  child: Icon(Icons.remove, color: backgroundColor, size: titleFontSize),
                 ),
               ],
             ),
@@ -58,5 +70,14 @@ class ProductCountWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void _onSelected(BuildContext context, {bool isUp}) {
+    ProductModel productModel = Provider.of<ProductModel>(context, listen: false);
+    if(isUp) {
+      productModel.changeUpQuantity();
+    } else {
+      productModel.changeDownQuantity();
+    }
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/common/constants/pomangam_theme.dart';
+import 'package:pomangam_client/common/util/string_utils.dart';
 import 'package:pomangam_client/domain/product/sub/product_sub.dart';
 
+@deprecated
 class ProductSubItemNumberWidget extends StatelessWidget {
 
   final ProductSub sub;
@@ -23,7 +25,7 @@ class ProductSubItemNumberWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text('+ ${sub?.salePrice}원', style: TextStyle(fontSize: titleFontSize)),
+            Text('+ ${StringUtils.comma(sub?.salePrice)}원', style: TextStyle(fontSize: titleFontSize)),
             Padding(padding: EdgeInsets.only(right: 8.0)),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,

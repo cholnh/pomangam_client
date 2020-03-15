@@ -20,7 +20,7 @@ class DeliverySite extends EntityAuditing {
 
     factory DeliverySite.fromJson(Map<String, dynamic> json) => _$DeliverySiteFromJson(json);
     Map<String, dynamic> toJson() => _$DeliverySiteToJson(this);
-    static List<DeliverySite> fromJsonList(List<Map<String, dynamic>> jsonList) {
+    static List<DeliverySite> fromJsonList(List<dynamic> jsonList) {
         List<DeliverySite> entities = [];
         jsonList.forEach((map) => entities.add(DeliverySite.fromJson(map)));
         return entities;
