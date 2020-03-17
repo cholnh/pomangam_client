@@ -1,10 +1,8 @@
-import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pomangam_client/common/initalizer/initializer.dart';
+import 'package:pomangam_client/_bases/initalizer/initializer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:pomangam_client/common/key/shared_preference_key.dart' as s;
+import 'package:pomangam_client/_bases/key/shared_preference_key.dart' as s;
 
 import '../testable.dart';
 

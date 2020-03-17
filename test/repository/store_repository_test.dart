@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:injector/injector.dart';
-import 'package:pomangam_client/domain/common/page_request.dart';
-import 'package:pomangam_client/common/network/repository/authorization_repository.dart';
-import 'package:pomangam_client/domain/store/store_summary.dart';
-import 'package:pomangam_client/repository/store/store_repository.dart';
+import 'package:pomangam_client/domains/_bases/page_request.dart';
+import 'package:pomangam_client/_bases/network/repository/authorization_repository.dart';
+import 'package:pomangam_client/domains/store/store_summary.dart';
+import 'package:pomangam_client/repositories/store/store_repository.dart';
 
 import '../testable.dart';
 

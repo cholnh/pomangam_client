@@ -2,23 +2,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:injector/injector.dart';
-import 'package:pomangam_client/common/constants/pomangam_theme.dart';
-import 'package:pomangam_client/common/di/injector_register.dart';
-import 'package:pomangam_client/common/i18n/i18n.dart';
-import 'package:pomangam_client/common/router/app_router.dart';
-import 'package:pomangam_client/provider/advertisement/advertisement_model.dart';
-import 'package:pomangam_client/provider/deliverysite/delivery_site_model.dart';
-import 'package:pomangam_client/provider/deliverysite/detail/delivery_detail_site_model.dart';
-import 'package:pomangam_client/provider/order/time/order_time_model.dart';
-import 'package:pomangam_client/provider/product/product_model.dart';
-import 'package:pomangam_client/provider/product/product_summary_model.dart';
-import 'package:pomangam_client/provider/product/sub/product_sub_category_model.dart';
-import 'package:pomangam_client/provider/sign/sign_in_model.dart';
-import 'package:pomangam_client/provider/sign/sign_up_model.dart';
-import 'package:pomangam_client/provider/store/store_model.dart';
-import 'package:pomangam_client/provider/store/store_product_category_model.dart';
-import 'package:pomangam_client/provider/store/store_summary_model.dart';
-import 'package:pomangam_client/ui/page/common/splash_page.dart';
+import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
+import 'package:pomangam_client/_bases/di/injector_register.dart';
+import 'package:pomangam_client/_bases/i18n/i18n.dart';
+import 'package:pomangam_client/_bases/router/app_router.dart';
+import 'package:pomangam_client/providers/advertisement/advertisement_model.dart';
+import 'package:pomangam_client/providers/cart/cart_model.dart';
+import 'package:pomangam_client/providers/deliverysite/delivery_site_model.dart';
+import 'package:pomangam_client/providers/deliverysite/detail/delivery_detail_site_model.dart';
+import 'package:pomangam_client/providers/order/time/order_time_model.dart';
+import 'package:pomangam_client/providers/product/product_model.dart';
+import 'package:pomangam_client/providers/product/product_summary_model.dart';
+import 'package:pomangam_client/providers/product/sub/product_sub_category_model.dart';
+import 'package:pomangam_client/providers/sign/sign_in_model.dart';
+import 'package:pomangam_client/providers/sign/sign_up_model.dart';
+import 'package:pomangam_client/providers/store/store_model.dart';
+import 'package:pomangam_client/providers/store/store_product_category_model.dart';
+import 'package:pomangam_client/providers/store/store_summary_model.dart';
+import 'package:pomangam_client/views/pages/_bases/splash_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ProductSummaryModel(), lazy: true),
         ChangeNotifierProvider(create: (_) => ProductSubCategoryModel(), lazy: true),
         ChangeNotifierProvider(create: (_) => AdvertisementModel(), lazy: true),
+        ChangeNotifierProvider(create: (_) => CartModel(), lazy: true),
 
       ],
       child: MaterialApp(

@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:injector/injector.dart';
-import 'package:pomangam_client/common/network/api/api.dart';
+import 'package:pomangam_client/_bases/network/api/api.dart';
 import '../testable.dart';
 
 class RepositoryTest implements Testable {
