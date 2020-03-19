@@ -23,7 +23,12 @@ class StoreSummaryModel with ChangeNotifier {
     _storeRepository = Injector.appInstance.getDependency<StoreRepository>();
   }
 
-  Future<void> fetch({bool isForceUpdate = false, int dIdx, int oIdx, DateTime oDate}) async {
+  Future<void> fetch({
+    bool isForceUpdate = false,
+    @required int dIdx,
+    @required int oIdx,
+    @required DateTime oDate
+  }) async {
     if(!isForceUpdate && hasReachedMax) return;
     hasReachedMax = true; // lock
     isFetching = true;
@@ -58,7 +63,11 @@ class StoreSummaryModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<StoreQuantityOrderable>> fetchQuantityOrderable({int dIdx, int oIdx, DateTime oDate}) async {
+  Future<List<StoreQuantityOrderable>> fetchQuantityOrderable({
+    @required int dIdx,
+    @required int oIdx,
+    @required DateTime oDate
+  }) async {
     List<StoreQuantityOrderable> quantities = [];
     try {
       quantities = await _storeRepository.findQuantityOrderableByIdxes(

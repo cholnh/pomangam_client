@@ -26,6 +26,9 @@ const Color secondaryColor = Colors.deepOrange;
 /// background color
 const Color backgroundColor = Colors.white;
 
+/// sub text color
+final Color subTextColor = Colors.black.withOpacity(0.5);
+
 /// font size
 const double appBarFontSize = 16.0;
 const double titleFontSize = 13.0;

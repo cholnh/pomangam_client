@@ -11,8 +11,8 @@ import 'package:pomangam_client/views/widgets/product/custom/product_custom_imag
 import 'package:pomangam_client/views/widgets/product/custom/product_custom_sub_widget.dart';
 import 'package:pomangam_client/views/widgets/product/product_app_bar.dart';
 import 'package:pomangam_client/views/widgets/product/product_contents_widget.dart';
-import 'package:pomangam_client/views/widgets/product/product_slide_floating_collapsed_widget.dart';
-import 'package:pomangam_client/views/widgets/product/product_slide_floating_panel_widget.dart';
+import 'package:pomangam_client/views/widgets/product/slide/product_slide_floating_collapsed_widget.dart';
+import 'package:pomangam_client/views/widgets/product/slide/product_slide_floating_panel_widget.dart';
 import 'package:pomangam_client/views/widgets/product/product_sub_category_widget.dart';
 import 'package:pomangam_client/views/widgets/product/product_sub_widget.dart';
 import 'package:provider/provider.dart';
@@ -148,6 +148,7 @@ class _ProductPageState extends State<ProductPage> {
     ..quantity = 1
     ..isProductFetched = false
     ..idxProductSubCategory = 0
+    ..isUserRecentRequirement = false
     ..fetch(
         dIdx: deliverySiteModel.userDeliverySite?.idx,
         sIdx: storeModel.store.idx,

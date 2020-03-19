@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/domains/product/sub/category/product_sub_category.dart';
 import 'package:pomangam_client/providers/product/product_model.dart';
 import 'package:pomangam_client/views/widgets/product/product_sub_item_widget.dart';
@@ -18,7 +19,7 @@ class ProductSubWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(20.0),
                 child: model.isProductFetching
                   ? CupertinoActivityIndicator()
-                  : Text('서브메뉴가 없습니다...', style: TextStyle(color: Colors.grey, fontSize: 14)),
+                  : Text('서브메뉴가 없습니다.', style: TextStyle(color: subTextColor, fontSize: 14)),
               ),
             ),
           );

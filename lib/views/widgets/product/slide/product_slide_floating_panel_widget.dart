@@ -11,7 +11,13 @@ import 'package:pomangam_client/providers/product/product_model.dart';
 import 'package:pomangam_client/providers/store/store_model.dart';
 import 'package:provider/provider.dart';
 
-class ProductSlideFloatingPanelWidget extends StatelessWidget {
+class ProductSlideFloatingPanelWidget extends StatefulWidget {
+
+  @override
+  _ProductSlideFloatingPanelWidgetState createState() => _ProductSlideFloatingPanelWidgetState();
+}
+
+class _ProductSlideFloatingPanelWidgetState extends State<ProductSlideFloatingPanelWidget> {
 
   final TextEditingController _textEditingController = TextEditingController();
 
@@ -40,32 +46,17 @@ class ProductSlideFloatingPanelWidget extends StatelessWidget {
                 Padding(padding: EdgeInsets.only(bottom: 8.0)),
                 TextField(
                   controller: _textEditingController,
-                  autocorrect: false,
-                  enableSuggestions: false,
-                  enableInteractiveSelection: true,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
-                      hintText: '예) 피클 빼주세요.',
-                      hintStyle: TextStyle(fontSize: titleFontSize, color: Colors.black.withOpacity(0.5)),
-                      border: OutlineInputBorder(),
-                      alignLabelWithHint: true,
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.cancel, size: 18.0),
-                        onPressed: () {
-                          WidgetsBinding.instance.addPostFrameCallback((_) => _textEditingController.clear());
-                          ProductModel productModel = Provider.of<ProductModel>(context, listen: false);
-                          if(productModel.isUserRecentRequirement) {
-                            productModel.toggleIsUserRecentRequirement();
-                          }
-                        },
-                      )
+                    hintText: '예) 피클 빼주세요.',
+                    hintStyle: TextStyle(fontSize: titleFontSize, color: Colors.black.withOpacity(0.5)),
+                    border: OutlineInputBorder(),
+                    alignLabelWithHint: true,
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.cancel, size: 18.0),
+                      onPressed: () => WidgetsBinding.instance.addPostFrameCallback((_) => _textEditingController.clear()),
+                    )
                   ),
-                  onChanged: (text) {
-                    ProductModel productModel = Provider.of<ProductModel>(context, listen: false);
-                    if(productModel.isUserRecentRequirement) {
-                      productModel.toggleIsUserRecentRequirement();
-                    }
-                  },
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(30),
                   ],
@@ -74,15 +65,8 @@ class ProductSlideFloatingPanelWidget extends StatelessWidget {
                 Consumer<ProductModel>(
                   builder: (_, model, child) {
                     return model.userRecentRequirement != null
-                      ? GestureDetector(
-                      onTap: () {
-                        model.toggleIsUserRecentRequirement();
-                        if(model.isUserRecentRequirement) {
-                          _textEditingController.text = '${model.userRecentRequirement}';
-                        } else {
-                          _textEditingController.clear();
-                        }
-                      },
+                    ? GestureDetector(
+                      onTap: () => model.toggleIsUserRecentRequirement(),
                       child: Row(
                         children: <Widget>[
                           Checkbox(
@@ -110,7 +94,7 @@ class ProductSlideFloatingPanelWidget extends StatelessWidget {
                     child: Text('확인', style: TextStyle(color: backgroundColor, fontWeight: FontWeight.bold, fontSize: 15.0)),
                   ),
                 ),
-                onTap: () => _onDialogSelected(context),
+                onTap: _onDialogSelected,
               ),
             ),
           )
@@ -119,7 +103,7 @@ class ProductSlideFloatingPanelWidget extends StatelessWidget {
     );
   }
 
-  void _onDialogSelected(BuildContext context) {
+  void _onDialogSelected() {
     StoreModel storeModel = Provider.of<StoreModel>(context, listen: false);
     ProductModel productModel = Provider.of<ProductModel>(context, listen: false);
     CartModel cartModel = Provider.of<CartModel>(context, listen: false);
@@ -128,24 +112,28 @@ class ProductSlideFloatingPanelWidget extends StatelessWidget {
     List<ProductSub> selectedSubs = List();
     product?.productSubCategories?.forEach((subCategory) => selectedSubs.addAll(subCategory.selectedProductSub));
 
+    String requirement = _textEditingController.text;
+    requirement += (productModel.isUserRecentRequirement
+      ? (requirement.isEmpty ? '' : ', ') + '${productModel.userRecentRequirement}'
+      : '');
+
     // add
     cartModel.addItem(
-        store: storeModel.store,
-        product: product,
-        quantity: productModel.quantity,
-        subs: selectedSubs,
-        requirement: _textEditingController.text
+      store: storeModel.store,
+      product: product,
+      quantity: productModel.quantity,
+      subs: selectedSubs,
+      requirement: requirement
     );
 
     Injector.appInstance.getDependency<AppRouter>()
-        .pop(context);
+      .pop(context);
     Fluttertoast.showToast(
-        msg: "카트에 추가되었습니다.",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-
-        fontSize: titleFontSize
+      msg: "카트에 추가되었습니다.",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIos: 1,
+      fontSize: titleFontSize
     );
   }
 }

@@ -46,7 +46,7 @@ class HomeTimePickerModalItemWidget extends StatelessWidget {
                 DateTime changedOrderDate = model.viewUserOrderDate;
                 model.changeUserOrderDate(changedOrderDate);
                 model.changeUserOrderTime(orderTime);
-                onSelected(oIdx: orderTime.idx, changedOrderDate: changedOrderDate);
+                onSelected(orderTime: orderTime, changedOrderDate: changedOrderDate);
               },
             ),
           );

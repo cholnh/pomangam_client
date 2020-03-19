@@ -16,6 +16,10 @@ class CartItem {
 
   String requirement;
 
+  int quantityOrderable;
+
+  bool isOrderable = true;
+
   CartItem({
     this.idx, this.store, this.product,
     this.quantity, this.subs, this.requirement
