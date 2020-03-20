@@ -84,18 +84,16 @@ class _ProductSlideFloatingPanelWidgetState extends State<ProductSlideFloatingPa
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: SafeArea(
-              child: GestureDetector(
-                child: Container(
-                  color: primaryColor,
-                  width: MediaQuery.of(context).size.width,
-                  height: 53.0,
-                  child: Center(
-                    child: Text('확인', style: TextStyle(color: backgroundColor, fontWeight: FontWeight.bold, fontSize: 15.0)),
-                  ),
+            child: GestureDetector(
+              child: Container(
+                color: primaryColor,
+                width: MediaQuery.of(context).size.width,
+                height: 53.0,
+                child: Center(
+                  child: Text('확인', style: TextStyle(color: backgroundColor, fontWeight: FontWeight.bold, fontSize: 15.0)),
                 ),
-                onTap: _onDialogSelected,
               ),
+              onTap: _onDialogSelected,
             ),
           )
         ],

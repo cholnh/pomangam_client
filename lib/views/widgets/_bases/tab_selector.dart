@@ -22,10 +22,9 @@ class TabSelector extends StatelessWidget {
     final Color selectedItemColor = Colors.black;
     final Color unselectedItemColor = Colors.grey;
 
-    return SizedBox(
-      height: 50.0,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 0.0),
+    return SafeArea(
+      child: SizedBox(
+        height: 50.0,
         child: BottomNavigationBar(
           key: PmgKeys.baseTab,
           type: BottomNavigationBarType.fixed,
@@ -38,6 +37,8 @@ class TabSelector extends StatelessWidget {
           backgroundColor: backgroundColor,
           selectedItemColor: selectedItemColor,
           unselectedItemColor: unselectedItemColor,
+          elevation: 0.0,
+
           items: [
             CustomBottomNavBarItem(
                 icon: const Icon(Icons.local_dining, key: PmgKeys.tabHomeImg),

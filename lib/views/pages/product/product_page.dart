@@ -46,27 +46,32 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ProductAppBar(context),
-      body: SlidingUpPanel(
-        controller: _panelController,
-        minHeight: 80.0,
-        maxHeight: 250.0,
-        backdropEnabled: true,
-        renderPanelSheet: false,
-        panel: ProductSlideFloatingPanelWidget(),
-        collapsed: ProductSlideFloatingCollapsedWidget(
-          onSelected: () => _panelController.open(),
-        ),
-        onPanelClosed: () => FocusScope.of(context).unfocus(),
-        body: SmartRefresher(
-          physics: BouncingScrollPhysics(),
-          enablePullDown: true,
-          header: WaterDropMaterialHeader(
-            color: primaryColor,
-            backgroundColor: backgroundColor,
+      body: SafeArea(
+        child: SlidingUpPanel(
+          controller: _panelController,
+          minHeight: 80.0,
+          maxHeight: 250.0,
+          backdropEnabled: true,
+          renderPanelSheet: false,
+          panel: ProductSlideFloatingPanelWidget(),
+          collapsed: ProductSlideFloatingCollapsedWidget(
+            onSelected: () => _panelController.open(),
           ),
-          controller: _refreshController,
-          onRefresh: _onRefresh,
-          child: _body(),
+          onPanelClosed: () => FocusScope.of(context).unfocus(),
+          body: Padding(
+            padding: const EdgeInsets.only(bottom: 80.0),
+            child: SmartRefresher(
+              physics: BouncingScrollPhysics(),
+              enablePullDown: true,
+              header: WaterDropMaterialHeader(
+                color: primaryColor,
+                backgroundColor: backgroundColor,
+              ),
+              controller: _refreshController,
+              onRefresh: _onRefresh,
+              child: _body(),
+            ),
+          ),
         ),
       )
     );
