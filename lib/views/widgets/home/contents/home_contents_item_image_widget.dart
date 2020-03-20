@@ -35,20 +35,20 @@ class HomeContentsItemImageWidget extends StatelessWidget {
               ),
             ),
             imagePaths.length > 1
-              ? Padding(
-                  padding: const EdgeInsets.only(top: 18.0),
-                  child: ScrollingPageIndicator(
-                    dotColor: Colors.black12,
-                    dotSelectedColor: primaryColor,
-                    dotSize: 5,
-                    dotSelectedSize: 6,
-                    dotSpacing: 9,
-                    controller: _controller,
-                    itemCount: imagePaths.length,
-                    orientation: Axis.horizontal
-                  ),
-                )
-              : Container()
+            ? Padding(
+                padding: const EdgeInsets.only(top: 18.0),
+                child: ScrollingPageIndicator(
+                  dotColor: Colors.black12,
+                  dotSelectedColor: primaryColor,
+                  dotSize: 5,
+                  dotSelectedSize: 6,
+                  dotSpacing: 9,
+                  controller: _controller,
+                  itemCount: imagePaths.length,
+                  orientation: Axis.horizontal
+                ),
+              )
+            : Container()
           ],
         ),
       ),
@@ -60,9 +60,9 @@ class HomeContentsItemImageWidget extends StatelessWidget {
     return GestureDetector(
       child: Container(
           width: width,
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey, width: 0.3)
-          ),
+//          decoration: BoxDecoration(
+//              border: Border.all(color: Colors.grey, width: 0.3)
+//          ),
           child: CachedNetworkImage(
             key: PmgKeys.homeContentsItemImage,
             imageUrl: '${Endpoint.serverDomain}/$imagePath',

@@ -72,9 +72,9 @@ class ProductImageWidget extends StatelessWidget {
     return GestureDetector(
       child: Container(
           width: width,
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey, width: 0.3)
-          ),
+//          decoration: BoxDecoration(
+//              border: Border.all(color: Colors.grey, width: 0.3)
+//          ),
           child: isHero
             ? Hero(
                 tag: 'productImageHero$pIdx',
