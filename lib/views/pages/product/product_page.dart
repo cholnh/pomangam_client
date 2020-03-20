@@ -47,20 +47,9 @@ class _ProductPageState extends State<ProductPage> {
     return Scaffold(
       appBar: ProductAppBar(context),
       body: SafeArea(
-        child: SlidingUpPanel(
-          controller: _panelController,
-          minHeight: 80.0,
-          maxHeight: 250.0,
-          backdropEnabled: true,
-          renderPanelSheet: false,
-          panel: ProductSlideFloatingPanelWidget(),
-          collapsed: ProductSlideFloatingCollapsedWidget(
-            onSelected: () => _panelController.open(),
-          ),
-          onPanelClosed: () => FocusScope.of(context).unfocus(),
-          body: Padding(
-            padding: const EdgeInsets.only(bottom: 80.0),
-            child: SmartRefresher(
+        child: Stack(
+          children: <Widget>[
+            SmartRefresher(
               physics: BouncingScrollPhysics(),
               enablePullDown: true,
               header: WaterDropMaterialHeader(
@@ -71,7 +60,19 @@ class _ProductPageState extends State<ProductPage> {
               onRefresh: _onRefresh,
               child: _body(),
             ),
-          ),
+            SlidingUpPanel(
+              controller: _panelController,
+              minHeight: 80.0,
+              maxHeight: 250.0,
+              backdropEnabled: true,
+              renderPanelSheet: false,
+              panel: ProductSlideFloatingPanelWidget(),
+              collapsed: ProductSlideFloatingCollapsedWidget(
+                onSelected: () => _panelController.open(),
+              ),
+              onPanelClosed: () => FocusScope.of(context).unfocus(),
+            ),
+          ],
         ),
       )
     );
@@ -101,7 +102,7 @@ class _ProductPageState extends State<ProductPage> {
                 ),
                 ProductCustomSubWidget(),
                 SliverToBoxAdapter(
-                  child: Container(height: 140.0),
+                  child: Container(height: 55.0),
                 )
               ],
             ),
@@ -119,7 +120,7 @@ class _ProductPageState extends State<ProductPage> {
           ),
           ProductSubWidget(),
           SliverToBoxAdapter(
-            child: Container(height: 140.0),
+            child: Container(height: 55.0),
           )
         ],
       );

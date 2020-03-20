@@ -53,72 +53,74 @@ class _StorePageState extends State<StorePage> {
         child: Consumer<CartModel>(
           builder: (_, model, child) {
             bool isShowCart = (model.cart?.items?.length ?? 0) != 0;
-            return isShowCart
-            ? SlidingUpPanel(
-              controller: _panelController,
-              minHeight: 80.0,
-              backdropEnabled: true,
-              renderPanelSheet: false,
-              onPanelOpened: () => _onCartOpen(model),
-              onPanelClosed: () => _onCartClose(model),
-              panel: StoreSlideFloatingPanelWidget(),
-              collapsed: StoreSlideFloatingCollapsedWidget(
-                  onSelected: () => _panelController.open()
-              ),
-              body: _body(isShowCart: true)
-            )
-            : _body(isShowCart: false);
-          },
+
+            return Stack(
+              children: <Widget>[
+                _body(isShowCart: isShowCart),
+                isShowCart
+                ? SlidingUpPanel(
+                  controller: _panelController,
+                  minHeight: 80.0,
+                  backdropEnabled: true,
+                  renderPanelSheet: false,
+                  onPanelOpened: () => _onCartOpen(model),
+                  onPanelClosed: () => _onCartClose(model),
+                  panel: StoreSlideFloatingPanelWidget(),
+                  collapsed: StoreSlideFloatingCollapsedWidget(
+                    onSelected: () => _panelController.open(),
+                  )
+                )
+                : Container()
+              ],
+            );
+          }
         ),
       )
     );
   }
 
   Widget _body({bool isShowCart = false}) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: isShowCart ? 50.0 : 0.0),
-      child: SmartRefresher(
-          physics: BouncingScrollPhysics(),
-          enablePullDown: true,
-          enablePullUp: true,
-          header: WaterDropMaterialHeader(
-            color: primaryColor,
-            backgroundColor: backgroundColor,
+    return SmartRefresher(
+        physics: BouncingScrollPhysics(),
+        enablePullDown: true,
+        enablePullUp: true,
+        header: WaterDropMaterialHeader(
+          color: primaryColor,
+          backgroundColor: backgroundColor,
+        ),
+        footer: ClassicFooter(
+          loadStyle: LoadStyle.ShowWhenLoading,
+          noDataText: '',
+          canLoadingText: '',
+          loadingText: '',
+          loadingIcon: Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: CupertinoActivityIndicator(),
           ),
-          footer: ClassicFooter(
-            loadStyle: LoadStyle.ShowWhenLoading,
-            noDataText: '',
-            canLoadingText: '',
-            loadingText: '',
-            loadingIcon: Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: CupertinoActivityIndicator(),
+          idleText: '',
+          idleIcon: Container(),
+          failedText: '탭하여 다시 시도',
+        ),
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        onLoading: _onLoading,
+        child: CustomScrollView(
+          key: PmgKeys.storePage,
+          slivers: <Widget>[
+            StoreHeaderWidget(sIdx: widget.sIdx), // desc
+            StoreDescriptionWidget(),
+            StoreCenterButtonWidget(),
+            StoreStoryWidget(),
+            StoreProductCategoryWidget(
+                sIdx: widget.sIdx,
+                onChangedCategory: _onChangedCategory
             ),
-            idleText: '',
-            idleIcon: Container(),
-            failedText: '탭하여 다시 시도',
-          ),
-          controller: _refreshController,
-          onRefresh: _onRefresh,
-          onLoading: _onLoading,
-          child: CustomScrollView(
-            key: PmgKeys.storePage,
-            slivers: <Widget>[
-              StoreHeaderWidget(sIdx: widget.sIdx), // desc
-              StoreDescriptionWidget(),
-              StoreCenterButtonWidget(),
-              StoreStoryWidget(),
-              StoreProductCategoryWidget(
-                  sIdx: widget.sIdx,
-                  onChangedCategory: _onChangedCategory
-              ),
-              StoreProductWidget(),
-              SliverToBoxAdapter(
-                child: Container(height: isShowCart ? 140.0 : 0.0),
-              )
-            ],
-          )
-      ),
+            StoreProductWidget(),
+            SliverToBoxAdapter(
+              child: Container(height: isShowCart ? 55.0 : 0.0),
+            )
+          ],
+        )
     );
   }
 
