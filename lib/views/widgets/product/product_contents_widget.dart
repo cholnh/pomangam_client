@@ -10,11 +10,6 @@ import 'package:pomangam_client/views/widgets/product/product_review_widget.dart
 import 'package:provider/provider.dart';
 
 class ProductContentsWidget extends StatelessWidget {
-
-  final int pIdx;
-
-  ProductContentsWidget({this.pIdx});
-
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
@@ -23,9 +18,7 @@ class ProductContentsWidget extends StatelessWidget {
           Product product = model.product;
           return Column(
             children: <Widget>[
-              ProductImageWidget(
-                pIdx: pIdx
-              ),
+              ProductImageWidget(),
               const Padding(padding: EdgeInsets.only(bottom: 10.0)),
               HomeContentsItemLikeWidget(
                 cntLike: product?.cntLike ?? 0,

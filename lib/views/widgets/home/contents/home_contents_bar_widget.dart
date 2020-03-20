@@ -1,12 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/key/pmg_key.dart';
-import 'package:pomangam_client/domains/order/time/order_time.dart';
-import 'package:pomangam_client/providers/cart/cart_model.dart';
 import 'package:pomangam_client/providers/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/providers/order/time/order_time_model.dart';
-import 'package:pomangam_client/providers/store/store_summary_model.dart';
 import 'package:pomangam_client/views/widgets/home/sort_picker/home_sort_picker_modal.dart';
 import 'package:pomangam_client/views/widgets/home/time_picker/home_time_picker_modal.dart';
 import 'package:provider/provider.dart';
@@ -61,7 +59,7 @@ class _HomeContentsBarWidgetState extends State<HomeContentsBarWidget> {
               ],
             ),
             onTap: () => _showModal(
-                widget: HomeTimePickerModal(onSelected: _selectTime)
+                widget: HomeTimePickerModal(onSelected: widget.onChangedTime)
             )
           );
         }
@@ -92,25 +90,7 @@ class _HomeContentsBarWidgetState extends State<HomeContentsBarWidget> {
     );
   }
 
-  _selectTime({OrderTime orderTime, DateTime changedOrderDate}) {
-    Navigator.pop(context);
-    Provider.of<StoreSummaryModel>(context, listen: false)
-    ..clearWithNotify()
-    ..fetch(
-        isForceUpdate: true,
-        dIdx: dIdx,
-        oIdx: orderTime.idx,
-        oDate: changedOrderDate
-    );
-
-    Provider.of<CartModel>(context, listen: false).cart
-    ..orderDate = changedOrderDate
-    ..orderTime = orderTime;
-
-    widget.onChangedTime();
-  }
-
-  _selectSort(sort) {
+  void _selectSort(sort) {
     Navigator.pop(context);
     setState(() {
       this.sort = sort;

@@ -38,14 +38,11 @@ class StoreProductItemWidget extends StatelessWidget {
                   ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
                 },
                 blendMode: BlendMode.darken,
-                child: Hero(
-                  tag: 'productImageHero${summary.idx}',
-                  child: CachedNetworkImage(
-                    imageUrl: '${Endpoint.serverDomain}/${summary.productImageMainPath}',
-                    fit: BoxFit.fill,
-                    placeholder: (context, url) => CupertinoActivityIndicator(),
-                    errorWidget: (context, url, error) => Icon(Icons.error_outline),
-                  ),
+                child: CachedNetworkImage(
+                  imageUrl: '${Endpoint.serverDomain}/${summary.productImageMainPath}',
+                  fit: BoxFit.fill,
+                  placeholder: (context, url) => CupertinoActivityIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error_outline),
                 )
             ),
             Container(

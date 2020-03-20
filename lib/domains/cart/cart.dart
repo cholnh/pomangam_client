@@ -19,4 +19,8 @@ class Cart {
     });
     return total;
   }
+
+  void clear() {
+    items.clear();
+  }
 }

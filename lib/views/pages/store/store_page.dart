@@ -53,7 +53,6 @@ class _StorePageState extends State<StorePage> {
         child: Consumer<CartModel>(
           builder: (_, model, child) {
             bool isShowCart = (model.cart?.items?.length ?? 0) != 0;
-
             return Stack(
               children: <Widget>[
                 _body(isShowCart: isShowCart),
@@ -112,8 +111,8 @@ class _StorePageState extends State<StorePage> {
             StoreCenterButtonWidget(),
             StoreStoryWidget(),
             StoreProductCategoryWidget(
-                sIdx: widget.sIdx,
-                onChangedCategory: _onChangedCategory
+              sIdx: widget.sIdx,
+              onChangedCategory: _onChangedCategory
             ),
             StoreProductWidget(),
             SliverToBoxAdapter(
@@ -188,10 +187,6 @@ class _StorePageState extends State<StorePage> {
     } else {
       _refreshController.loadComplete();
     }
-  }
-
-  void _onBottomButtonSelected() {
-    Injector.appInstance.getDependency<AppRouter>().navigateTo(context, '/carts');
   }
 
   void _onRefresh() async {

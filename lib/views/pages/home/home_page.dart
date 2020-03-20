@@ -6,15 +6,19 @@ import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/key/pmg_key.dart';
 import 'package:pomangam_client/domains/tab/tab_menu.dart';
 import 'package:pomangam_client/providers/advertisement/advertisement_model.dart';
+import 'package:pomangam_client/providers/cart/cart_model.dart';
 import 'package:pomangam_client/providers/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/providers/order/time/order_time_model.dart';
 import 'package:pomangam_client/providers/store/store_summary_model.dart';
 import 'package:pomangam_client/providers/tab/tab_model.dart';
 import 'package:pomangam_client/views/widgets/home/advertisement/home_advertisement_widget.dart';
-import 'package:pomangam_client/views/widgets/home/contents/home_contents_widget.dart';
 import 'package:pomangam_client/views/widgets/home/contents/home_contents_bar_widget.dart';
+import 'package:pomangam_client/views/widgets/home/contents/home_contents_widget.dart';
+import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_collapsed_widget.dart';
+import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_panel_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -23,7 +27,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  final PanelController _panelController = PanelController();
   final RefreshController _refreshController = RefreshController(initialRefresh: false);
+  bool isPanelShown = false;
 
   StoreSummaryModel storeSummaryModel;
   int dIdx;
@@ -65,6 +71,33 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    return Consumer<CartModel>(
+      builder: (_, model, child) {
+        bool isShowCart = (model.cart?.items?.length ?? 0) != 0;
+        return Stack(
+          children: <Widget>[
+            _body(isShowCart: isShowCart),
+            isShowCart
+            ? SlidingUpPanel(
+              controller: _panelController,
+              minHeight: 80.0,
+              backdropEnabled: true,
+              renderPanelSheet: false,
+              onPanelOpened: () => _onCartOpen(model),
+              onPanelClosed: () => _onCartClose(model),
+              panel: StoreSlideFloatingPanelWidget(),
+              collapsed: StoreSlideFloatingCollapsedWidget(
+                onSelected: () => _panelController.open(),
+              )
+            )
+            : Container()
+          ],
+        );
+      }
+    );
+  }
+
+  Widget _body({bool isShowCart = false}) {
     return SmartRefresher(
       physics: BouncingScrollPhysics(),
       enablePullDown: true,
@@ -94,12 +127,33 @@ class _HomePageState extends State<HomePage> {
         slivers: <Widget>[
           HomeAdvertisementWidget(),
           HomeContentsBarWidget(
-            onChangedTime: _onChangedTime
+              onChangedTime: _onChangedTime
           ),
           HomeContentsWidget(),
+          SliverToBoxAdapter(
+            child: Container(height: isShowCart ? 55.0 : 0.0),
+          )
         ],
       ),
     );
+  }
+
+  void _onCartOpen(CartModel cartModel) {
+    if(isPanelShown) return;
+    isPanelShown = true;
+    DeliverySiteModel deliverySiteModel = Provider.of<DeliverySiteModel>(context, listen: false);
+    OrderTimeModel orderTimeModel = Provider.of<OrderTimeModel>(context, listen: false);
+
+    cartModel.updateOrderableStore(
+        dIdx: deliverySiteModel.userDeliverySite?.idx,
+        oIdx: orderTimeModel.userOrderTime?.idx,
+        oDate: orderTimeModel.userOrderDate
+    );
+  }
+
+  void _onCartClose(CartModel cartModel) {
+    isPanelShown = false;
+    cartModel.changeIsUpdatedOrderableStore(false);
   }
 
   void _onChangedTime() {

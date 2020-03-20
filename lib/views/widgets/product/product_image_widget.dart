@@ -10,25 +10,17 @@ import 'package:scrolling_page_indicator/scrolling_page_indicator.dart';
 
 class ProductImageWidget extends StatelessWidget {
 
-  final int pIdx;
   final PageController _controller = PageController();
-
-  ProductImageWidget({this.pIdx});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ProductModel>(
       builder: (_, model, child) {
-
         List<String> imagePaths = List();
-        imagePaths.clear();
-        List<Widget> items = List();
-        items.add(_buildPage(context, model.summary?.productImageMainPath, true));
         if(model.product != null) {
+          imagePaths.add(model.product.productImageMainPath);
           imagePaths.addAll(model.product.productImageSubPaths);
         }
-        items.addAll(imagePaths?.map((imagePath)
-          => _buildPage(context, imagePath, false))?.toList());
 
         return SizedBox(
           key: PmgKeys.productImage,
@@ -37,25 +29,25 @@ class ProductImageWidget extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: PageView(
-                  children: items,
+                  children: _buildPage(context, imagePaths),
                   controller: _controller,
                 ),
               ),
               Opacity(
-                opacity: (imagePaths.length + 1) > 1 ? 1 : 0,
+                opacity: (imagePaths.length) > 1 ? 1 : 0,
                 child: Align(
                   alignment: Alignment.center,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 18.0),
                     child: ScrollingPageIndicator(
-                        dotColor: Colors.black12,
-                        dotSelectedColor: primaryColor,
-                        dotSize: 5,
-                        dotSelectedSize: 6,
-                        dotSpacing: 9,
-                        controller: _controller,
-                        itemCount: (imagePaths.length + 1),
-                        orientation: Axis.horizontal
+                      dotColor: Colors.black12,
+                      dotSelectedColor: primaryColor,
+                      dotSize: 5,
+                      dotSelectedSize: 6,
+                      dotSpacing: 9,
+                      controller: _controller,
+                      itemCount: (imagePaths.length),
+                      orientation: Axis.horizontal
                     ),
                   ),
                 ),
@@ -67,31 +59,19 @@ class ProductImageWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildPage(BuildContext context, String imagePath, bool isHero) {
-    double width = MediaQuery.of(context).size.width;
-    return GestureDetector(
-      child: Container(
-          width: width,
-//          decoration: BoxDecoration(
-//              border: Border.all(color: Colors.grey, width: 0.3)
-//          ),
-          child: isHero
-            ? Hero(
-                tag: 'productImageHero$pIdx',
-                child: CachedNetworkImage(
-                  imageUrl: '${Endpoint.serverDomain}/$imagePath',
-                  fit: BoxFit.fill,
-                  placeholder: (context, url) => CupertinoActivityIndicator(),
-                  errorWidget: (context, url, error) => Icon(Icons.error_outline),
-                ),
-              )
-            : CachedNetworkImage(
-                imageUrl: '${Endpoint.serverDomain}/$imagePath',
-                fit: BoxFit.fill,
-                placeholder: (context, url) => CupertinoActivityIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.error_outline),
-              )
-      ),
-    );
+  List<Widget> _buildPage(BuildContext context, List<String> imagePaths) {
+    return imagePaths.map((imagePath) {
+      return GestureDetector(
+        child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: CachedNetworkImage(
+              imageUrl: '${Endpoint.serverDomain}/$imagePath',
+              fit: BoxFit.fill,
+              placeholder: (context, url) => CupertinoActivityIndicator(),
+              errorWidget: (context, url, error) => Icon(Icons.error_outline),
+            )
+        ),
+      );
+    }).toList();
   }
 }

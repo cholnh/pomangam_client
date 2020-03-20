@@ -52,6 +52,13 @@ class CartModel with ChangeNotifier {
     ));
   }
 
+  void clear({bool notify = false}) {
+    cart.clear();
+    if(notify) {
+      notifyListeners();
+    }
+  }
+
   void removeItem(CartItem removeItem) {
     this.cart.items.removeWhere((CartItem el) => el.idx == removeItem.idx);
     notifyListeners();
