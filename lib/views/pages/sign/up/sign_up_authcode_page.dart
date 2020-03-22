@@ -3,10 +3,8 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:injector/injector.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
-import 'package:pomangam_client/_bases/router/app_router.dart';
 import 'package:pomangam_client/_bases/util/string_utils.dart';
 import 'package:pomangam_client/domains/sign/enum/auth_code_state.dart';
 import 'package:pomangam_client/providers/sign/sign_up_model.dart';
@@ -177,12 +175,10 @@ class _SignUpAuthCodePageState extends State<SignUpAuthCodePage> {
         context,
         '핸드폰번호를 확인해주세요.',
         onPressed: (dialogContext) {
-          Injector.appInstance.getDependency<AppRouter>()
-              .pop(dialogContext);
-          Future.delayed(Duration(milliseconds: 500), ()
-          => Injector.appInstance.getDependency<AppRouter>()
-              .pop(context));
-      });
+          Navigator.pop(dialogContext);
+          Future.delayed(Duration(milliseconds: 500), () => Navigator.pop(context));
+        }
+      );
     }
   }
 
@@ -204,8 +200,5 @@ class _SignUpAuthCodePageState extends State<SignUpAuthCodePage> {
     }
   }
 
-  void _routeNext() {
-    Injector.appInstance.getDependency<AppRouter>()
-        .navigateTo(context, '/signup/password');
-  }
+  void _routeNext() => Navigator.pushNamed(context, '/signup/password');
 }

@@ -64,7 +64,7 @@ class HomeAdvertisementWidget extends StatelessWidget {
             ),
             onTap: () => ad.nextLocation == null
               ? {}
-              : Injector.appInstance.getDependency<AppRouter>().navigateTo(context, ad.nextLocation),
+              : Navigator.pushNamed(context, ad.nextLocation),
           );
         },
       );

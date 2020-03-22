@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:injector/injector.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
-import 'package:pomangam_client/_bases/router/app_router.dart';
 import 'package:pomangam_client/providers/sign/sign_up_model.dart';
 import 'package:provider/provider.dart';
 
@@ -14,14 +12,10 @@ void showModal({BuildContext context}) {
       context: context,
       builder: (context) {
         return SignModal(
-            onSignIn: () {
-              Injector.appInstance.getDependency<AppRouter>()
-                  .navigateTo(context, '/signin');
-            },
+            onSignIn: () => Navigator.pushNamed(context, '/signin'),
             onSignUp: () {
               Provider.of<SignUpModel>(context, listen: false).returnUrl = '/';
-              Injector.appInstance.getDependency<AppRouter>()
-                  .navigateTo(context, '/signup');
+              Navigator.pushNamed(context, '/signup');
             }
         );
       }

@@ -25,11 +25,6 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -71,9 +66,6 @@ class _SplashPageState extends State<SplashPage> {
     // addPostFrameCallback 메서드를 통해 build 완료를 통지받음.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       await clearPrefs(); // for test
-      //await _initializer.signIn(phoneNumber: '01064784899#test', password: '1234'); // for test
-
-      // 초기화 진행
       _initializer
           .initialize(
             context: context,
@@ -86,11 +78,11 @@ class _SplashPageState extends State<SplashPage> {
     });
   }
 
-  void _onDone() => _router.navigateTo(context, '/');
+  void _onDone() => _router.navigateTo(context, '/', clearStack: true);
 
-  void _onServerError() => _router.navigateTo(context, '/error/Server Down');
+  void _onServerError() => _router.navigateTo(context, '/error/Server Down', clearStack: true);
 
-  void _deliverySiteNotIssuedHandler() =>  _router.navigateTo(context, '/dsites');
+  void _deliverySiteNotIssuedHandler() =>  _router.navigateTo(context, '/dsites', clearStack: true);
 
   @visibleForTesting
   Future<void> clearPrefs() async {

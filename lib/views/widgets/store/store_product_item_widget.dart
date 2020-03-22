@@ -1,17 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:injector/injector.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/network/constant/endpoint.dart';
-import 'package:pomangam_client/_bases/router/app_router.dart';
 import 'package:pomangam_client/domains/product/product_summary.dart';
 import 'package:pomangam_client/providers/product/product_model.dart';
 import 'package:provider/provider.dart';
 
 class StoreProductItemWidget extends StatelessWidget {
 
-  final AppRouter _router = Injector.appInstance.getDependency<AppRouter>();
   final ProductSummary summary;
 
   StoreProductItemWidget({Key key, this.summary}): super(key: key);
@@ -66,6 +63,6 @@ class StoreProductItemWidget extends StatelessWidget {
     Provider.of<ProductModel>(context, listen: false)
     ..product?.productImageSubPaths?.clear()
     ..summary = summary;
-    _router.navigateTo(context, '/products/${summary.idx}');
+    Navigator.pushNamed(context, '/products/${summary.idx}');
   }
 }

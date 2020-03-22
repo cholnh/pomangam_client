@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/_bases/i18n/messages.dart';
-import 'package:pomangam_client/_bases/router/app_router.dart';
-import 'package:injector/injector.dart';
 
 class NotFoundPage extends StatelessWidget {
-  final AppRouter router = Injector.appInstance.getDependency<AppRouter>();
 
   NotFoundPage({Key key}) : super(key: key);
 
@@ -24,11 +21,11 @@ class NotFoundPage extends StatelessWidget {
                   RaisedButton(
                     child: Text(Messages.notFoundHomeBtn),
                     color: Theme.of(context).accentColor,
-                    onPressed: () => router.navigateTo(context, '/', replace: true),
+                    onPressed: () => Navigator.pushReplacementNamed(context, '/'),
                   ),
                   RaisedButton(
                     child: Text(Messages.notFoundBackBtn),
-                    onPressed: () => router.pop(context),
+                    onPressed: () => Navigator.pop(context),
                   ),
                 ],
               )

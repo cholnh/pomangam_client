@@ -110,6 +110,7 @@ class _ProductSlideFloatingPanelWidgetState extends State<ProductSlideFloatingPa
     List<ProductSub> selectedSubs = List();
     product?.productSubCategories?.forEach((subCategory) => selectedSubs.addAll(subCategory.selectedProductSub));
 
+    // 고객 요구사항
     String requirement = _textEditingController.text;
     requirement += (productModel.isUserRecentRequirement
       ? (requirement.isEmpty ? '' : ', ') + '${productModel.userRecentRequirement}'
@@ -124,8 +125,10 @@ class _ProductSlideFloatingPanelWidgetState extends State<ProductSlideFloatingPa
       requirement: requirement
     );
 
-    Injector.appInstance.getDependency<AppRouter>()
-      .pop(context);
+    // 뒤로가기
+    Navigator.pop(context);
+
+    // toast 메시지
     Fluttertoast.showToast(
       msg: "카트에 추가되었습니다.",
       toastLength: Toast.LENGTH_SHORT,

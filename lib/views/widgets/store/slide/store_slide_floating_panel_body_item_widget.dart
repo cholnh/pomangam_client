@@ -30,44 +30,47 @@ class StoreSlideFloatingPanelBodyItemWidget extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
       child: Column(
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Opacity(
-                opacity: isOrderable ? 1.0 : 0.5,
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                        margin: const EdgeInsets.only(right: 5.0),
-                        child: CircleAvatar(
-                            child: CachedNetworkImage(
-                              imageUrl: '${Endpoint.serverDomain}/${first.store.brandImagePath}',
-                              fit: BoxFit.fill,
-                              width: 12.0,
-                              height: 12.0,
-                              placeholder: (context, url) => CupertinoActivityIndicator(),
-                              errorWidget: (context, url, error) => Icon(Icons.error_outline),
-                            ),
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.white
-                        ),
-                        width: 18.0,
-                        height: 18.0,
-                        padding: const EdgeInsets.all(0.5),
-                        decoration: BoxDecoration(
-                          color: Colors.black12,
-                          shape: BoxShape.circle,
-                        )
-                    ),
-                    Text('${first.store.storeInfo.name}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
-                    Text(' (${first?.quantityOrderable ?? 0}개 주문가능)', style: TextStyle(fontSize: 13.0, color: subTextColor))
-                  ],
+          GestureDetector(
+            onTap: () => _navigateToStore(context, first.store.idx),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Opacity(
+                  opacity: isOrderable ? 1.0 : 0.5,
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                          margin: const EdgeInsets.only(right: 5.0),
+                          child: CircleAvatar(
+                              child: CachedNetworkImage(
+                                imageUrl: '${Endpoint.serverDomain}/${first.store.brandImagePath}',
+                                fit: BoxFit.fill,
+                                width: 12.0,
+                                height: 12.0,
+                                placeholder: (context, url) => CupertinoActivityIndicator(),
+                                errorWidget: (context, url, error) => Icon(Icons.error_outline),
+                              ),
+                              foregroundColor: Colors.white,
+                              backgroundColor: Colors.white
+                          ),
+                          width: 18.0,
+                          height: 18.0,
+                          padding: const EdgeInsets.all(0.5),
+                          decoration: BoxDecoration(
+                            color: Colors.black12,
+                            shape: BoxShape.circle,
+                          )
+                      ),
+                      Text('${first.store.storeInfo.name}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
+                      Text(' (${first?.quantityOrderable ?? 0}개 주문가능)', style: TextStyle(fontSize: 13.0, color: subTextColor))
+                    ],
+                  ),
                 ),
-              ),
-              isOrderable
-              ? Container()
-              : Text('주문량 초과', style: TextStyle(fontWeight: FontWeight.bold, color: primaryColor, fontSize: titleFontSize))
-            ],
+                isOrderable
+                ? Container()
+                : Text('주문량 초과', style: TextStyle(fontWeight: FontWeight.bold, color: primaryColor, fontSize: titleFontSize))
+              ],
+            ),
           ),
           Padding(padding: const EdgeInsets.only(bottom: 5.0)),
           Column(
@@ -153,5 +156,9 @@ class StoreSlideFloatingPanelBodyItemWidget extends StatelessWidget {
         timeInSecForIos: 1,
         fontSize: titleFontSize
     );
+  }
+
+  void _navigateToStore(BuildContext context, int sIdx) {
+    Navigator.pushNamed(context, '/stores/$sIdx');
   }
 }

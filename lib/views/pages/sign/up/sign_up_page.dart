@@ -297,10 +297,7 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
-  void _routeNext() {
-    Injector.appInstance.getDependency<AppRouter>()
-        .navigateTo(context, '/signup/authcode');
-  }
+  void _routeNext() => Navigator.pushNamed(context, '/signup/authcode');
 
   void _setTitle(String to) {
     _model.changeTitle(to: to);

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:injector/injector.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/network/constant/endpoint.dart';
-import 'package:pomangam_client/_bases/router/app_router.dart';
 import 'package:pomangam_client/domains/store/store_summary.dart';
 import 'package:pomangam_client/providers/order/time/order_time_model.dart';
 import 'package:pomangam_client/providers/store/store_model.dart';
@@ -28,7 +26,6 @@ class HomeContentsItemWidget extends StatefulWidget {
 
 class _HomeContentsItemWidgetState extends State<HomeContentsItemWidget> {
 
-  final AppRouter _router = Injector.appInstance.getDependency<AppRouter>();
   bool _isOrderable;
   bool _isOpening;
 
@@ -106,7 +103,7 @@ class _HomeContentsItemWidgetState extends State<HomeContentsItemWidget> {
   void _navigateToStorePage() {
     Provider.of<StoreModel>(context, listen: false)
         .summary = widget.summary;
-    _router.navigateTo(context, '/stores/${widget.summary.idx}');
+    Navigator.pushNamed(context, '/stores/${widget.summary.idx}');
   }
 
   String _subTitle() {

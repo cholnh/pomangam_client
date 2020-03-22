@@ -10,7 +10,7 @@ class MorePage extends StatefulWidget {
 }
 
 class _MorePageState extends State<MorePage> {
-  final AppRouter router = Injector.appInstance.getDependency<AppRouter>();
+
   bool _saving = false;
   bool _bedroom = false;
 

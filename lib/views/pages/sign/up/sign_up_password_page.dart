@@ -191,8 +191,5 @@ class _SignUpPasswordPageState extends State<SignUpPasswordPage> {
     Navigator.popUntil(context, ModalRoute.withName(url));
   }
 
-  void _routeNext() {
-    Injector.appInstance.getDependency<AppRouter>()
-        .navigateTo(context, '/signup/nickname');
-  }
+  void _routeNext() => Navigator.pushNamed(context, '/signup/nickname');
 }
