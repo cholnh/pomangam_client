@@ -11,6 +11,8 @@ import 'package:pomangam_client/providers/deliverysite/delivery_site_model.dart'
 import 'package:pomangam_client/providers/order/time/order_time_model.dart';
 import 'package:pomangam_client/providers/store/store_summary_model.dart';
 import 'package:pomangam_client/providers/tab/tab_model.dart';
+import 'package:pomangam_client/views/widgets/_bases/base_app_bar.dart';
+import 'package:pomangam_client/views/widgets/_bases/tab_selector.dart';
 import 'package:pomangam_client/views/widgets/home/advertisement/home_advertisement_widget.dart';
 import 'package:pomangam_client/views/widgets/home/contents/home_contents_bar_widget.dart';
 import 'package:pomangam_client/views/widgets/home/contents/home_contents_widget.dart';
@@ -71,29 +73,38 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CartModel>(
-      builder: (_, model, child) {
-        bool isShowCart = (model.cart?.items?.length ?? 0) != 0;
-        return Stack(
-          children: <Widget>[
-            _body(isShowCart: isShowCart),
-            isShowCart
-            ? SlidingUpPanel(
-              controller: _panelController,
-              minHeight: 80.0,
-              backdropEnabled: true,
-              renderPanelSheet: false,
-              onPanelOpened: () => _onCartOpen(model),
-              onPanelClosed: () => _onCartClose(model),
-              panel: StoreSlideFloatingPanelWidget(),
-              collapsed: StoreSlideFloatingCollapsedWidget(
-                onSelected: () => _panelController.open(),
-              )
+    return Material(
+      child: Consumer<CartModel>(
+        builder: (_, model, child) {
+          bool isShowCart = (model.cart?.items?.length ?? 0) != 0;
+          return isShowCart
+            ? Scaffold(
+                bottomNavigationBar: TabSelector(),
+                body: SlidingUpPanel(
+                  controller: _panelController,
+                  minHeight: 80.0,
+                  maxHeight: 550.0,
+                  backdropEnabled: true,
+                  renderPanelSheet: false,
+                  onPanelOpened: () => _onCartOpen(model),
+                  onPanelClosed: () => _onCartClose(model),
+                  panel: StoreSlideFloatingPanelWidget(),
+                  collapsed: StoreSlideFloatingCollapsedWidget(
+                    onSelected: () => _panelController.open(),
+                  ),
+                  body: Scaffold(
+                    appBar: BaseAppBar(),
+                    body: _body(isShowCart: isShowCart),
+                  ),
+                ),
             )
-            : Container()
-          ],
-        );
-      }
+            : Scaffold(
+                appBar: BaseAppBar(),
+                bottomNavigationBar: TabSelector(),
+                body: _body(isShowCart: isShowCart),
+            );
+          }
+        ),
     );
   }
 
@@ -131,7 +142,7 @@ class _HomePageState extends State<HomePage> {
           ),
           HomeContentsWidget(),
           SliverToBoxAdapter(
-            child: Container(height: isShowCart ? 55.0 : 0.0),
+            child: Container(height: isShowCart ? 100.0 : 0.0),
           )
         ],
       ),

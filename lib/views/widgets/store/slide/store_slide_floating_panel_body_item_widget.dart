@@ -14,17 +14,14 @@ import 'package:provider/provider.dart';
 class StoreSlideFloatingPanelBodyItemWidget extends StatelessWidget {
 
   final List<CartItem> cartItems;
+  final bool isLast;
 
-  StoreSlideFloatingPanelBodyItemWidget({this.cartItems});
+  StoreSlideFloatingPanelBodyItemWidget({this.cartItems, this.isLast});
 
   @override
   Widget build(BuildContext context) {
     CartItem first = cartItems.first;
     bool isOrderable = first.isOrderable;
-
-//    int totalQuantity = 0;
-//    cartItems.forEach((item) => totalQuantity += item.quantity);
-//    bool isOrderable = (first?.quantityOrderable ?? 0) - totalQuantity >= 0;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
@@ -76,7 +73,7 @@ class StoreSlideFloatingPanelBodyItemWidget extends StatelessWidget {
           Column(
             children: _itemsWidget(context, isOrderable),
           ),
-          Divider(height: 20.0)
+          isLast ? Container() : Divider(height: 20.0)
         ],
       ),
     );

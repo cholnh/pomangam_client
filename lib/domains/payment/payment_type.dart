@@ -1,0 +1,1 @@
+enum PaymentType { CREDIT_CARD, PHONE, V_BANK }

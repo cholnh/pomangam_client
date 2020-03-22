@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/util/string_utils.dart';
 import 'package:pomangam_client/providers/cart/cart_model.dart';
 import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_panel_body_widget.dart';
+import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_panel_footer_widget.dart';
 import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_panel_header_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -38,6 +38,7 @@ class StoreSlideFloatingPanelWidget extends StatelessWidget {
                     ],
                   ),
                 ),
+                StoreSlideFloatingPanelFooterWidget()
               ],
             ),
           ),
@@ -59,7 +60,7 @@ class StoreSlideFloatingPanelWidget extends StatelessWidget {
                       ),
                     ),
                     onTap: model.isUpdatedOrderableStore && model.isAllOrderable
-                      ? () => print('결제 page 이동')
+                      ? () => _saveOrder(context)
                       : () {},
                   );
                 },
@@ -69,5 +70,19 @@ class StoreSlideFloatingPanelWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _saveOrder(BuildContext context) {
+    print('[결제하기 누름]');
+    CartModel cartModel = Provider.of<CartModel>(context, listen: false);
+    cartModel.cart.items.forEach((item) {
+      print('${item.product.productInfo.name} ${item.quantity}개');
+      item.subs.forEach((sub) {
+        print('  - ${sub.productSubInfo.name} ${item.quantity}개');
+      });
+      print('요구사항: ${item.requirement}');
+      print('총액: ${item.totalPrice()}');
+      print('------------------------------');
+    });
   }
 }

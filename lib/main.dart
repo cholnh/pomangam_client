@@ -19,6 +19,7 @@ import 'package:pomangam_client/providers/sign/sign_up_model.dart';
 import 'package:pomangam_client/providers/store/store_model.dart';
 import 'package:pomangam_client/providers/store/store_product_category_model.dart';
 import 'package:pomangam_client/providers/store/store_summary_model.dart';
+import 'package:pomangam_client/providers/tab/tab_model.dart';
 import 'package:pomangam_client/views/pages/_bases/splash_page.dart';
 import 'package:provider/provider.dart';
 
@@ -32,8 +33,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => TabModel(), lazy: true),
         ChangeNotifierProvider(create: (_) => SignUpModel(), lazy: true),
         ChangeNotifierProvider(create: (_) => SignInModel(), lazy: true),
         ChangeNotifierProvider(create: (_) => DeliverySiteModel(), lazy: true),

@@ -5,8 +5,6 @@ import 'package:pomangam_client/views/pages/home/home_page.dart';
 import 'package:pomangam_client/views/pages/more/more_page.dart';
 import 'package:pomangam_client/views/pages/order_info/order_info_page.dart';
 import 'package:pomangam_client/views/pages/recommend/recommend_page.dart';
-import 'package:pomangam_client/views/widgets/_bases/base_app_bar.dart';
-import 'package:pomangam_client/views/widgets/_bases/tab_selector.dart';
 import 'package:provider/provider.dart';
 
 class BasePage extends StatelessWidget {
@@ -17,14 +15,7 @@ class BasePage extends StatelessWidget {
     TabModel tabModel = Provider.of<TabModel>(context);
     return WillPopScope(
       onWillPop: () => Future.value(false), // 뒤로가기 방지
-      child: Scaffold(
-        appBar: BaseAppBar(),
-        body: _selectedPage(tabModel.tab),
-        bottomNavigationBar: TabSelector(
-          activeTab: tabModel.tab,
-          onTabSelected: (tab) => tabModel.change(tab),
-        )
-      )
+      child: _selectedPage(tabModel.tab)
     );
   }
 

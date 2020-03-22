@@ -1,10 +1,9 @@
 import 'package:fluro/fluro.dart';
-import 'package:pomangam_client/providers/tab/tab_model.dart';
 import 'package:pomangam_client/views/pages/_bases/base_page.dart';
 import 'package:pomangam_client/views/pages/_bases/error_page.dart';
 import 'package:pomangam_client/views/pages/_bases/not_found_page.dart';
-import 'package:pomangam_client/views/pages/cart/cart_page.dart';
 import 'package:pomangam_client/views/pages/deliverysite/delivery_site_page.dart';
+import 'package:pomangam_client/views/pages/payment/payment_page.dart';
 import 'package:pomangam_client/views/pages/product/product_page.dart';
 import 'package:pomangam_client/views/pages/sign/in/sign_in_page.dart';
 import 'package:pomangam_client/views/pages/sign/up/sign_up_authcode_page.dart';
@@ -12,24 +11,28 @@ import 'package:pomangam_client/views/pages/sign/up/sign_up_nickname_page.dart';
 import 'package:pomangam_client/views/pages/sign/up/sign_up_page.dart';
 import 'package:pomangam_client/views/pages/sign/up/sign_up_password_page.dart';
 import 'package:pomangam_client/views/pages/store/store_page.dart';
-import 'package:provider/provider.dart';
 
 class AppRouter extends Router {
   void configureRoutes() {
+
+    /// A NotFoundPage router path.
+    ///
+    /// When an unknown path is called, Returns the page specified in the handler.
+    super.notFoundHandler =
+      Handler(handlerFunc: (context, params) {
+        return NotFoundPage();
+    });
+
 
     /// A HomePage router path.
     ///
     /// Returns the page specified in the handler.
     super.define("/",
       handler:  Handler(handlerFunc: (context, params) {
-        return MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (_) => TabModel(), lazy: true),
-          ],
-          child: BasePage(),
-        );
+        return BasePage();
       }),
-      transitionType: TransitionType.material);
+      transitionType: TransitionType.material
+    );
 
 
     /// A HomePage router path.
@@ -39,7 +42,8 @@ class AppRouter extends Router {
       handler:  Handler(handlerFunc: (context, params) {
         return ErrorPage(contents: params['msg'][0]);
       }),
-      transitionType: TransitionType.material);
+      transitionType: TransitionType.material
+    );
 
 
     /// A StorePage router path.
@@ -50,18 +54,20 @@ class AppRouter extends Router {
         int sIdx = int.parse(params['idx'][0]);
         return StorePage(sIdx: sIdx);
       }),
-      transitionType: TransitionType.cupertino);
+      transitionType: TransitionType.cupertino
+    );
 
 
     /// A ProductPage router path.
     ///
     /// Returns the page specified in the handler.
     super.define("/products/:idx",
-        handler: Handler(handlerFunc: (context, params) {
-          int pIdx = int.parse(params['idx'][0]);
-          return ProductPage(pIdx: pIdx);
-        }),
-        transitionType: TransitionType.cupertino);
+      handler: Handler(handlerFunc: (context, params) {
+        int pIdx = int.parse(params['idx'][0]);
+        return ProductPage(pIdx: pIdx);
+      }),
+      transitionType: TransitionType.cupertino
+    );
 
 
     /// A SignIn router path.
@@ -71,7 +77,8 @@ class AppRouter extends Router {
       handler: Handler(handlerFunc: (context, params) {
         return SignInPage();
       }),
-      transitionType: TransitionType.materialFullScreenDialog);
+      transitionType: TransitionType.materialFullScreenDialog
+    );
 
 
     /// A SignUp router path.
@@ -81,7 +88,8 @@ class AppRouter extends Router {
       handler: Handler(handlerFunc: (context, params) {
         return SignUpPage();
       }),
-      transitionType: TransitionType.materialFullScreenDialog);
+      transitionType: TransitionType.materialFullScreenDialog
+    );
 
 
     /// A SignUpAuthCodePage router path.
@@ -91,7 +99,8 @@ class AppRouter extends Router {
       handler: Handler(handlerFunc: (context, params) {
         return SignUpAuthCodePage();
       }),
-      transitionType: TransitionType.cupertino);
+      transitionType: TransitionType.cupertino
+    );
 
 
     /// A SignUpPasswordPage router path.
@@ -101,7 +110,8 @@ class AppRouter extends Router {
       handler: Handler(handlerFunc: (context, params) {
         return SignUpPasswordPage();
       }),
-      transitionType: TransitionType.cupertino);
+      transitionType: TransitionType.cupertino
+    );
 
 
     /// A SignUpNicknamePage router path.
@@ -111,7 +121,8 @@ class AppRouter extends Router {
       handler: Handler(handlerFunc: (context, params) {
         return SignUpNicknamePage();
       }),
-      transitionType: TransitionType.cupertino);
+      transitionType: TransitionType.cupertino
+    );
 
 
     /// A DeliverySitePage router path.
@@ -121,27 +132,19 @@ class AppRouter extends Router {
       handler: Handler(handlerFunc: (context, params) {
         return DeliverySitePage();
       }),
-      transitionType: TransitionType.material);
+      transitionType: TransitionType.material
+    );
 
 
-    /// A CartPage router path.
+    /// A PaymentPage router path.
     ///
     /// Returns the page specified in the handler.
-    super.define("/carts",
+    super.define("/payments",
       handler: Handler(handlerFunc: (context, params) {
-        return CartPage();
+        return PaymentPage();
       }),
-      transitionType: TransitionType.cupertino);
-
-
-
-    /// A NotFoundPage router path.
-    ///
-    /// When an unknown path is called, Returns the page specified in the handler.
-    super.notFoundHandler =
-      Handler(handlerFunc: (context, params) {
-        return NotFoundPage();
-    });
+      transitionType: TransitionType.inFromBottom
+    );
 
   }
 }

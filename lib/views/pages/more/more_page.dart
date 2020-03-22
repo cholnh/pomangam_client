@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:injector/injector.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:pomangam_client/_bases/router/app_router.dart';
+import 'package:pomangam_client/views/widgets/_bases/base_app_bar.dart';
+import 'package:pomangam_client/views/widgets/_bases/tab_selector.dart';
 import 'package:pomangam_client/views/widgets/sign/sign_modal.dart';
 
 class MorePage extends StatefulWidget {
@@ -29,35 +29,39 @@ class _MorePageState extends State<MorePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ModalProgressHUD(
-        inAsyncCall: _saving,
-        child: Form(
-          child: Column(
-            children: [
-              SwitchListTile(
-                title: const Text('Bedroom'),
-                value: _bedroom,
-                onChanged: (bool value) {
-                  setState(() {
-                    _bedroom = value;
-                  });
-                },
-                secondary: const Icon(Icons.hotel),
-              ),
-              RaisedButton(
-                onPressed: _submit,
-                child: Text('Save'),
-              ),
-              Divider(),
-              RaisedButton(
-                onPressed: () => showModal(context: context),
-                child: Text('Login'),
-              ),
-            ],
+    return Scaffold(
+      appBar: BaseAppBar(),
+      bottomNavigationBar: TabSelector(),
+      body: Center(
+        child: ModalProgressHUD(
+          inAsyncCall: _saving,
+          child: Form(
+            child: Column(
+              children: [
+                SwitchListTile(
+                  title: const Text('Bedroom'),
+                  value: _bedroom,
+                  onChanged: (bool value) {
+                    setState(() {
+                      _bedroom = value;
+                    });
+                  },
+                  secondary: const Icon(Icons.hotel),
+                ),
+                RaisedButton(
+                  onPressed: _submit,
+                  child: Text('Save'),
+                ),
+                Divider(),
+                RaisedButton(
+                  onPressed: () => showModal(context: context),
+                  child: Text('Login'),
+                ),
+              ],
+            ),
           ),
-        ),
 
+        ),
       ),
     );
   }

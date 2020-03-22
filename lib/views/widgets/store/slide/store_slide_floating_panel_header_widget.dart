@@ -11,7 +11,7 @@ class StoreSlideFloatingPanelHeaderWidget extends StatelessWidget {
     return Column(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.fromLTRB(25.0, 25.0, 25.0, 0.0),
+          padding: const EdgeInsets.fromLTRB(25.0, 20.0, 25.0, 0.0),
           child: Consumer<CartModel>(
             builder: (_, model, child) {
               return Column(
@@ -34,7 +34,7 @@ class StoreSlideFloatingPanelHeaderWidget extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Text('수정', style: TextStyle(fontWeight: FontWeight.bold, color: primaryColor, fontSize: titleFontSize))
+                      Text('변경', style: TextStyle(fontWeight: FontWeight.bold, color: primaryColor, fontSize: titleFontSize))
                     ],
                   ),
                   Padding(padding: EdgeInsets.only(bottom: 3.0)),

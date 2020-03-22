@@ -47,34 +47,38 @@ class _StorePageState extends State<StorePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: StoreAppBar(context),
-      body: SafeArea(
-        child: Consumer<CartModel>(
-          builder: (_, model, child) {
-            bool isShowCart = (model.cart?.items?.length ?? 0) != 0;
-            return Stack(
-              children: <Widget>[
-                _body(isShowCart: isShowCart),
-                isShowCart
-                ? SlidingUpPanel(
-                  controller: _panelController,
-                  minHeight: 80.0,
-                  backdropEnabled: true,
-                  renderPanelSheet: false,
-                  onPanelOpened: () => _onCartOpen(model),
-                  onPanelClosed: () => _onCartClose(model),
-                  panel: StoreSlideFloatingPanelWidget(),
-                  collapsed: StoreSlideFloatingCollapsedWidget(
-                    onSelected: () => _panelController.open(),
-                  )
-                )
-                : Container()
-              ],
+    return Material(
+      child: Consumer<CartModel>(
+        builder: (_, model, child) {
+          bool isShowCart = (model.cart?.items?.length ?? 0) != 0;
+          return isShowCart
+            ? SlidingUpPanel(
+                controller: _panelController,
+                minHeight: 80.0,
+                maxHeight: 550.0,
+                backdropEnabled: true,
+                renderPanelSheet: false,
+                onPanelOpened: () => _onCartOpen(model),
+                onPanelClosed: () => _onCartClose(model),
+                panel: StoreSlideFloatingPanelWidget(),
+                collapsed: StoreSlideFloatingCollapsedWidget(
+                  onSelected: () => _panelController.open(),
+                ),
+                body: Scaffold(
+                  appBar: StoreAppBar(context),
+                  body: SafeArea(
+                    child: _body(isShowCart: isShowCart),
+                  ),
+                ),
+            )
+            : Scaffold(
+              appBar: StoreAppBar(context),
+              body: SafeArea(
+                child: _body(isShowCart: isShowCart),
+              ),
             );
-          }
-        ),
-      )
+        }
+      ),
     );
   }
 

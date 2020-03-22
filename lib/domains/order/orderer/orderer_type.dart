@@ -1,0 +1,1 @@
+enum OrdererType { GUEST, USER }

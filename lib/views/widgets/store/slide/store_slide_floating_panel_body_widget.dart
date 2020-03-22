@@ -31,6 +31,7 @@ class StoreSlideFloatingPanelBodyWidget extends StatelessWidget {
             List<CartItem> cartItems = model.cart.items.where((item) => item.store.idx == idxStore).toList();
             return StoreSlideFloatingPanelBodyItemWidget(
               cartItems: cartItems,
+              isLast: index == idxesStore.length - 1
             );
           } , childCount: idxesStore.length)
         );
