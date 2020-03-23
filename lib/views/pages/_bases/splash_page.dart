@@ -65,16 +65,13 @@ class _SplashPageState extends State<SplashPage> {
     // widget build 가 모두 완료된 후 Provider 를 가져와야 하므로,
     // addPostFrameCallback 메서드를 통해 build 완료를 통지받음.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      await clearPrefs(); // for test
       _initializer
-          .initialize(
-            context: context,
-            onDone: _onDone,
-            onServerError: _onServerError,
-            deliverySiteNotIssuedHandler: _deliverySiteNotIssuedHandler
-          ).catchError((err) => _onServerError());
-
-      await printPrefs();  // for test
+        .initialize(
+          context: context,
+          onDone: _onDone,
+          onServerError: _onServerError,
+          deliverySiteNotIssuedHandler: _deliverySiteNotIssuedHandler
+        ).catchError((err) => _onServerError());
     });
   }
 

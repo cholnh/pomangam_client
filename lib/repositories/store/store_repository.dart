@@ -22,8 +22,11 @@ class StoreRepository {
     @required int oIdx,
     @required String oDate,
     @required PageRequest pageRequest
-  }) async => StoreSummary.fromJsonList(
-      (await api.get(url: '/dsites/$dIdx/stores?oIdx=$oIdx&oDate=$oDate&page=${pageRequest.page}&size=${pageRequest.size}')).data);
+  }) async => StoreSummary.fromJsonList((
+      await api.get(
+          url: '/dsites/$dIdx/stores?oIdx=$oIdx&oDate=$oDate&page=${pageRequest.page}&size=${pageRequest.size}',
+          fallBack: () => findOpeningStores(dIdx: dIdx, oIdx: oIdx, oDate: oDate, pageRequest: pageRequest)
+      )).data);
 
   Future<int> count({
     @required int dIdx,

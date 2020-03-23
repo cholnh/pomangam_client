@@ -71,10 +71,11 @@ class Api implements NetworkService {
   ///
   @override
   Future<Response> get({
-    @required String url
+    @required String url,
+    Function fallBack
   }) {
     Function logic = () => resourceRepository.get(url: url);
-    return logic().catchError((error) => _errorHandler(error, logic));
+    return logic().catchError((error) => _errorHandler(error, fallBack == null ? logic : fallBack));
   }
 
 

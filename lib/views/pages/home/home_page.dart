@@ -76,13 +76,13 @@ class _HomePageState extends State<HomePage> {
     return Consumer<CartModel>(
       builder: (_, model, child) {
         bool isShowCart = (model.cart?.items?.length ?? 0) != 0;
-        return Material(
-          child: SafeArea(
+        return Scaffold(
+          bottomNavigationBar: TabSelector(),
+          body: SafeArea(
             child: Stack(
               children: <Widget>[
                 Scaffold(
                   appBar: BaseAppBar(),
-                  bottomNavigationBar: TabSelector(),
                   body: _body(isShowCart: isShowCart),
                 ),
                 isShowCart

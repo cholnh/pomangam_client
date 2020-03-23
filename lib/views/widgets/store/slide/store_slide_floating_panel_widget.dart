@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/util/string_utils.dart';
 import 'package:pomangam_client/providers/cart/cart_model.dart';
+import 'package:pomangam_client/providers/payment/payment_model.dart';
 import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_panel_body_widget.dart';
 import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_panel_footer_widget.dart';
 import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_panel_header_widget.dart';
@@ -46,9 +47,11 @@ class StoreSlideFloatingPanelWidget extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: Consumer<CartModel>(
               builder: (_, model, __) {
+                PaymentModel paymentModel = Provider.of<PaymentModel>(context);
+                bool isPayable = paymentModel.isReadyPayment() && model.isUpdatedOrderableStore && model.isAllOrderable;
                 return GestureDetector(
                   child: Opacity(
-                    opacity: model.isUpdatedOrderableStore && model.isAllOrderable ? 1.0 : 0.5,
+                    opacity: isPayable ? 1.0 : 0.5,
                     child: Container(
                       color: primaryColor,
                       width: MediaQuery.of(context).size.width,
@@ -58,7 +61,7 @@ class StoreSlideFloatingPanelWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  onTap: model.isUpdatedOrderableStore && model.isAllOrderable
+                  onTap: isPayable
                     ? () => _saveOrder(context)
                     : () {},
                 );

@@ -25,3 +25,11 @@ const String userPoint = '__user_point__';
 /// ## 배달지 정보
 const String idxDeliverySite = '__idx_delivery_site__';
 const String idxDeliveryDetailSite = '__idx_delivery_detail_site__';
+
+/// ## 결제 정보
+const String paymentType = '__payment_type__';
+const String cashReceiptNumber = '__cash_receipt_number__';
+const String cashReceiptType = '__cash_receipt_type__';
+const String isPaymentAgree = '__is_payment_agree__';
+const String paymentAgreeDate = '__payment_agree_date__';
+

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/providers/cart/cart_model.dart';
+import 'package:pomangam_client/providers/payment/payment_model.dart';
 import 'package:provider/provider.dart';
 
 class StoreSlideFloatingPanelFooterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    PaymentModel paymentModel = Provider.of<PaymentModel>(context);
+
     return Column(
       children: <Widget>[
         Divider(height: 40.0, thickness: 8.0, color: Colors.black.withOpacity(0.03)),
@@ -25,9 +28,9 @@ class StoreSlideFloatingPanelFooterWidget extends StatelessWidget {
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              Icon(Icons.credit_card, size: 14.0),
+                              paymentModel.iconPaymentType(),
                               Padding(padding: EdgeInsets.only(right: 4.0)),
-                              Text('신용/체크 카드', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0))
+                              Text('${paymentModel.textPaymentType()}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0))
                             ],
                           ),
                           Text('변경', style: TextStyle(fontWeight: FontWeight.bold, color: primaryColor, fontSize: titleFontSize))

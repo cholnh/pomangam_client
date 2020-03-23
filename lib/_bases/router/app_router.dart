@@ -3,7 +3,12 @@ import 'package:pomangam_client/views/pages/_bases/base_page.dart';
 import 'package:pomangam_client/views/pages/_bases/error_page.dart';
 import 'package:pomangam_client/views/pages/_bases/not_found_page.dart';
 import 'package:pomangam_client/views/pages/deliverysite/delivery_site_page.dart';
+import 'package:pomangam_client/views/pages/payment/agreement/payment_agreement_page.dart';
+import 'package:pomangam_client/views/pages/payment/cash_receipt/payment_cash_receipt_page.dart';
+import 'package:pomangam_client/views/pages/payment/coupon/payment_coupon_page.dart';
+import 'package:pomangam_client/views/pages/payment/method/payment_method_page.dart';
 import 'package:pomangam_client/views/pages/payment/payment_page.dart';
+import 'package:pomangam_client/views/pages/payment/point/payment_point_page.dart';
 import 'package:pomangam_client/views/pages/product/product_page.dart';
 import 'package:pomangam_client/views/pages/sign/in/sign_in_page.dart';
 import 'package:pomangam_client/views/pages/sign/up/sign_up_authcode_page.dart';
@@ -145,6 +150,62 @@ class AppRouter extends Router {
       }),
       transitionType: TransitionType.inFromBottom
     );
+
+
+    /// A PaymentAgreementPage router path.
+    ///
+    /// Returns the page specified in the handler.
+    super.define("/payments/agreements",
+      handler: Handler(handlerFunc: (context, params) {
+        return PaymentAgreementPage();
+      }),
+      transitionType: TransitionType.cupertino
+    );
+
+
+    /// A PaymentMethodPage router path.
+    ///
+    /// Returns the page specified in the handler.
+    super.define("/payments/methods",
+      handler: Handler(handlerFunc: (context, params) {
+        return PaymentMethodPage();
+      }),
+      transitionType: TransitionType.cupertino
+    );
+
+
+    /// A PaymentCouponPage router path.
+    ///
+    /// Returns the page specified in the handler.
+    super.define("/payments/coupons",
+      handler: Handler(handlerFunc: (context, params) {
+        return PaymentCouponPage();
+      }),
+      transitionType: TransitionType.cupertino
+    );
+
+
+    /// A PaymentPointPage router path.
+    ///
+    /// Returns the page specified in the handler.
+    super.define("/payments/points",
+      handler: Handler(handlerFunc: (context, params) {
+        return PaymentPointPage();
+      }),
+      transitionType: TransitionType.cupertino
+    );
+
+
+    /// A PaymentCashReceiptPage router path.
+    ///
+    /// Returns the page specified in the handler.
+    super.define("/payments/cashreceipts",
+      handler: Handler(handlerFunc: (context, params) {
+        return PaymentCashReceiptPage();
+      }),
+      transitionType: TransitionType.cupertino
+    );
+
 
   }
 }

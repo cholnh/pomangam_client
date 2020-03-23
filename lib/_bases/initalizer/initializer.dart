@@ -1,23 +1,22 @@
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
+import 'package:pomangam_client/_bases/initalizer/data/cart_data_initializer.dart';
+import 'package:pomangam_client/_bases/initalizer/data/delivery_detail_site_data_initializer.dart';
+import 'package:pomangam_client/_bases/initalizer/data/delivery_site_data_initializer.dart';
+import 'package:pomangam_client/_bases/initalizer/data/order_time_data_initializer.dart';
 import 'package:pomangam_client/_bases/key/shared_preference_key.dart' as s;
 import 'package:pomangam_client/_bases/network/api/api.dart';
 import 'package:pomangam_client/_bases/network/domain/server_health.dart';
 import 'package:pomangam_client/_bases/network/domain/token.dart';
 import 'package:pomangam_client/domains/sign/user.dart';
-import 'package:pomangam_client/providers/cart/cart_model.dart';
-import 'package:pomangam_client/providers/deliverysite/delivery_site_model.dart';
-import 'package:pomangam_client/providers/deliverysite/detail/delivery_detail_site_model.dart';
-import 'package:pomangam_client/providers/order/time/order_time_model.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Initializer {
 
   Api api;
 
-  int fallbackTotalCount = 5;
+  int fallbackTotalCount = 10;
   bool isServerDown, successNetwork, successLocale, successNotification, successToken, successModelData;
 
   Initializer({this.api});
@@ -86,7 +85,9 @@ class Initializer {
     return successNetwork && successLocale && successNotification && successToken && successModelData;
   }
 
-  Future<bool> initializeLocale({Locale locale}) async {
+  Future<bool> initializeLocale({
+    Locale locale
+  }) async {
     try {
       log('start initializeLocale', name: 'Initializer.initializeLocale', time: DateTime.now());
       api.setResourceLocale(locale: locale); // server 통신 header 에 locale 추가
@@ -115,6 +116,7 @@ class Initializer {
     return _initializeNotification();
 
   }
+
   Future<bool> _initializeNotification() async {
     try {
       log('start initializeNotification', name: 'Initializer.initializeNotification', time: DateTime.now());
@@ -132,6 +134,7 @@ class Initializer {
     isServerDown = await initializeNetwork();
     return _initializeToken();
   }
+
   Future<bool> _initializeToken() async {
     try {
       log('start initializeToken', name: 'Initializer.initializeToken', time: DateTime.now());
@@ -184,41 +187,52 @@ class Initializer {
     return user;
   }
 
-  Future<bool> initializeModelData({BuildContext context, Function deliverySiteNotIssuedHandler}) async {
+  Future<bool> initializeModelData({
+    BuildContext context,
+    Function deliverySiteNotIssuedHandler
+  }) async {
     isServerDown = await initializeNetwork();
     return _initializeModelData(context: context, deliverySiteNotIssuedHandler: deliverySiteNotIssuedHandler);
   }
-  Future<bool> _initializeModelData({BuildContext context, Function deliverySiteNotIssuedHandler}) async {
+
+  Future<bool> _initializeModelData({
+    BuildContext context,
+    Function deliverySiteNotIssuedHandler
+  }) async {
     try {
       log('start initializeData', name: 'Initializer.initializeData', time: DateTime.now());
       if(isServerDown || context == null) return false;
 
       SharedPreferences pref = await SharedPreferences.getInstance();
-      int ddIdx = pref.getInt(s.idxDeliveryDetailSite) ?? 1;
       int dIdx = pref.getInt(s.idxDeliverySite) ?? 1;
+      int ddIdx = pref.getInt(s.idxDeliveryDetailSite) ?? 1;
 
       if(dIdx == null || ddIdx == null) {
         deliverySiteNotIssuedHandler();
       } else {
-        DeliverySiteModel deliverySiteModel = Provider.of<DeliverySiteModel>(context, listen: false);
-        DeliveryDetailSiteModel detailSiteModel = Provider.of<DeliveryDetailSiteModel>(context, listen: false);
-        OrderTimeModel orderTimeModel = Provider.of<OrderTimeModel>(context, listen: false);
-        CartModel cartModel = Provider.of<CartModel>(context, listen: false);
+        // delivery site
+        await deliverySiteDataInitialize(
+          context: context,
+          dIdx: dIdx
+        );
 
-        // 배달지 설정
-        await deliverySiteModel.changeUserDeliverySiteByIdx(dIdx: dIdx);
+        // detail site
+        await deliveryDetailSiteDataInitialize(
+          context: context,
+          dIdx: dIdx,
+          ddIdx: ddIdx
+        );
 
-        // 배달지 상세주소 설정
-        await detailSiteModel.changeUserDeliveryDetailSiteByIdx(dIdx: dIdx, ddIdx: ddIdx);
+        // order time
+        await orderTimeDataInitialize(
+          context: context,
+          dIdx: dIdx
+        );
 
-        // 배달가능시간 설정
-        await orderTimeModel.fetch(forceUpdate: true, dIdx: dIdx);
-
-        // 카트 초기화
-        cartModel.cart
-        ..orderDate = orderTimeModel.userOrderDate
-        ..orderTime = orderTimeModel.userOrderTime
-        ..detail = detailSiteModel.userDeliveryDetailSite;
+        // cart
+        await cartDataInitialize(
+          context: context
+        );
       }
       log('success', name: 'Initializer.initializeData', time: DateTime.now());
       return true;
