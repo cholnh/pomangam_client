@@ -44,27 +44,25 @@ class StoreSlideFloatingPanelWidget extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: SafeArea(
-              child: Consumer<CartModel>(
-                builder: (_, model, __) {
-                  return GestureDetector(
-                    child: Opacity(
-                      opacity: model.isUpdatedOrderableStore && model.isAllOrderable ? 1.0 : 0.5,
-                      child: Container(
-                        color: primaryColor,
-                        width: MediaQuery.of(context).size.width,
-                        height: 53.0,
-                        child: Center(
-                          child: Text('${StringUtils.comma(model.cart.totalPrice())}원 결제하기', style: TextStyle(color: backgroundColor, fontWeight: FontWeight.bold, fontSize: 15.0)),
-                        ),
+            child: Consumer<CartModel>(
+              builder: (_, model, __) {
+                return GestureDetector(
+                  child: Opacity(
+                    opacity: model.isUpdatedOrderableStore && model.isAllOrderable ? 1.0 : 0.5,
+                    child: Container(
+                      color: primaryColor,
+                      width: MediaQuery.of(context).size.width,
+                      height: 53.0,
+                      child: Center(
+                        child: Text('${StringUtils.comma(model.cart.totalPrice())}원 결제하기', style: TextStyle(color: backgroundColor, fontWeight: FontWeight.bold, fontSize: 15.0)),
                       ),
                     ),
-                    onTap: model.isUpdatedOrderableStore && model.isAllOrderable
-                      ? () => _saveOrder(context)
-                      : () {},
-                  );
-                },
-              ),
+                  ),
+                  onTap: model.isUpdatedOrderableStore && model.isAllOrderable
+                    ? () => _saveOrder(context)
+                    : () {},
+                );
+              },
             ),
           )
         ],

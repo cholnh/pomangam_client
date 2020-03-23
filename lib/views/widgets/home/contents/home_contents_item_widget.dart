@@ -62,7 +62,6 @@ class _HomeContentsItemWidgetState extends State<HomeContentsItemWidget> {
             const Divider(height: 0.1),
             const Padding(padding: EdgeInsets.only(bottom: 10.0)),
             HomeContentsItemTitleWidget(
-              heroTag: 'storeImageHero${widget.summary.idx}',
               brandImagePath: '${Endpoint.serverDomain}/${widget.summary.brandImagePath}',
               title: widget.summary.name,
               subTitle: _subTitle(),

@@ -7,11 +7,6 @@ import 'package:pomangam_client/views/widgets/store/store_score_widget.dart';
 import 'package:provider/provider.dart';
 
 class StoreHeaderWidget extends StatelessWidget {
-
-  final int sIdx;
-
-  StoreHeaderWidget({this.sIdx});
-
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
@@ -23,7 +18,6 @@ class StoreHeaderWidget extends StatelessWidget {
             return Row(
               children: <Widget>[
                 StoreBrandImageWidget(
-                    sIdx: sIdx,
                     brandImagePath: '${Endpoint.serverDomain}/${model.summary.brandImagePath}'
                 ),
                 Expanded(

@@ -73,14 +73,20 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Consumer<CartModel>(
-        builder: (_, model, child) {
-          bool isShowCart = (model.cart?.items?.length ?? 0) != 0;
-          return isShowCart
-            ? Scaffold(
-                bottomNavigationBar: TabSelector(),
-                body: SlidingUpPanel(
+    return Consumer<CartModel>(
+      builder: (_, model, child) {
+        bool isShowCart = (model.cart?.items?.length ?? 0) != 0;
+        return Material(
+          child: SafeArea(
+            child: Stack(
+              children: <Widget>[
+                Scaffold(
+                  appBar: BaseAppBar(),
+                  bottomNavigationBar: TabSelector(),
+                  body: _body(isShowCart: isShowCart),
+                ),
+                isShowCart
+                ? SlidingUpPanel(
                   controller: _panelController,
                   minHeight: 80.0,
                   maxHeight: 550.0,
@@ -96,15 +102,13 @@ class _HomePageState extends State<HomePage> {
                     appBar: BaseAppBar(),
                     body: _body(isShowCart: isShowCart),
                   ),
-                ),
-            )
-            : Scaffold(
-                appBar: BaseAppBar(),
-                bottomNavigationBar: TabSelector(),
-                body: _body(isShowCart: isShowCart),
-            );
-          }
-        ),
+                )
+                : Container()
+              ],
+            ),
+          ),
+        );
+      }
     );
   }
 
@@ -142,7 +146,7 @@ class _HomePageState extends State<HomePage> {
           ),
           HomeContentsWidget(),
           SliverToBoxAdapter(
-            child: Container(height: isShowCart ? 100.0 : 0.0),
+            child: Container(height: isShowCart ? 110.0 : 0.0),
           )
         ],
       ),

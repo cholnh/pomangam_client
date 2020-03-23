@@ -6,15 +6,16 @@ import 'package:pomangam_client/views/widgets/home/contents/home_contents_item_w
 
 class HomeContentsItemTitleWidget extends StatelessWidget {
 
-  final String heroTag;
   final String brandImagePath;
   final String title;
   final String subTitle;
   final Color subTitleColor;
   final double avgStar;
 
-  HomeContentsItemTitleWidget({this.heroTag, this.brandImagePath, this.title,
-      this.subTitle, this.subTitleColor, this.avgStar});
+  HomeContentsItemTitleWidget({
+    this.brandImagePath, this.title,
+    this.subTitle, this.subTitleColor, this.avgStar
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,29 +26,26 @@ class HomeContentsItemTitleWidget extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Hero(
-                  tag: heroTag,
-                  child: Container(
-                      child: CircleAvatar(
-                          child: CachedNetworkImage(
-                            imageUrl: brandImagePath,
-                            fit: BoxFit.fill,
-                            width: 24.0,
-                            height: 24.0,
-                            placeholder: (context, url) => CupertinoActivityIndicator(),
-                            errorWidget: (context, url, error) => Icon(Icons.error_outline),
-                          ),
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.white
-                      ),
-                      width: 34.0,
-                      height: 34.0,
-                      padding: const EdgeInsets.all(0.5),
-                      decoration: BoxDecoration(
-                        color: Colors.black12,
-                        shape: BoxShape.circle,
-                      )
-                  )
+              Container(
+                child: CircleAvatar(
+                  child: CachedNetworkImage(
+                    imageUrl: brandImagePath,
+                    fit: BoxFit.fill,
+                    width: 24.0,
+                    height: 24.0,
+                    placeholder: (context, url) => CupertinoActivityIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error_outline),
+                  ),
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.white
+                ),
+                width: 34.0,
+                height: 34.0,
+                padding: const EdgeInsets.all(0.5),
+                decoration: BoxDecoration(
+                  color: Colors.black12,
+                  shape: BoxShape.circle,
+                )
               ),
               Padding(padding: EdgeInsets.only(right: 10.0)),
               Column(

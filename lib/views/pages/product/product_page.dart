@@ -44,21 +44,23 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: ProductAppBar(context),
-      body: SafeArea(
+    return Material(
+      child: SafeArea(
         child: Stack(
           children: <Widget>[
-            SmartRefresher(
-              physics: BouncingScrollPhysics(),
-              enablePullDown: true,
-              header: WaterDropMaterialHeader(
-                color: primaryColor,
-                backgroundColor: backgroundColor,
+            Scaffold(
+              appBar: ProductAppBar(context),
+              body: SmartRefresher(
+                physics: BouncingScrollPhysics(),
+                enablePullDown: true,
+                header: WaterDropMaterialHeader(
+                  color: primaryColor,
+                  backgroundColor: backgroundColor,
+                ),
+                controller: _refreshController,
+                onRefresh: _onRefresh,
+                child: _body(),
               ),
-              controller: _refreshController,
-              onRefresh: _onRefresh,
-              child: _body(),
             ),
             SlidingUpPanel(
               controller: _panelController,
