@@ -31,30 +31,35 @@ class _HomeTimePickerModalState extends State<HomeTimePickerModal> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Consumer<OrderTimeModel>(
-        builder: (_, model, child) {
-          var textOrderDate = DateFormat('yyyy-MM-dd').format(model.viewUserOrderDate);
-          return model.isOrderDateMode
-            ? HomeDatePicker(
-                initialDate: model.viewUserOrderDate,
-                firstDate:  DateTime.now() - 1.days,
-                lastDate:  DateTime.now() + 7.days,
-                onSelectedDate: (date) => _onSelectedDate(date),
-              )
-            : Column(
-                children: <Widget>[
-                  HomeTimePickerModalHeaderWidget(
-                    textOrderDate: '$textOrderDate',
-                    onSelectedDatePicker: () => model.changeOrderDateMode(true),
-                  ),
-                  const Divider(height: 0.1, color: Colors.black),
-                  HomeTimePickerModalItemWidget(
-                      model: model, 
-                      onSelected: widget.onSelected
-                  ),
-                ],
-              );
-        }
+      child: SizedBox(
+        height: 470.0,
+        child: Consumer<OrderTimeModel>(
+          builder: (_, model, child) {
+            String textOrderDate = DateFormat('yyyy년 MM월 dd일').format(model.viewUserOrderDate);
+            String subTextOrderDate = _subTextOrderDate(model.viewUserOrderDate);
+            return Column(
+              children: <Widget>[
+                HomeTimePickerModalHeaderWidget(
+                  isOrderDateMode: model.isOrderDateMode,
+                  textOrderDate: '$textOrderDate $subTextOrderDate',
+                  onSelectedDatePicker: () => model.changeOrderDateMode(!model.isOrderDateMode),
+                ),
+                Divider(height: 0.0, thickness: 8.0, color: Colors.black.withOpacity(0.03)),
+                model.isOrderDateMode
+                ? HomeDatePicker(
+                    initialDate: model.viewUserOrderDate,
+                    firstDate:  DateTime.now() - 1.days,
+                    lastDate:  DateTime.now() + 7.days,
+                    onSelectedDate: (date) => _onSelectedDate(date),
+                )
+                : HomeTimePickerModalItemWidget(
+                    model: model,
+                    onSelected: widget.onSelected
+                ),
+              ],
+            );
+          }
+        ),
       ),
     );
   }
@@ -65,5 +70,27 @@ class _HomeTimePickerModalState extends State<HomeTimePickerModal> {
     if(date != null) {
       model.changeViewUserOrderDate(date);
     }
+  }
+
+  String _subTextOrderDate(DateTime dt) {
+    bool isToday = _isToday(dt);
+    bool isTomorrow = _isTomorrow(dt);
+    if(isToday) {
+      return '(오늘)';
+    } else if(isTomorrow) {
+      return '(내일)';
+    } else {
+      return '';
+    }
+  }
+
+  bool _isToday(DateTime dt) {
+    DateTime now = DateTime.now();
+    return dt.year == now.year && dt.month == now.month && dt.day == now.day;
+  }
+
+  bool _isTomorrow(DateTime dt) {
+    DateTime tomorrow = 1.days.fromNow;
+    return dt.year == tomorrow.year && dt.month == tomorrow.month && dt.day == tomorrow.day;
   }
 }

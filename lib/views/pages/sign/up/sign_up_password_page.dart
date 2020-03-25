@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:injector/injector.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
-import 'package:pomangam_client/_bases/router/app_router.dart';
 import 'package:pomangam_client/domains/sign/user.dart';
 import 'package:pomangam_client/providers/sign/sign_in_model.dart';
 import 'package:pomangam_client/providers/sign/sign_up_model.dart';
@@ -51,113 +49,118 @@ class _SignUpPasswordPageState extends State<SignUpPasswordPage> {
     super.dispose();
   }
 
+  Widget _bottomNavigationBar() {
+    SignUpModel model = Provider.of<SignUpModel>(context);
+    return model.isPasswordFilled
+      ? SignUpBottomBtnWidget(
+          isActive: !model.signUpPasswordLock,
+          backgroundColor: backgroundColor,
+          color: mainColor,
+          onTap: () {
+            if(model.isPasswordFilled) {
+              _verify();
+            }
+          },
+      )
+      : null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => Future.value(false), // 뒤로가기 방지
-      child: Scaffold(
-        appBar: SignUpAppBar(
-            context,
-            enableBackButton: false,
-            backgroundColor: mainColor
-        ),
-        backgroundColor: mainColor,
-        body: Padding(
-          padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 20.0),
-          child: Column(
-            children: <Widget>[
-              SignUpTitleWidget(
-                title: '보안코드를 설정합니다.',
-                subTitle: '한 번만 입력하니 정확히 입력해주세요.',
-                color: backgroundColor,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 40.0),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                          width: 250,
-                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
-                          child: Consumer<SignUpModel>(
-                            builder: (_, model, child) {
-                              return PinCodeTextField(
-                                backgroundColor: mainColor,
-                                length: 4,
-                                controller: _controller,
-                                focusNode: _focusNode,
-                                activeColor: mainColor,
-                                inactiveColor: Colors.deepOrange.shade900,
-                                selectedColor: backgroundColor,
-                                textStyle: TextStyle(color: backgroundColor, locale: Locale('en')),
-                                textInputType: model.isNumberMode
-                                  ? TextInputType.number
-                                  : TextInputType.text,
+    return SafeArea(
+      child: WillPopScope(
+        onWillPop: () => Future.value(false), // 뒤로가기 방지
+        child: Scaffold(
+          appBar: SignUpAppBar(
+              context,
+              enableBackButton: false,
+              backgroundColor: mainColor
+          ),
+          bottomNavigationBar: _bottomNavigationBar(),
+          backgroundColor: mainColor,
+          body: Padding(
+            padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
+            child: Column(
+              children: <Widget>[
+                SignUpTitleWidget(
+                  title: '보안코드를 설정합니다.',
+                  subTitle: '한 번만 입력하니 정확히 입력해주세요.',
+                  color: backgroundColor,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 40.0),
+                    child: Center(
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                              width: 250,
+                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
+                              child: Consumer<SignUpModel>(
+                                builder: (_, model, child) {
+                                  return PinCodeTextField(
+                                    backgroundColor: mainColor,
+                                    length: 4,
+                                    controller: _controller,
+                                    focusNode: _focusNode,
+                                    activeColor: mainColor,
+                                    inactiveColor: Colors.deepOrange.shade900,
+                                    selectedColor: backgroundColor,
+                                    textStyle: TextStyle(color: backgroundColor, locale: Locale('en')),
+                                    textInputType: model.isNumberMode
+                                      ? TextInputType.number
+                                      : TextInputType.text,
 
-                                obsecureText: true,
-                                animationType: AnimationType.scale,
-                                shape: PinCodeFieldShape.underline,
-                                animationDuration: Duration(milliseconds: 300),
-                                dialogTitle: '포만감',
-                                dialogContent: '코드를 붙여넣기 하시겠습니까?',
-                                fieldHeight: 70,
-                                fieldWidth: 58,
-                                onCompleted: (value) {
-                                  model.changePasswordFilled(to: true);
+                                    obsecureText: true,
+                                    animationType: AnimationType.scale,
+                                    shape: PinCodeFieldShape.underline,
+                                    animationDuration: Duration(milliseconds: 300),
+                                    dialogTitle: '포만감',
+                                    dialogContent: '코드를 붙여넣기 하시겠습니까?',
+                                    fieldHeight: 70,
+                                    fieldWidth: 58,
+                                    onCompleted: (value) {
+                                      model.changePasswordFilled(to: true);
+                                    },
+                                    onChanged: (value) {
+                                      if(value.length < 4) {
+                                        model.changePasswordFilled(to: false);
+                                      }
+                                    },
+                                  );
                                 },
-                                onChanged: (value) {
-                                  if(value.length < 4) {
-                                    model.changePasswordFilled(to: false);
-                                  }
+                              )
+                          ),
+                          Consumer<SignUpModel>(
+                            builder: (_, model, child) {
+                              return !model.isPasswordFilled
+                                ? GestureDetector(
+                                child: Text(
+                                    model.isNumberMode
+                                      ? '문자로 설정하기'
+                                      : '숫자로 설정하기',
+                                    style: TextStyle(
+                                        color: backgroundColor,
+                                        fontWeight: FontWeight.bold
+                                    )
+                                ),
+                                onTap: () {
+                                  model.changeNumberMode(to: !model.isNumberMode);
+                                  _focusNode.unfocus();
+                                  Future.delayed(Duration(milliseconds: 300), ()
+                                    => FocusScope.of(context).requestFocus(_focusNode));
                                 },
-                              );
-                            },
+                              )
+                              : Container();
+                            }
                           )
+                        ],
                       ),
-                      Consumer<SignUpModel>(
-                        builder: (_, model, child) {
-                          return !model.isPasswordFilled
-                            ? GestureDetector(
-                            child: Text(
-                                model.isNumberMode
-                                  ? '문자로 설정하기'
-                                  : '숫자로 설정하기',
-                                style: TextStyle(
-                                    color: backgroundColor,
-                                    fontWeight: FontWeight.bold
-                                )
-                            ),
-                            onTap: () {
-                              model.changeNumberMode(to: !model.isNumberMode);
-                              _focusNode.unfocus();
-                              Future.delayed(Duration(milliseconds: 300), ()
-                                => FocusScope.of(context).requestFocus(_focusNode));
-                            },
-                          )
-                          : Container();
-                        }
-                      )
-                    ],
+                    ),
                   ),
                 ),
-              ),
-              Consumer<SignUpModel>(
-                builder: (_, model, child) {
-                  return model.isPasswordFilled
-                    ? SignUpBottomBtnWidget(
-                      isActive: !model.signUpPasswordLock,
-                      backgroundColor: backgroundColor,
-                      color: mainColor,
-                      onTap: () {
-                        if(model.isPasswordFilled) {
-                          _verify();
-                        }
-                      },
-                    )
-                    : Container();
-                },
-              )
-            ],
+              ],
+            ),
           ),
         ),
       ),

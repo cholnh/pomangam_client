@@ -13,9 +13,11 @@ class BasePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TabModel tabModel = Provider.of<TabModel>(context);
-    return WillPopScope(
-      onWillPop: () => Future.value(false), // 뒤로가기 방지
-      child: _selectedPage(tabModel.tab)
+    return SafeArea(
+      child: WillPopScope(
+        onWillPop: () => Future.value(false), // 뒤로가기 방지
+        child: _selectedPage(tabModel.tab)
+      ),
     );
   }
 

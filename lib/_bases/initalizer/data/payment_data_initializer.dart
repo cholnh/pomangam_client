@@ -5,9 +5,7 @@ import 'package:pomangam_client/providers/payment/payment_model.dart';
 import 'package:provider/provider.dart';
 
 Future<bool> paymentDataInitialize({
-  BuildContext context,
-  Function deliverySiteNotIssuedHandler,
-  int dIdx
+  BuildContext context
 }) async {
   try {
     log('start paymentData', name: 'paymentDataInitialize', time: DateTime.now());

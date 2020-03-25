@@ -14,25 +14,26 @@ class SignUpBottomBtnWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: SafeArea(
-          child: GestureDetector(
-            child: Container(
-              color: backgroundColor,
-              width: MediaQuery.of(context).size.width,
-              height: 50.0,
-              child: Center(
-                child: isActive
-                  ? Text('$title', style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 17.0))
-                  : CupertinoActivityIndicator(),
+    return SafeArea(
+        child: GestureDetector(
+          child: SizedBox(
+            height: 65.0,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                color: backgroundColor,
+                child: Center(
+                  child: isActive
+                    ? Text('$title', style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 17.0))
+                    : CupertinoActivityIndicator(),
+                ),
               ),
             ),
-            onTap: isActive
-                ? onTap
-                : (){},
           ),
+          onTap: isActive
+              ? onTap
+              : (){},
         ),
-    );
+      );
   }
 }

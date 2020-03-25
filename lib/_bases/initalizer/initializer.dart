@@ -5,6 +5,7 @@ import 'package:pomangam_client/_bases/initalizer/data/cart_data_initializer.dar
 import 'package:pomangam_client/_bases/initalizer/data/delivery_detail_site_data_initializer.dart';
 import 'package:pomangam_client/_bases/initalizer/data/delivery_site_data_initializer.dart';
 import 'package:pomangam_client/_bases/initalizer/data/order_time_data_initializer.dart';
+import 'package:pomangam_client/_bases/initalizer/data/payment_data_initializer.dart';
 import 'package:pomangam_client/_bases/key/shared_preference_key.dart' as s;
 import 'package:pomangam_client/_bases/network/api/api.dart';
 import 'package:pomangam_client/_bases/network/domain/server_health.dart';
@@ -231,6 +232,11 @@ class Initializer {
 
         // cart
         await cartDataInitialize(
+          context: context
+        );
+
+        // payment
+        await paymentDataInitialize(
           context: context
         );
       }

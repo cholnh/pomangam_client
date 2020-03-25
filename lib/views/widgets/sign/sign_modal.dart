@@ -12,11 +12,11 @@ void showModal({BuildContext context}) {
       context: context,
       builder: (context) {
         return SignModal(
-            onSignIn: () => Navigator.pushNamed(context, '/signin'),
-            onSignUp: () {
-              Provider.of<SignUpModel>(context, listen: false).returnUrl = '/';
-              Navigator.pushNamed(context, '/signup');
-            }
+          onSignIn: () => Navigator.pushNamed(context, '/signin'),
+          onSignUp: () {
+            Provider.of<SignUpModel>(context, listen: false).returnUrl = '/';
+            Navigator.pushNamed(context, '/signup');
+          }
         );
       }
   );

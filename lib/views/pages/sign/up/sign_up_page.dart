@@ -69,137 +69,144 @@ class _SignUpPageState extends State<SignUpPage> {
     super.dispose();
   }
 
+  Widget _bottomNavigationBar() {
+    SignUpModel model = Provider.of<SignUpModel>(context);
+    return model.state == SignViewState.name || model.state == SignViewState.finish
+      ? SignUpBottomBtnWidget(
+        isActive: !model.signUpLock,
+        onTap: () {
+          _isAllFilled()
+            ? model.state == SignViewState.finish
+            ? _verify()
+            : _lastCheck()
+            : _nextToBirth();
+        },
+      )
+      : null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SignUpAppBar(context),
-      backgroundColor: backgroundColor,
-      body: Consumer<SignUpModel> (
-        builder: (_, model, child) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 20.0),
-            child: Column(
-              children: <Widget>[
-                SignUpTitleWidget(
-                  title: '${model.title}',
-                ),
-                Expanded(
-                  child: Container(
-                      padding: EdgeInsets.only(top: 25.0),
-                      child: Align(
-                          alignment: Alignment.topCenter,
-                          child: AnimatedList(
-                              key: _listKey,
-                              controller: _scrollController,
-                              initialItemCount: 0,
-                              reverse: true,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index, animation) {
-                                switch (index) {
-                                  case 0:
-                                    return SignUpFirstItemWidget(
-                                      controller: _nameController,
-                                      animation: animation,
-                                      focusNode: _nameNode,
-                                      model: model,
-                                      onChanged: (value) {
-                                        if(value.length > 0) {
-                                          _changeSignState(SignViewState.name);
-                                        } else {
-                                          _changeSignState(SignViewState.ready);
-                                        }
-                                      },
-                                      onComplete: () {
-                                        _isAllFilled()
-                                            ? _lastCheck()
-                                            : _nextToBirth();
-                                      },
-                                    );
-                                  case 1:
-                                    return SignUpSecondItemWidget(
-                                      animation: animation,
-                                      birthController: _birthController,
-                                      sexController: _sexController,
-                                      birthNode: _birthNode,
-                                      sexNode: _sexNode,
-                                      onChangedBirth: (value) {
-                                        if(value.length >= 6) {
-                                          if(_isAllFilled()) {
-                                            _lastCheck();
+    return SafeArea(
+      child: Scaffold(
+        appBar: SignUpAppBar(context),
+        bottomNavigationBar: _bottomNavigationBar(),
+        backgroundColor: backgroundColor,
+        body: Consumer<SignUpModel> (
+          builder: (_, model, child) {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
+              child: Column(
+                children: <Widget>[
+                  SignUpTitleWidget(
+                    title: '${model.title}',
+                  ),
+                  Expanded(
+                    child: Container(
+                        padding: EdgeInsets.only(top: 25.0),
+                        child: Align(
+                            alignment: Alignment.topCenter,
+                            child: AnimatedList(
+                                key: _listKey,
+                                controller: _scrollController,
+                                initialItemCount: 0,
+                                reverse: true,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index, animation) {
+                                  switch (index) {
+                                    case 0:
+                                      return SignUpFirstItemWidget(
+                                        controller: _nameController,
+                                        animation: animation,
+                                        focusNode: _nameNode,
+                                        model: model,
+                                        onChanged: (value) {
+                                          if(value.length > 0) {
+                                            _changeSignState(SignViewState.name);
                                           } else {
-                                            _birthNode.unfocus();
-                                            _focus(_sexNode);
+                                            _changeSignState(SignViewState.ready);
+                                          }
+                                        },
+                                        onComplete: () {
+                                          _isAllFilled()
+                                              ? _lastCheck()
+                                              : _nextToBirth();
+                                        },
+                                      );
+                                    case 1:
+                                      return SignUpSecondItemWidget(
+                                        animation: animation,
+                                        birthController: _birthController,
+                                        sexController: _sexController,
+                                        birthNode: _birthNode,
+                                        sexNode: _sexNode,
+                                        onChangedBirth: (value) {
+                                          if(value.length >= 6) {
+                                            if(_isAllFilled()) {
+                                              _lastCheck();
+                                            } else {
+                                              _birthNode.unfocus();
+                                              _focus(_sexNode);
+                                              _changeSignState(SignViewState.sex);
+                                            }
+                                          } else {
+                                            _changeSignState(SignViewState.birth);
+                                          }
+                                        },
+                                        onChangedSex: (value) {
+                                          if(value.length >= 1) {
+                                            _isAllFilled()
+                                                ? _lastCheck()
+                                                : _nextToPhone();
+                                          } else {
                                             _changeSignState(SignViewState.sex);
                                           }
-                                        } else {
-                                          _changeSignState(SignViewState.birth);
-                                        }
-                                      },
-                                      onChangedSex: (value) {
-                                        if(value.length >= 1) {
+                                        },
+                                        onCompleteBirth: () {
+                                          _isAllFilled()
+                                              ? _lastCheck()
+                                              : _nextToSex();
+                                        },
+                                        onCompleteSex: () {
                                           _isAllFilled()
                                               ? _lastCheck()
                                               : _nextToPhone();
-                                        } else {
-                                          _changeSignState(SignViewState.sex);
-                                        }
-                                      },
-                                      onCompleteBirth: () {
-                                        _isAllFilled()
-                                            ? _lastCheck()
-                                            : _nextToSex();
-                                      },
-                                      onCompleteSex: () {
-                                        _isAllFilled()
-                                            ? _lastCheck()
-                                            : _nextToPhone();
-                                      },
-                                    );
-                                  case 2:
-                                    return SignUpThirdItemWidget(
-                                      controller: _phoneController,
-                                      animation: animation,
-                                      focusNode: _phoneNode,
-                                      model: model,
-                                      onChanged: (value) {
-                                        if(value.length >= 11) {
-                                          if(_isFirstView && _isAllFilled()) {
-                                            _lastCheck();
+                                        },
+                                      );
+                                    case 2:
+                                      return SignUpThirdItemWidget(
+                                        controller: _phoneController,
+                                        animation: animation,
+                                        focusNode: _phoneNode,
+                                        model: model,
+                                        onChanged: (value) {
+                                          if(value.length >= 11) {
+                                            if(_isFirstView && _isAllFilled()) {
+                                              _lastCheck();
+                                            } else {
+                                              _changeSignState(SignViewState.finish);
+                                            }
                                           } else {
-                                            _changeSignState(SignViewState.finish);
+                                            _changeSignState(SignViewState.phone);
                                           }
-                                        } else {
-                                          _changeSignState(SignViewState.phone);
-                                        }
-                                      },
-                                      onComplete: () {
-                                        _lastCheck();
-                                      },
-                                    );
-                                  default:
-                                    return Container();
+                                        },
+                                        onComplete: () {
+                                          _lastCheck();
+                                        },
+                                      );
+                                    default:
+                                      return Container();
+                                  }
                                 }
-                              }
-                          )
-                      )
+                            )
+                        )
+                    ),
                   ),
-                ),
-                model.state == SignViewState.name || model.state == SignViewState.finish
-                  ? SignUpBottomBtnWidget(
-                    isActive: !model.signUpLock,
-                    onTap: () {
-                      _isAllFilled()
-                          ? model.state == SignViewState.finish
-                            ? _verify()
-                            : _lastCheck()
-                          : _nextToBirth();
-                    },
-                  )
-                  : Container()
-              ],
-            ),
-          );
-        }
+                ],
+              ),
+            );
+          }
+        ),
       ),
     );
   }

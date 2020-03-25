@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
+import 'package:pomangam_client/domains/payment/payment_page_type.dart';
+import 'package:pomangam_client/domains/payment/payment_type.dart';
 import 'package:pomangam_client/providers/cart/cart_model.dart';
 import 'package:pomangam_client/providers/payment/payment_model.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +11,7 @@ class StoreSlideFloatingPanelFooterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PaymentModel paymentModel = Provider.of<PaymentModel>(context);
+    PaymentType paymentType = paymentModel.payment?.paymentType;
 
     return Column(
       children: <Widget>[
@@ -28,9 +31,9 @@ class StoreSlideFloatingPanelFooterWidget extends StatelessWidget {
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              paymentModel.iconPaymentType(),
+                              convertPaymentTypeToIcon(paymentType),
                               Padding(padding: EdgeInsets.only(right: 4.0)),
-                              Text('${paymentModel.textPaymentType()}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0))
+                              Text('${convertPaymentTypeToText(paymentType)}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0))
                             ],
                           ),
                           Text('변경', style: TextStyle(fontWeight: FontWeight.bold, color: primaryColor, fontSize: titleFontSize))
@@ -53,6 +56,6 @@ class StoreSlideFloatingPanelFooterWidget extends StatelessWidget {
   }
 
   void _navigateToPayment(BuildContext context) {
-    Navigator.pushNamed(context, '/payments');
+    Navigator.pushNamed(context, '/payments', arguments: PaymentPageType.FROM_CART);
   }
 }

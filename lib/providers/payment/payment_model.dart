@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
+import 'package:pomangam_client/_bases/key/shared_preference_key.dart' as s;
 import 'package:pomangam_client/domains/payment/cash_receipt/cash_receipt_type.dart';
 import 'package:pomangam_client/domains/payment/payment.dart';
 import 'package:pomangam_client/domains/payment/payment_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:pomangam_client/_bases/key/shared_preference_key.dart' as s;
 
 class PaymentModel with ChangeNotifier {
 
@@ -15,52 +14,13 @@ class PaymentModel with ChangeNotifier {
     return payment?.paymentType != null && payment.isPaymentAgree;
   }
 
-  Widget iconPaymentType() {
-    if(payment?.paymentType != null) {
-      switch(payment.paymentType) {
-        case PaymentType.CREDIT_CARD:
-          return Icon(Icons.credit_card, size: 14.0);
-        case PaymentType.PHONE:
-          return Icon(Icons.phone_iphone, size: 14.0);
-        case PaymentType.V_BANK:
-          return Icon(Icons.format_bold, size: 14.0);
-      }
-    }
-    return Icon(Icons.error, size: 16.0, color: primaryColor);
-  }
-
-  String textPaymentType() {
-    if(payment?.paymentType != null) {
-      switch(payment.paymentType) {
-        case PaymentType.CREDIT_CARD:
-          return '신용/체크 카드';
-        case PaymentType.PHONE:
-          return '핸드폰 결제';
-        case PaymentType.V_BANK:
-          return '가상계좌';
-      }
-    }
-    return '미등록';
-  }
-
-  String textCashReceiptType() {
-    if(payment?.cashReceipt?.cashReceiptType != null) {
-      switch(payment.cashReceipt.cashReceiptType) {
-        case CashReceiptType.PERSONAL:
-          return '개인소득공제';
-        case CashReceiptType.BUSINESS:
-          return '사업자증빙';
-      }
-    }
-    return '미등록';
-  }
-
   Future<void> loadPayment() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     this.payment
-    ..paymentType = convertPaymentType(pref.getString(s.paymentType))
+    ..paymentType = convertTextToPaymentType(pref.getString(s.paymentType))
+    ..cashReceipt.isIssueCashReceipt = pref.getBool(s.isIssueCashReceipt)
     ..cashReceipt.cashReceiptNumber = pref.getString(s.cashReceiptNumber)
-    ..cashReceipt.cashReceiptType = convertCashReceiptType(pref.getString(s.paymentType))
+    ..cashReceipt.cashReceiptType = convertTextToCashReceiptType(pref.getString(s.paymentType))
     ..isPaymentAgree = pref.getBool(s.isPaymentAgree)
     ..paymentAgreeDate = DateTime.parse(pref.getString(s.paymentAgreeDate));
   }
@@ -72,6 +32,18 @@ class PaymentModel with ChangeNotifier {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString(s.paymentType, paymentType.toString());
     this.payment.paymentType = paymentType;
+    if(notify) {
+      notifyListeners();
+    }
+  }
+
+  Future<void> saveIsIssueCashReceipt(
+      bool isIssueCashReceipt,
+      {bool notify = false}
+  ) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setBool(s.isIssueCashReceipt, isIssueCashReceipt);
+    this.payment.cashReceipt.isIssueCashReceipt = isIssueCashReceipt;
     if(notify) {
       notifyListeners();
     }

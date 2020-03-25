@@ -38,28 +38,40 @@ class _SignUpNicknamePageState extends State<SignUpNicknamePage> {
     super.dispose();
   }
 
+  Widget _bottomNavigationBar() {
+    SignUpModel model = Provider.of<SignUpModel>(context);
+    return SignUpBottomBtnWidget(
+      isActive: !model.signUpNicknameLock,
+      title: '완료',
+      onTap: () {
+        _verify();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => Future.value(false), // 뒤로가기 방지
-      child: Scaffold(
-        appBar: SignUpAppBar(context, enableBackButton: false),
-        backgroundColor: backgroundColor,
-        body: Padding(
-          padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 20.0),
-          child: Column(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.centerLeft,
-                child: SignUpTitleWidget(
-                  title: '포만이가 되신것을 환영합니다.',
-                  subTitle: '아래 닉네임으로 활동하시게 됩니다.',
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return SafeArea(
+      child: WillPopScope(
+        onWillPop: () => Future.value(false), // 뒤로가기 방지
+        child: Scaffold(
+          appBar: SignUpAppBar(context, enableBackButton: false),
+          bottomNavigationBar: _bottomNavigationBar(),
+          backgroundColor: backgroundColor,
+          body: Padding(
+            padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
+            child: Column(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: SignUpTitleWidget(
+                    title: '포만이가 되신것을 환영합니다.',
+                    subTitle: '아래 닉네임으로 활동하시게 됩니다.',
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 50.0),
+                Padding(
+                  padding: EdgeInsets.only(top: 40.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -85,11 +97,6 @@ class _SignUpNicknamePageState extends State<SignUpNicknamePage> {
                           ),
                         ),
                       ),
-                      GestureDetector(
-                        child: IconButton(
-                          icon: Icon(Icons.loop),
-                        ),
-                      ),
                       Consumer<SignUpModel>(
                         builder: (_, model, child) {
                           return model.isValidNicknameFilled
@@ -107,19 +114,8 @@ class _SignUpNicknamePageState extends State<SignUpNicknamePage> {
                     ],
                   ),
                 ),
-              ),
-              Consumer<SignUpModel>(
-                builder: (_, model, child) {
-                  return  SignUpBottomBtnWidget(
-                    isActive: !model.signUpNicknameLock,
-                    title: '완료',
-                    onTap: () {
-                      _verify();
-                    },
-                  );
-                }
-              )
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -131,13 +127,15 @@ class _SignUpNicknamePageState extends State<SignUpNicknamePage> {
       _model.lockSignUpNickname();  // Lock
       String nickname = _controller.text;
       if(nickname == savedNickname) {
+        _routeNext(_model.returnUrl);
         return;
       }
       if(StringUtils.isValidNickname(nickname)) {
-        if( !await _model.isExistNickname(nickname: nickname) &&
-            await _model.patchNickname(nickname: nickname)
-        ) {
+        bool isExisted = await _model.isExistNickname(nickname: nickname);
+        bool isPatched = await _model.patchNickname(nickname: nickname);
+        if(!isExisted && isPatched) {
           _routeNext(_model.returnUrl);
+          return;
         } else {
           _verifyError('이미 등록된 닉네임입니다.');
         }

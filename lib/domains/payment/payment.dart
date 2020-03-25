@@ -16,9 +16,11 @@ class Payment {
   DateTime paymentAgreeDate;
 
   Payment({
-    this.paymentType, this.cashReceipt, this.isPaymentAgree,
+    this.paymentType, CashReceipt cashReceipt, this.isPaymentAgree,
     this.paymentAgreeDate
-  });
+  }){
+    this.cashReceipt = cashReceipt == null ? CashReceipt() : cashReceipt;
+  }
 
   factory Payment.fromJson(Map<String, dynamic> json) => _$PaymentFromJson(json);
   Map<String, dynamic> toJson() => _$PaymentToJson(this);

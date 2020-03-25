@@ -19,7 +19,7 @@ class HomeDatePicker extends StatelessWidget {
       onDayPressed: (DateTime date, List<Event> events) => onSelectedDate(date),
       thisMonthDayBorderColor: Colors.white,
       weekendTextStyle: TextStyle(color: Colors.black),
-      height: 420.0,
+      height: 350.0,
       selectedDateTime: initialDate,
       minSelectedDate: firstDate,
       maxSelectedDate: lastDate,
@@ -30,7 +30,7 @@ class HomeDatePicker extends StatelessWidget {
       todayButtonColor: Colors.white,
       todayBorderColor: Colors.white,
       todayTextStyle: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
-      headerTextStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 20.0),
+      headerTextStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.0),
       leftButtonIcon: Icon(Icons.chevron_left, color: Colors.black),
       rightButtonIcon: Icon(Icons.chevron_right, color: Colors.black),
     );

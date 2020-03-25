@@ -39,19 +39,24 @@ class HomeTimePickerModalItemWidget extends StatelessWidget {
           var textMinute = m == 0 ? '' : '$m분 ';
           var textArrivalTime = '$h시 $textMinute' + (isNextDay ? '예약' : '도착');
           return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: ListTile(
               title: orderTime.idx != model.userOrderTime.idx
-                  ? Center(child: Text('$textArrivalTime'))
-                  : Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('$textArrivalTime'),
-                      isSameDay ? const Padding(padding: EdgeInsets.all(3)) : Container(),
-                      isSameDay ? const Icon(Icons.check, color: primaryColor) : Container()
-                    ],
-                  )
-              ),
+                ? Text('$textArrivalTime', style: TextStyle(fontSize: 14.0))
+                : Row(
+                  children: <Widget>[
+                    Text(
+                      '$textArrivalTime',
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: isSameDay ? FontWeight.bold : FontWeight.normal,
+                        color: isSameDay ? primaryColor : Colors.black
+                      )
+                    ),
+                    isSameDay ? const Padding(padding: EdgeInsets.all(3)) : Container(),
+                    isSameDay ? const Icon(Icons.check, color: primaryColor, size: 18.0) : Container()
+                  ],
+                ),
               onTap: () => _onSelected(context, orderTime, isSameDay),
             ),
           );

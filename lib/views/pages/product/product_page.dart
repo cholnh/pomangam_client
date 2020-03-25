@@ -44,8 +44,8 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: SafeArea(
+    return SafeArea(
+      child: Material(
         child: Stack(
           children: <Widget>[
             Scaffold(
@@ -76,7 +76,7 @@ class _ProductPageState extends State<ProductPage> {
             ),
           ],
         ),
-      )
+      ),
     );
   }
 

@@ -12,23 +12,25 @@ class ErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => Future.value(false), // 뒤로가기 방지
-      child: Scaffold(
-        key: PmgKeys.errorPage,
-        body: Center(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(Messages.errorMsg, style: TextStyle(fontSize: 26)),
-                Text(contents, style: TextStyle(fontSize: 20)),
-                const Padding(padding: EdgeInsets.only(bottom: 20)),
-              ],
+    return SafeArea(
+      child: WillPopScope(
+        onWillPop: () => Future.value(false), // 뒤로가기 방지
+        child: Scaffold(
+          key: PmgKeys.errorPage,
+          body: Center(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(Messages.errorMsg, style: TextStyle(fontSize: 26)),
+                  Text(contents, style: TextStyle(fontSize: 20)),
+                  const Padding(padding: EdgeInsets.only(bottom: 20)),
+                ],
+              ),
             ),
           ),
-        ),
-      )
+        )
+      ),
     );
   }
 }

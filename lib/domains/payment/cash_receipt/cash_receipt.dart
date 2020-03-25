@@ -6,11 +6,15 @@ part 'cash_receipt.g.dart';
 @JsonSerializable(nullable: true, explicitToJson: true)
 class CashReceipt {
 
+  bool isIssueCashReceipt = false;
+
   String cashReceiptNumber;
 
   CashReceiptType cashReceiptType;
 
-  CashReceipt({this.cashReceiptNumber, this.cashReceiptType});
+  CashReceipt({this.cashReceiptNumber, CashReceiptType cashReceiptType}) {
+    this.cashReceiptType = cashReceiptType == null ? CashReceiptType.PERSONAL_PHONE_NUMBER : cashReceiptType;
+  }
 
   factory CashReceipt.fromJson(Map<String, dynamic> json) => _$CashReceiptFromJson(json);
   Map<String, dynamic> toJson() => _$CashReceiptToJson(this);

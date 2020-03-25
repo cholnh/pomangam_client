@@ -61,105 +61,108 @@ class _SignUpAuthCodePageState extends State<SignUpAuthCodePage> {
     super.dispose();
   }
 
+  Widget _bottomNavigationBar() {
+    SignUpModel model = Provider.of<SignUpModel>(context);
+    return model.isAuthCodeFilled
+      ? SignUpBottomBtnWidget(
+        isActive: !model.signUpAuthCodeLock,
+        onTap: () {
+          if(model.isAuthCodeFilled) {
+            _verify();
+          }
+        },
+      )
+      : null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SignUpAppBar(context),
-      backgroundColor: backgroundColor,
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 20.0),
-        child: Column(
-          children: <Widget>[
-            SignUpTitleWidget(title: '인증코드를 입력해주세요.'),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(top: 40.0),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      width: 250,
-                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
-                      child: Consumer<SignUpModel>(
+    return SafeArea(
+      child: Scaffold(
+        appBar: SignUpAppBar(context),
+        bottomNavigationBar: _bottomNavigationBar(),
+        backgroundColor: backgroundColor,
+        body: Padding(
+          padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
+          child: Column(
+            children: <Widget>[
+              SignUpTitleWidget(title: '인증코드를 입력해주세요.'),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 40.0),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        width: 250,
+                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
+                        child: Consumer<SignUpModel>(
+                          builder: (_, model, child) {
+                            return PinCodeTextField(
+                              enabled: model.authCodeState != AuthCodeState.fail,
+                              length: 4,
+                              controller: _controller,
+                              focusNode: _focusNode,
+                              activeColor: primaryColor,
+                              inactiveColor: Colors.grey,
+                              selectedColor: primaryColor,
+                              textInputType: TextInputType.number,
+                              obsecureText: false,
+                              animationType: AnimationType.scale,
+                              shape: PinCodeFieldShape.box,
+                              animationDuration: Duration(milliseconds: 300),
+                              borderRadius: BorderRadius.circular(5),
+                              dialogTitle: '포만감',
+                              dialogContent: '코드를 붙여넣기 하시겠습니까?',
+                              fieldHeight: 70,
+                              fieldWidth: 58,
+                              onCompleted: (value) {
+                                model.changeAuthCodeFilled(to: true);
+                              },
+                              onChanged: (value) {
+                                if(value.length < 4) {
+                                  model.changeAuthCodeFilled(to: false);
+                                }
+                              },
+                            );
+                          }
+                        )
+                      ),
+                      Consumer<SignUpModel>(
                         builder: (_, model, child) {
-                          return PinCodeTextField(
-                            enabled: model.authCodeState != AuthCodeState.fail,
-                            length: 4,
-                            controller: _controller,
-                            focusNode: _focusNode,
-                            activeColor: primaryColor,
-                            inactiveColor: Colors.grey,
-                            selectedColor: primaryColor,
-                            textInputType: TextInputType.number,
-                            obsecureText: false,
-                            animationType: AnimationType.scale,
-                            shape: PinCodeFieldShape.box,
-                            animationDuration: Duration(milliseconds: 300),
-                            borderRadius: BorderRadius.circular(5),
-                            dialogTitle: '포만감',
-                            dialogContent: '코드를 붙여넣기 하시겠습니까?',
-                            fieldHeight: 70,
-                            fieldWidth: 58,
-                            onCompleted: (value) {
-                              model.changeAuthCodeFilled(to: true);
-                            },
-                            onChanged: (value) {
-                              if(value.length < 4) {
-                                model.changeAuthCodeFilled(to: false);
-                              }
-                            },
+                          return Column(
+                            children: <Widget>[
+                              model.authCodeState == AuthCodeState.fail
+                              ? Text(
+                                  '인증코드 전송에 실패하였습니다.',
+                                  style: TextStyle(
+                                    color: primaryColor,
+                                  )
+                              )
+                              : null, // TODO 타이머 구현
+                              Padding(padding: EdgeInsets.only(bottom: 10.0)),
+                              GestureDetector(
+                                child: Text(
+                                    '인증코드 재전송' +
+                                    (model.authCodeSendCount >= 1
+                                        ? ' (${model.authCodeSendCount}/${model.maxAuthCodeSendCount})'
+                                        : ''),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold
+                                    )
+                                ),
+                                onTap: _requestAuthCode,
+                              ),
+                            ].where((Object o) => o != null).toList()
                           );
                         }
                       )
-                    ),
-                    Consumer<SignUpModel>(
-                      builder: (_, model, child) {
-                        return Column(
-                          children: <Widget>[
-                            model.authCodeState == AuthCodeState.fail
-                            ? Text(
-                                '인증코드 전송에 실패하였습니다.',
-                                style: TextStyle(
-                                  color: primaryColor,
-                                )
-                            )
-                            : null, // TODO 타이머 구현
-                            Padding(padding: EdgeInsets.only(bottom: 10.0)),
-                            GestureDetector(
-                              child: Text(
-                                  '인증코드 재전송' +
-                                  (model.authCodeSendCount >= 1
-                                      ? ' (${model.authCodeSendCount}/${model.maxAuthCodeSendCount})'
-                                      : ''),
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold
-                                  )
-                              ),
-                              onTap: _requestAuthCode,
-                            ),
-                          ].where((Object o) => o != null).toList()
-                        );
-                      }
-                    )
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ),
-            Consumer<SignUpModel>(
-              builder: (_, model, child) {
-                return model.isAuthCodeFilled
-                  ? SignUpBottomBtnWidget(
-                    isActive: !model.signUpAuthCodeLock,
-                    onTap: () {
-                      if(model.isAuthCodeFilled) {
-                        _verify();
-                      }
-                    },
-                  )
-                  : Container();
-              },
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

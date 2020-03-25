@@ -1,23 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:injector/injector.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/key/pmg_key.dart';
-import 'package:pomangam_client/_bases/router/app_router.dart';
 import 'package:pomangam_client/providers/cart/cart_model.dart';
 import 'package:pomangam_client/providers/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/providers/order/time/order_time_model.dart';
 import 'package:pomangam_client/providers/product/product_summary_model.dart';
 import 'package:pomangam_client/providers/store/store_model.dart';
 import 'package:pomangam_client/providers/store/store_product_category_model.dart';
+import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_collapsed_widget.dart';
 import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_panel_widget.dart';
 import 'package:pomangam_client/views/widgets/store/store_app_bar.dart';
 import 'package:pomangam_client/views/widgets/store/store_center_button_widget.dart';
 import 'package:pomangam_client/views/widgets/store/store_description_widget.dart';
 import 'package:pomangam_client/views/widgets/store/store_header_widget.dart';
-import 'package:pomangam_client/views/widgets/store/store_product_widget.dart';
 import 'package:pomangam_client/views/widgets/store/store_product_category_widget.dart';
-import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_collapsed_widget.dart';
+import 'package:pomangam_client/views/widgets/store/store_product_widget.dart';
 import 'package:pomangam_client/views/widgets/store/store_story_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -50,8 +48,8 @@ class _StorePageState extends State<StorePage> {
     return Consumer<CartModel>(
       builder: (_, model, child) {
         bool isShowCart = (model.cart?.items?.length ?? 0) != 0;
-        return Material(
-          child: SafeArea(
+        return SafeArea(
+          child: Material(
             child: Stack(
               children: <Widget>[
                 Scaffold(

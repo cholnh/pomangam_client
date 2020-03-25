@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:pomangam_client/views/widgets/_bases/base_app_bar.dart';
 import 'package:pomangam_client/views/widgets/_bases/tab_selector.dart';
 import 'package:pomangam_client/views/widgets/sign/sign_modal.dart';
 
@@ -30,7 +29,6 @@ class _MorePageState extends State<MorePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BaseAppBar(),
       bottomNavigationBar: TabSelector(),
       body: Center(
         child: ModalProgressHUD(

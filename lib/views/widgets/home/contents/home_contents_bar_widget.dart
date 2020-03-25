@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/key/pmg_key.dart';
+import 'package:pomangam_client/domains/sort/sort_type.dart';
 import 'package:pomangam_client/providers/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/providers/order/time/order_time_model.dart';
 import 'package:pomangam_client/views/widgets/home/sort_picker/home_sort_picker_modal.dart';
@@ -20,7 +21,8 @@ class HomeContentsBarWidget extends StatefulWidget {
 }
 
 class _HomeContentsBarWidgetState extends State<HomeContentsBarWidget> {
-  int sort = 0;
+
+  SortType sortType = SortType.SORT_BY_RECOMMEND_DESC;
   int dIdx;
   DateTime oDate;
 
@@ -46,7 +48,7 @@ class _HomeContentsBarWidgetState extends State<HomeContentsBarWidget> {
       title: Consumer<OrderTimeModel>(
         builder: (_, model, child) {
           bool isNextDay = model.userOrderDate?.isAfter(DateTime.now());
-          var textArrivalDate = isNextDay ? ' (${DateFormat('MM월 dd일').format(model.userOrderDate)}) ' : '';
+          var textArrivalDate = isNextDay ? ' (${DateFormat('MM월 dd일').format(model.userOrderDate)})' : '';
           int h = model.userOrderTime.getArrivalDateTime().hour;
           int m = model.userOrderTime.getArrivalDateTime().minute;
           var textMinute = m == 0 ? '' : '$m분 ';
@@ -65,35 +67,43 @@ class _HomeContentsBarWidgetState extends State<HomeContentsBarWidget> {
         }
       ),
       actions: <Widget>[
-//        const IconButton(
-//          icon: const Icon(Icons.view_module, color: Colors.grey),
-//        ),
-        IconButton(
-          icon: const Icon(Icons.filter_list, color: Colors.grey),
-          onPressed: () => _showModal(
-              widget: HomeSortPickerModal(sort: sort, onSelected: _selectSort)
+        GestureDetector(
+          onTap: () => _showModal(
+            widget: HomeSortPickerModal(type: sortType, onSelected: _selectSort)
+          ),
+          child: Material(
+            child: Row(
+              children: <Widget>[
+                Center(child: Text('${convertSortTypeToText(sortType)}', style: TextStyle(fontSize: 10.0, color: subTextColor))),
+                Padding(padding: const EdgeInsets.only(right: 3.0)),
+                Icon(Icons.filter_list, color: subTextColor),
+                Padding(padding: const EdgeInsets.only(right: 11.0))
+              ],
+            ),
           ),
         )
       ],
     );
   }
 
-  _showModal({Widget widget}) {
+  void _showModal({Widget widget}) {
     showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        context: context,
-        builder: (context) {
-          return widget;
-        }
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(24.0), topRight: Radius.circular(24.0))
+      ),
+
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return widget;
+      }
     );
   }
 
-  void _selectSort(sort) {
+  void _selectSort(SortType sortType) {
     Navigator.pop(context);
     setState(() {
-      this.sort = sort;
+      this.sortType = sortType;
     });
   }
 }

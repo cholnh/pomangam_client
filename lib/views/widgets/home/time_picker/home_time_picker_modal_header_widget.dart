@@ -1,60 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/i18n/i18n.dart';
 
 class HomeTimePickerModalHeaderWidget extends StatelessWidget {
 
+  final bool isOrderDateMode;
   final String textOrderDate;
   final Function onSelectedDatePicker;
 
-  HomeTimePickerModalHeaderWidget({this.textOrderDate, this.onSelectedDatePicker});
+  HomeTimePickerModalHeaderWidget({this.isOrderDateMode, this.textOrderDate, this.onSelectedDatePicker});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Opacity(
-              opacity: 0.0,
-              child: const IconButton(
-                icon: const Icon(Icons.clear),
-                onPressed: null,
-              )
-          ),
-          Flexible(
-            child: GestureDetector(
-              onTap: onSelectedDatePicker,
-              child: Column(
+    return GestureDetector(
+      onTap: onSelectedDatePicker,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 20.0, bottom: 25.0),
+        child: Material(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top: 12.0)),
                   Text(
-                      '${Messages.timePickerTitle}',
-                      style: const TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold)
+                    '${Messages.timePickerTitle}',
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold
+                    )
                   ),
-                  Container(
-                    padding: EdgeInsets.only(top: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(Icons.access_time, size: 18.0),
-                        Padding(padding: EdgeInsets.only(left: 6.0)),
-                        Text('$textOrderDate')
-                      ],
-                    ),
-                  ),
-                  Padding(padding: EdgeInsets.only(top: 12.0))
+                  Text(isOrderDateMode ? '시간변경' : '날짜변경', style: TextStyle(fontWeight: FontWeight.bold, color: primaryColor, fontSize: titleFontSize))
                 ],
               ),
-            ),
+              Padding(padding: const EdgeInsets.only(top: 5.0)),
+              Text('$textOrderDate', style: const TextStyle(fontSize: 14.0))
+            ],
           ),
-          IconButton(
-              icon: const Icon(Icons.close),
-              onPressed: (){
-                Navigator.of(context).pop();
-              }
-          ),
-        ]
+        ),
+      ),
     );
   }
 }

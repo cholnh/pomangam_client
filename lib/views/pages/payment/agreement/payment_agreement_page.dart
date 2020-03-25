@@ -32,134 +32,136 @@ class _PaymentAgreementPageState extends State<PaymentAgreementPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PaymentAppBar(
-        context,
-        title: '주문/결제/약관에 관한 동의',
-        leadingIcon: const Icon(CupertinoIcons.back, color: Colors.black),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-        child: Consumer<PolicyModel>(
-          builder: (_, policyModel, __) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text('개인정보 처리방침', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w700)),
-                Padding(padding: const EdgeInsets.only(bottom: 4.0)),
-                SizedBox(
-                  height: 100.0,
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Html(
-                      data: policyModel.htmlPrivacy ?? '',
-                      backgroundColor: Color.fromRGBO(0xee, 0xee, 0xee, 1.0),
-                      padding: const EdgeInsets.all(5.0),
-                      defaultTextStyle: TextStyle(fontSize: 12.0),
-                      customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                        if (node is dom.Element) {
-                          switch (node.className) {
-                            case 'title': return baseStyle.merge(TextStyle(fontWeight: FontWeight.bold, fontSize: 11.0));
-                            case 'outer': return baseStyle.merge(TextStyle(fontWeight: FontWeight.bold, fontSize: 9.0));
-                            case 'inner': return baseStyle.merge(TextStyle(fontSize: 9.0));
+    return SafeArea(
+      child: Scaffold(
+        appBar: PaymentAppBar(
+          context,
+          title: '주문/결제/약관에 관한 동의',
+          leadingIcon: const Icon(CupertinoIcons.back, color: Colors.black),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+          child: Consumer<PolicyModel>(
+            builder: (_, policyModel, __) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text('개인정보 처리방침', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w700)),
+                  Padding(padding: const EdgeInsets.only(bottom: 4.0)),
+                  SizedBox(
+                    height: 100.0,
+                    child: SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
+                      child: Html(
+                        data: policyModel.htmlPrivacy ?? '',
+                        backgroundColor: Color.fromRGBO(0xee, 0xee, 0xee, 1.0),
+                        padding: const EdgeInsets.all(5.0),
+                        defaultTextStyle: TextStyle(fontSize: 12.0),
+                        customTextStyle: (dom.Node node, TextStyle baseStyle) {
+                          if (node is dom.Element) {
+                            switch (node.className) {
+                              case 'title': return baseStyle.merge(TextStyle(fontWeight: FontWeight.bold, fontSize: 11.0));
+                              case 'outer': return baseStyle.merge(TextStyle(fontWeight: FontWeight.bold, fontSize: 9.0));
+                              case 'inner': return baseStyle.merge(TextStyle(fontSize: 9.0));
+                            }
                           }
+                          return baseStyle;
                         }
-                        return baseStyle;
-                      }
-                    )
+                      )
+                    ),
                   ),
-                ),
-                Padding(padding: const EdgeInsets.only(bottom: 20.0)),
-                Text('전자상거래 표준약관', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w700)),
-                Padding(padding: const EdgeInsets.only(bottom: 4.0)),
-                SizedBox(
-                  height: 100.0,
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Html(
-                      data: policyModel.htmlTerms ?? '',
-                      backgroundColor: Color.fromRGBO(0xee, 0xee, 0xee, 1.0),
-                      padding: const EdgeInsets.all(5.0),
-                      defaultTextStyle: TextStyle(fontSize: 12.0),
-                      customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                        if (node is dom.Element) {
-                          switch (node.className) {
-                            case 'title': return baseStyle.merge(TextStyle(fontWeight: FontWeight.bold, fontSize: 11.0));
-                            case 'outer': return baseStyle.merge(TextStyle(fontWeight: FontWeight.bold, fontSize: 9.0));
-                            case 'inner': return baseStyle.merge(TextStyle(fontSize: 9.0));
+                  Padding(padding: const EdgeInsets.only(bottom: 20.0)),
+                  Text('전자상거래 표준약관', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w700)),
+                  Padding(padding: const EdgeInsets.only(bottom: 4.0)),
+                  SizedBox(
+                    height: 100.0,
+                    child: SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
+                      child: Html(
+                        data: policyModel.htmlTerms ?? '',
+                        backgroundColor: Color.fromRGBO(0xee, 0xee, 0xee, 1.0),
+                        padding: const EdgeInsets.all(5.0),
+                        defaultTextStyle: TextStyle(fontSize: 12.0),
+                        customTextStyle: (dom.Node node, TextStyle baseStyle) {
+                          if (node is dom.Element) {
+                            switch (node.className) {
+                              case 'title': return baseStyle.merge(TextStyle(fontWeight: FontWeight.bold, fontSize: 11.0));
+                              case 'outer': return baseStyle.merge(TextStyle(fontWeight: FontWeight.bold, fontSize: 9.0));
+                              case 'inner': return baseStyle.merge(TextStyle(fontSize: 9.0));
+                            }
                           }
+                          return baseStyle;
                         }
-                        return baseStyle;
-                      }
-                    )
+                      )
+                    ),
                   ),
-                ),
-                Padding(padding: const EdgeInsets.only(bottom: 20.0)),
-                Center(
-                  child: Text(
-                    '포만감은 통신판매중개자로서 통신판매의 당사자가 아니며, 판매자가 등록한 상품 정보, 상품의 품질 및 거래에 대해서 일체의 책임을 지지 않습니다.',
-                    style: TextStyle(fontSize: 12.0, color: subTextColor)),
-                ),
-                Padding(padding: const EdgeInsets.only(bottom: 40.0)),
-                Consumer<PaymentModel>(
-                  builder: (_, paymentModel, __) {
-                    bool isPaymentAgree = paymentModel.payment?.isPaymentAgree == null ? false : paymentModel.payment?.isPaymentAgree;
-                    return Column(
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            Text('위 내용에 대해 동의합니다.', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0)),
-                            !isPaymentAgree || paymentModel.payment?.paymentAgreeDate == null
-                            ? Container()
-                            : Text(' (${_agreementDate(paymentModel.payment.paymentAgreeDate)})', style: TextStyle(fontSize: 11.0, color: subTextColor)),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () => isPaymentAgree ? {} : _onSelected(paymentModel, true),
-                              child: Material(
-                                child: Row(
-                                  children: <Widget>[
-                                    Checkbox(
-                                        value: isPaymentAgree
-                                    ),
-                                    Text(
-                                        '동의',
+                  Padding(padding: const EdgeInsets.only(bottom: 20.0)),
+                  Center(
+                    child: Text(
+                      '포만감은 통신판매중개자로서 통신판매의 당사자가 아니며, 판매자가 등록한 상품 정보, 상품의 품질 및 거래에 대해서 일체의 책임을 지지 않습니다.',
+                      style: TextStyle(fontSize: 12.0, color: subTextColor)),
+                  ),
+                  Padding(padding: const EdgeInsets.only(bottom: 40.0)),
+                  Consumer<PaymentModel>(
+                    builder: (_, paymentModel, __) {
+                      bool isPaymentAgree = paymentModel.payment?.isPaymentAgree == null ? false : paymentModel.payment?.isPaymentAgree;
+                      return Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Text('위 내용에 대해 동의합니다.', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0)),
+                              !isPaymentAgree || paymentModel.payment?.paymentAgreeDate == null
+                              ? Container()
+                              : Text(' (${_agreementDate(paymentModel.payment.paymentAgreeDate)} 동의 완료)', style: TextStyle(fontSize: 11.0, color: subTextColor)),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () => isPaymentAgree ? {} : _onSelected(paymentModel, true),
+                                child: Material(
+                                  child: Row(
+                                    children: <Widget>[
+                                      Checkbox(
+                                          value: isPaymentAgree
+                                      ),
+                                      Text(
+                                          '동의',
+                                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0)
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () => !isPaymentAgree ? {} : _onSelected(paymentModel, false),
+                                child: Material(
+                                  child: Row(
+                                    children: <Widget>[
+                                      Checkbox(
+                                          value: !isPaymentAgree
+                                      ),
+                                      Text(
+                                        '동의 안 함',
                                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0)
-                                    ),
-                                  ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            GestureDetector(
-                              onTap: () => !isPaymentAgree ? {} : _onSelected(paymentModel, false),
-                              child: Material(
-                                child: Row(
-                                  children: <Widget>[
-                                    Checkbox(
-                                        value: !isPaymentAgree
-                                    ),
-                                    Text(
-                                      '동의 안 함',
-                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0)
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    );
-                  },
-                )
-              ],
-            );
-          },
+                            ],
+                          )
+                        ],
+                      );
+                    },
+                  )
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
