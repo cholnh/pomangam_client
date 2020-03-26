@@ -52,7 +52,7 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 0.0),
-                      child: Text('내 결제', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w700)),
+                      child: Text('내 결제', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
                     ),
                     isSignIn ? PaymentMethodUserTypeWidget(
                       bankName: '우리카드',
@@ -74,7 +74,7 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0, bottom: 0.0),
-                      child: Text('일반 결제', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w700)),
+                      child: Text('일반 결제', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
                     ),
                     PaymentMethodCommonTypeWidget(
                       paymentType: PaymentType.COMMON_CREDIT_CARD,

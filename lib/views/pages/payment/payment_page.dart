@@ -4,9 +4,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/util/string_utils.dart';
+import 'package:pomangam_client/domains/coupon/coupon.dart';
 import 'package:pomangam_client/domains/payment/cash_receipt/cash_receipt_type.dart';
 import 'package:pomangam_client/domains/payment/payment_page_type.dart';
 import 'package:pomangam_client/domains/payment/payment_type.dart';
+import 'package:pomangam_client/domains/sign/point_rank/point_rank.dart';
 import 'package:pomangam_client/providers/cart/cart_model.dart';
 import 'package:pomangam_client/providers/payment/payment_model.dart';
 import 'package:pomangam_client/providers/sign/sign_in_model.dart';
@@ -35,6 +37,8 @@ class _PaymentPageState extends State<PaymentPage> {
     CartModel cartModel = Provider.of<CartModel>(context);
     SignInModel signInModel = Provider.of<SignInModel>(context);
     bool isSignIn = signInModel.isSignIn();
+    PointRank pointRank = signInModel.userInfo.pointRank;
+    int totalPrice = cartModel.cart.totalPrice();
 
     return SafeArea(
       child: Scaffold(
@@ -56,11 +60,18 @@ class _PaymentPageState extends State<PaymentPage> {
                           ? Center(
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 40.0, bottom: 60.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                child: Column(
                                   children: <Widget>[
-                                    Text('결제금액', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0)),
-                                    Text(' ${StringUtils.comma(cartModel.cart.totalPrice())}원', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0, color: primaryColor)),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text('결제금액', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0)),
+                                        Text(' ${StringUtils.comma(totalPrice)}원', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0, color: primaryColor)),
+                                      ],
+                                    ),
+                                    Padding(padding: const EdgeInsets.only(bottom: 5.0)),
+                                    // Text('(${StringUtils.comma(pointRank.savedPoint(totalPrice))}포인트 적립)', style: TextStyle(fontSize: 13.0, color: subTextColor))
+                                    Text('(결제금액의 ${pointRank.percentSavePoint}% 포인트 적립)', style: TextStyle(fontSize: 13.0, color: subTextColor))
                                   ],
                                 ),
                               ),
@@ -76,7 +87,13 @@ class _PaymentPageState extends State<PaymentPage> {
                       ),
                       PaymentItemWidget(
                         title: '포인트',
-                        subTitle: isSignIn ? '${StringUtils.comma(signInModel.userInfo.point)}원 사용가능' : '로그인이 필요합니다',
+                        subTitle: isSignIn
+                          ? cartModel.usingPoint > 0
+                            ? '${StringUtils.comma(cartModel.usingPoint)}포인트 사용'
+                            : signInModel.userInfo.point > 0
+                                ? '${StringUtils.comma(signInModel.userInfo.point)}포인트 사용가능'
+                                : '포인트 없음'
+                          : '로그인이 필요합니다',
                         onSelected: isSignIn
                           ? () => Navigator.pushNamed(context, '/payments/points')
                           : () => showSignModal(context: context, returnUrl: '/payments', arguments: PaymentPageType.FROM_CART),
@@ -84,7 +101,9 @@ class _PaymentPageState extends State<PaymentPage> {
                       ),
                       PaymentItemWidget(
                         title: '할인쿠폰',
-                        subTitle: '쿠폰코드를 입력 또는 선택해 주세요',
+                        subTitle: cartModel.usingCoupons.length > 0
+                          ? _couponTitle(cartModel.usingCoupons)
+                          : '쿠폰코드를 입력 또는 선택해 주세요',
                         onSelected: () => Navigator.pushNamed(context, '/payments/coupons'),
                         isActive: isSignIn,
                       ),
@@ -139,5 +158,16 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
   void _init({bool isBuild = false}) {
+  }
+
+  String _couponTitle(List<Coupon> coupons) {
+    String title = '';
+    for(int i=0; i<coupons.length; i++) {
+      title += '${coupons[i].title}(${StringUtils.comma(coupons[i].discountCost)}원)';
+      if(i != coupons.length - 1) {
+        title += ', ';
+      }
+    }
+    return title;
   }
 }

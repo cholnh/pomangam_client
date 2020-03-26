@@ -17,6 +17,11 @@ class Promotion extends EntityAuditing {
     this.beginDate, this.endDate
   });
 
+  bool isValid() {
+    DateTime now = DateTime.now();
+    return beginDate.isBefore(now) && endDate.isAfter(now);
+  }
+
   Map<String, dynamic> toJson() => _$PromotionToJson(this);
   factory Promotion.fromJson(Map<String, dynamic> json) => _$PromotionFromJson(json);
 }

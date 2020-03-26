@@ -3,9 +3,11 @@ import 'package:injector/injector.dart';
 import 'package:intl/intl.dart';
 import 'package:pomangam_client/domains/cart/cart.dart';
 import 'package:pomangam_client/domains/cart/item/cart_item.dart';
+import 'package:pomangam_client/domains/coupon/coupon.dart';
 import 'package:pomangam_client/domains/order/time/order_time.dart';
 import 'package:pomangam_client/domains/product/product.dart';
 import 'package:pomangam_client/domains/product/sub/product_sub.dart';
+import 'package:pomangam_client/domains/promotion/promotion.dart';
 import 'package:pomangam_client/domains/store/store.dart';
 import 'package:pomangam_client/domains/store/store_quantity_orderable.dart';
 import 'package:pomangam_client/repositories/store/store_repository.dart';
@@ -18,6 +20,10 @@ class CartModel with ChangeNotifier {
 
   bool isUpdatedOrderableStore = false;
   bool isAllOrderable = true;
+
+  int usingPoint = 0;
+  List<Coupon> usingCoupons = List();
+  List<Promotion> usingPromotions = List();
 
   CartModel() {
     _storeRepository = Injector.appInstance.getDependency<StoreRepository>();
@@ -54,6 +60,10 @@ class CartModel with ChangeNotifier {
 
   void clear({bool notify = false}) {
     cart.clear();
+    usingPoint = 0;
+    usingCoupons.clear();
+    usingPromotions.clear();
+
     if(notify) {
       notifyListeners();
     }
@@ -71,7 +81,13 @@ class CartModel with ChangeNotifier {
   }
 
   int totalPrice() {
-    return cart.totalPrice();
+    int totalDiscount = 0;
+    totalDiscount += usingPoint;
+    usingCoupons.forEach((usingCoupon)
+      => totalDiscount += usingCoupon.isValid() ? usingCoupon.discountCost : 0);
+    usingPromotions.forEach((usingPromotion)
+      => totalDiscount += usingPromotion.isValid() ? usingPromotion.discountCost : 0);
+    return cart.totalPrice() - totalDiscount;
   }
 
   Future<void> updateOrderableStore({

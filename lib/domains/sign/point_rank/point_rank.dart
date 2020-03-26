@@ -24,6 +24,10 @@ class PointRank extends EntityAuditing {
     this.userRecommendCount
   }): super(idx: idx, registerDate: registerDate, modifyDate: modifyDate);
 
+  int savedPoint(int totalPrice) {
+    return ((totalPrice * percentSavePoint / 100) + priceSavePoint).toInt();
+  }
+
   factory PointRank.fromJson(Map<String, dynamic> json) => _$PointRankFromJson(json);
   Map<String, dynamic> toJson() => _$PointRankToJson(this);
 }

@@ -18,6 +18,11 @@ class Coupon extends EntityAuditing {
     this.idxUser, this.beginDate, this.endDate
   });
 
+  bool isValid() {
+    DateTime now = DateTime.now();
+    return beginDate.isBefore(now) && endDate.isAfter(now);
+  }
+
   Map<String, dynamic> toJson() => _$CouponToJson(this);
   factory Coupon.fromJson(Map<String, dynamic> json) => _$CouponFromJson(json);
 }
