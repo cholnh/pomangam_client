@@ -17,11 +17,11 @@ class PaymentModel with ChangeNotifier {
   Future<void> loadPayment() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     this.payment
-    ..paymentType = convertTextToPaymentType(pref.getString(s.paymentType))
-    ..cashReceipt.isIssueCashReceipt = pref.getBool(s.isIssueCashReceipt)
+    ..paymentType = pref.getString(s.paymentType) != null ? convertTextToPaymentType(pref.getString(s.paymentType)) : PaymentType.COMMON_CREDIT_CARD
+    ..cashReceipt.isIssueCashReceipt = pref.getBool(s.isIssueCashReceipt) ?? false
     ..cashReceipt.cashReceiptNumber = pref.getString(s.cashReceiptNumber)
-    ..cashReceipt.cashReceiptType = convertTextToCashReceiptType(pref.getString(s.paymentType))
-    ..isPaymentAgree = pref.getBool(s.isPaymentAgree)
+    ..cashReceipt.cashReceiptType = pref.getString(s.cashReceiptType) != null ? convertTextToCashReceiptType(pref.getString(s.cashReceiptType)) : CashReceiptType.PERSONAL_CARD_NUMBER
+    ..isPaymentAgree = pref.getBool(s.isPaymentAgree) ?? false
     ..paymentAgreeDate = DateTime.parse(pref.getString(s.paymentAgreeDate));
   }
 

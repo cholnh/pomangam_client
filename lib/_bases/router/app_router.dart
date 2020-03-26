@@ -6,6 +6,7 @@ import 'package:pomangam_client/views/pages/deliverysite/delivery_site_page.dart
 import 'package:pomangam_client/views/pages/payment/agreement/payment_agreement_page.dart';
 import 'package:pomangam_client/views/pages/payment/cash_receipt/payment_cash_receipt_page.dart';
 import 'package:pomangam_client/views/pages/payment/coupon/payment_coupon_page.dart';
+import 'package:pomangam_client/views/pages/payment/method/payment_method_add_page.dart';
 import 'package:pomangam_client/views/pages/payment/method/payment_method_page.dart';
 import 'package:pomangam_client/views/pages/payment/payment_page.dart';
 import 'package:pomangam_client/views/pages/payment/point/payment_point_page.dart';
@@ -204,6 +205,17 @@ class AppRouter extends Router {
         return PaymentCashReceiptPage();
       }),
       transitionType: TransitionType.cupertino
+    );
+
+
+    /// A PaymentMethodAddPage router path.
+    ///
+    /// Returns the page specified in the handler.
+    super.define("/payments/methods/add",
+        handler: Handler(handlerFunc: (context, params) {
+          return PaymentMethodAddPage();
+        }),
+        transitionType: TransitionType.cupertino
     );
 
 

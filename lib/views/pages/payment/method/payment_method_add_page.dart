@@ -1,25 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/views/widgets/payment/payment_app_bar.dart';
 
-class PaymentCouponPage extends StatelessWidget {
+class PaymentMethodAddPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: PaymentAppBar(
           context,
-          title: '할인쿠폰',
+          title: '결제수단 추가',
           leadingIcon: const Icon(CupertinoIcons.back, color: Colors.black),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          child: Container(
-            height: 300.0,
-            color: subTextColor,
-          ),
-        )
+        body: Column(
+          children: <Widget>[
+
+          ],
+        ),
       ),
     );
   }

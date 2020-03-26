@@ -9,9 +9,11 @@ import 'package:pomangam_client/domains/payment/payment_page_type.dart';
 import 'package:pomangam_client/domains/payment/payment_type.dart';
 import 'package:pomangam_client/providers/cart/cart_model.dart';
 import 'package:pomangam_client/providers/payment/payment_model.dart';
+import 'package:pomangam_client/providers/sign/sign_in_model.dart';
 import 'package:pomangam_client/views/widgets/payment/payment_app_bar.dart';
 import 'package:pomangam_client/views/widgets/payment/payment_bottom_bar.dart';
 import 'package:pomangam_client/views/widgets/payment/payment_item_widget.dart';
+import 'package:pomangam_client/views/widgets/sign/sign_modal.dart';
 import 'package:provider/provider.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -31,6 +33,8 @@ class _PaymentPageState extends State<PaymentPage> {
   Widget build(BuildContext context) {
     PaymentPageType paymentPageType = ModalRoute.of(context).settings?.arguments ?? PaymentPageType.FROM_SETTING;
     CartModel cartModel = Provider.of<CartModel>(context);
+    SignInModel signInModel = Provider.of<SignInModel>(context);
+    bool isSignIn = signInModel.isSignIn();
 
     return SafeArea(
       child: Scaffold(
@@ -72,14 +76,17 @@ class _PaymentPageState extends State<PaymentPage> {
                       ),
                       PaymentItemWidget(
                         title: '포인트',
-                        subTitle: '3,400원 사용가능',
-                        onSelected: () => Navigator.pushNamed(context, '/payments/points'),
-                        isActive: false,
+                        subTitle: isSignIn ? '${StringUtils.comma(signInModel.userInfo.point)}원 사용가능' : '로그인이 필요합니다',
+                        onSelected: isSignIn
+                          ? () => Navigator.pushNamed(context, '/payments/points')
+                          : () => showSignModal(context: context, returnUrl: '/payments', arguments: PaymentPageType.FROM_CART),
+                        isActive: isSignIn,
                       ),
                       PaymentItemWidget(
                         title: '할인쿠폰',
                         subTitle: '쿠폰코드를 입력 또는 선택해 주세요',
                         onSelected: () => Navigator.pushNamed(context, '/payments/coupons'),
+                        isActive: isSignIn,
                       ),
                       PaymentItemWidget(
                         title: '현금영수증',

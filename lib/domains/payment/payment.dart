@@ -16,9 +16,10 @@ class Payment {
   DateTime paymentAgreeDate;
 
   Payment({
-    this.paymentType, CashReceipt cashReceipt, this.isPaymentAgree,
+    PaymentType paymentType, CashReceipt cashReceipt, this.isPaymentAgree,
     this.paymentAgreeDate
   }){
+    this.paymentType = paymentType == null ? PaymentType.COMMON_CREDIT_CARD : paymentType;
     this.cashReceipt = cashReceipt == null ? CashReceipt() : cashReceipt;
   }
 

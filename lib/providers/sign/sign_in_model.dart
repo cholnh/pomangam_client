@@ -8,7 +8,7 @@ import 'package:pomangam_client/repositories/sign/sign_repository.dart';
 class SignInModel with ChangeNotifier {
   SignRepository _signRepository;
 
-  SignInState signState = SignInState.signedOut;
+  SignInState signState = SignInState.SIGNED_OUT;
   User userInfo;
 
   SignInModel() {
@@ -21,11 +21,11 @@ class SignInModel with ChangeNotifier {
   }) async {
     if(phoneNumber == null || phoneNumber.isEmpty ||
         password == null || password.isEmpty) {
-      signState = SignInState.signedFail;
+      signState = SignInState.SIGNED_FAIL;
       notifyListeners();
       return null;
     } else {
-      signState = SignInState.signingIn;
+      signState = SignInState.SIGNING_IN;
       notifyListeners();
 
       try {
@@ -33,11 +33,11 @@ class SignInModel with ChangeNotifier {
             phoneNumber: phoneNumber,
             password: password);
       } catch(error) {
-        signState = SignInState.signedFail;
+        signState = SignInState.SIGNED_FAIL;
         notifyListeners();
       }
 
-      signState = SignInState.signedIn;
+      signState = SignInState.SIGNED_IN;
       notifyListeners();
       return userInfo;
     }
@@ -45,12 +45,12 @@ class SignInModel with ChangeNotifier {
 
   void signOut() {
     userInfo = null;
-    signState = SignInState.signedOut;
+    signState = SignInState.SIGNED_OUT;
     _signRepository.signOut();
     notifyListeners();
   }
 
-  Future<bool> isSignIn() async {
-    return Initializer.isSignIn();
+  bool isSignIn() {
+    return this.signState == SignInState.SIGNED_IN;
   }
 }

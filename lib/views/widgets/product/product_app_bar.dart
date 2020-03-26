@@ -4,6 +4,7 @@ import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/initalizer/initializer.dart';
 import 'package:pomangam_client/providers/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/providers/product/product_model.dart';
+import 'package:pomangam_client/providers/sign/sign_in_model.dart';
 import 'package:pomangam_client/views/widgets/sign/sign_modal.dart';
 import 'package:provider/provider.dart';
 
@@ -47,8 +48,8 @@ class ProductAppBar extends AppBar {
   );
 }
 
-void _onPressed({BuildContext context, ProductModel model}) async {
-  bool isSignIn = await Initializer.isSignIn();
+void _onPressed({BuildContext context, ProductModel model}) {
+  bool isSignIn = Provider.of<SignInModel>(context, listen: false).isSignIn();
   if(isSignIn) {
     DeliverySiteModel deliverySiteModel = Provider.of<DeliverySiteModel>(context, listen: false);
     model.likeToggle(
@@ -57,6 +58,6 @@ void _onPressed({BuildContext context, ProductModel model}) async {
         pIdx: model.product?.idx
     );
   } else {
-    showModal(context: context);
+    showSignModal(context: context, returnUrl: '/products/${model.product?.idx}');
   }
 }

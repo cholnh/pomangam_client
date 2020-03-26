@@ -52,7 +52,7 @@ class _MorePageState extends State<MorePage> {
                 ),
                 Divider(),
                 RaisedButton(
-                  onPressed: () => showModal(context: context),
+                  onPressed: () => showSignModal(context: context),
                   child: Text('Login'),
                 ),
               ],

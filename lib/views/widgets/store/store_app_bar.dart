@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/initalizer/initializer.dart';
+import 'package:pomangam_client/providers/sign/sign_in_model.dart';
 import 'package:pomangam_client/providers/store/store_model.dart';
 import 'package:pomangam_client/views/widgets/sign/sign_modal.dart';
 import 'package:provider/provider.dart';
@@ -38,14 +39,14 @@ class StoreAppBar extends AppBar {
   );
 }
 
-void _onPressed({BuildContext context, StoreModel model}) async {
-  bool isSignIn = await Initializer.isSignIn();
+void _onPressed({BuildContext context, StoreModel model}) {
+  bool isSignIn = Provider.of<SignInModel>(context, listen: false).isSignIn();
   if(isSignIn) {
     model.likeToggle(
         dIdx: model.store?.idxDeliverySite,
         sIdx: model.store?.idx
     );
   } else {
-    showModal(context: context);
+    showSignModal(context: context, returnUrl: '/stores/${model.store?.idx}');
   }
 }

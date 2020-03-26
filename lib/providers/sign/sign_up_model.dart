@@ -16,6 +16,7 @@ class SignUpModel with ChangeNotifier {
   SignViewState state = SignViewState.ready;
   String title = '';
   String returnUrl;
+  Object arguments;
 
   // sign up page
   bool signUpLock = false;

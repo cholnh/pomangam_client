@@ -10,7 +10,10 @@ import 'package:pomangam_client/_bases/key/shared_preference_key.dart' as s;
 import 'package:pomangam_client/_bases/network/api/api.dart';
 import 'package:pomangam_client/_bases/network/domain/server_health.dart';
 import 'package:pomangam_client/_bases/network/domain/token.dart';
+import 'package:pomangam_client/domains/sign/enum/sign_in_state.dart';
 import 'package:pomangam_client/domains/sign/user.dart';
+import 'package:pomangam_client/providers/sign/sign_in_model.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Initializer {
@@ -39,7 +42,7 @@ class Initializer {
       successToken = false;
       successModelData = false;
 
-      // await signIn(phoneNumber: '01064784899#test', password: '1234');
+      await signIn(phoneNumber: '01064784899#test', password: '1234');
 
       do {
         successNetwork = successNetwork
@@ -55,7 +58,7 @@ class Initializer {
           : await _initializeNotification();
         successToken = successToken
           ? true
-          : await _initializeToken();
+          : await _initializeToken(context: context);
         successModelData = successModelData
           ? true
           : await _initializeModelData(
@@ -131,12 +134,12 @@ class Initializer {
     }
   }
 
-  Future<bool> initializeToken() async {
+  Future<bool> initializeToken({BuildContext context}) async {
     isServerDown = await initializeNetwork();
-    return _initializeToken();
+    return _initializeToken(context: context);
   }
 
-  Future<bool> _initializeToken() async {
+  Future<bool> _initializeToken({BuildContext context}) async {
     try {
       log('start initializeToken', name: 'Initializer.initializeToken', time: DateTime.now());
       if(isServerDown) return false;
@@ -144,13 +147,16 @@ class Initializer {
       Token token = await api.oauthTokenRepository.loadToken();
       if(token != null) {
         token
-          ..saveToDisk()        // SharedPreference 내부에 저장
-          ..saveToDioHeader();  // 네트워크 헤더에 저장 : Authorization Bearer {access_token}
+        ..saveToDisk()        // SharedPreference 내부에 저장
+        ..saveToDioHeader();  // 네트워크 헤더에 저장 : Authorization Bearer {access_token}
 
         String phoneNumber = await _loadInPrefs(s.userPhoneNumber);
         if(token.tokenMode == TokenMode.LOGIN && phoneNumber.isNotEmpty) {
-          User.fromJson((await api.get(url: '/users/$phoneNumber')).data)
-            ..saveToDisk();
+          User userInfo = User.fromJson((await api.get(url: '/users/$phoneNumber')).data)
+          ..saveToDisk();
+          Provider.of<SignInModel>(context, listen: false)
+          ..userInfo = userInfo
+          ..signState = SignInState.SIGNED_IN;
         }
       }
       log('success', name: 'Initializer.initializeToken', time: DateTime.now());
@@ -178,12 +184,12 @@ class Initializer {
 
     if(token != null) {
       token
-        ..saveToDisk()        // SharedPreference 내부에 저장
-        ..saveToDioHeader();  // 네트워크 헤더에 저장 : Authorization Bearer {access_token}
+      ..saveToDisk()        // SharedPreference 내부에 저장
+      ..saveToDioHeader();  // 네트워크 헤더에 저장 : Authorization Bearer {access_token}
 
       (await SharedPreferences.getInstance()).setString(s.userPhoneNumber, phoneNumber);
       user = User.fromJson((await api.get(url: '/users/$phoneNumber')).data)
-        ..saveToDisk();
+      ..saveToDisk();
     }
     return user;
   }
@@ -263,7 +269,9 @@ class Initializer {
   /// ## isSignIn
   ///
   /// 로그인 유무 확인
+  /// deprecated - SignInModel.isSignIn() 대체
   ///
+  @deprecated
   static Future<bool> isSignIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String strTokenMode = prefs.get(s.tokenMode);

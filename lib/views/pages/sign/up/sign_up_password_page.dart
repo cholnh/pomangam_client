@@ -176,7 +176,7 @@ class _SignUpPasswordPageState extends State<SignUpPasswordPage> {
         _signUpModel.nickname = saved.nickname;
       } else {
         DialogUtils.dialog(context, '가입이 비정상적으로 처리되었습니다.');
-        _routeBack(_signUpModel.returnUrl ?? '/');
+        _routeBack(_signUpModel.returnUrl ?? '/', arguments: _signUpModel.arguments);
         return;
       }
       _signIn(_signUpModel.phoneNumber, _signUpModel.password);
@@ -190,8 +190,8 @@ class _SignUpPasswordPageState extends State<SignUpPasswordPage> {
     await _signInModel.signIn(phoneNumber: phoneNumber, password: password);
   }
 
-  void _routeBack(url) {
-    Navigator.popUntil(context, ModalRoute.withName(url));
+  void _routeBack(url, {Object arguments}) {
+    Navigator.pushReplacementNamed(context, url, arguments: arguments);
   }
 
   void _routeNext() => Navigator.pushNamed(context, '/signup/nickname');

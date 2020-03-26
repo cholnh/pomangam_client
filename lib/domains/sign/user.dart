@@ -1,8 +1,8 @@
-
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pomangam_client/domains/_bases/entity_auditing.dart';
 import 'package:pomangam_client/domains/deliverysite/detail/delivery_detail_site.dart';
 import 'package:pomangam_client/domains/sign/enum/sex.dart';
+import 'package:pomangam_client/domains/sign/point_rank/point_rank.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pomangam_client/_bases/key/shared_preference_key.dart' as s;
 
@@ -29,19 +29,17 @@ class User extends EntityAuditing {
 
   int idxFcmToken;
 
+  PointRank pointRank;
+
   User({
     int idx, DateTime registerDate, DateTime modifyDate,
-      this.deliveryDetailSite, this.phoneNumber, this.password,
-      this.name, this.nickname, this.sex, this.birth, this.point, this.idxFcmToken
+    this.deliveryDetailSite, this.phoneNumber, this.password,
+    this.name, this.nickname, this.sex, this.birth, this.point, this.idxFcmToken,
+    this.pointRank
   }): super(idx: idx, registerDate: registerDate, modifyDate: modifyDate);
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
-  static List<User> fromJsonList(List<Map<String, dynamic>> jsonList) {
-      List<User> entities = [];
-      jsonList.forEach((map) => entities.add(User.fromJson(map)));
-      return entities;
-  }
 
   static Future<User> loadFromDisk() async {
     try {

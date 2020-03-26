@@ -127,14 +127,14 @@ class _SignUpNicknamePageState extends State<SignUpNicknamePage> {
       _model.lockSignUpNickname();  // Lock
       String nickname = _controller.text;
       if(nickname == savedNickname) {
-        _routeNext(_model.returnUrl);
+        _routeNext(_model.returnUrl, arguments: _model.arguments);
         return;
       }
       if(StringUtils.isValidNickname(nickname)) {
         bool isExisted = await _model.isExistNickname(nickname: nickname);
         bool isPatched = await _model.patchNickname(nickname: nickname);
         if(!isExisted && isPatched) {
-          _routeNext(_model.returnUrl);
+          _routeNext(_model.returnUrl, arguments: _model.arguments);
           return;
         } else {
           _verifyError('이미 등록된 닉네임입니다.');
@@ -151,8 +151,9 @@ class _SignUpNicknamePageState extends State<SignUpNicknamePage> {
     FocusScope.of(context).requestFocus(focusNode);
   }
 
-  void _routeNext(url) {
-    Navigator.popUntil(context, ModalRoute.withName(url ?? '/'));
+  void _routeNext(url, {Object arguments}) {
+    //Navigator.popUntil(context, ModalRoute.withName(url ?? '/'));
+    Navigator.pushReplacementNamed(context, url, arguments: arguments);
   }
 
   void _verifyError(String cause) {

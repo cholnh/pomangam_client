@@ -1,1 +1,1 @@
-enum SignInState { signedIn, signedFail, signedOut, signingIn }
+enum SignInState { SIGNED_IN, SIGNED_FAIL, SIGNED_OUT, SIGNING_IN }

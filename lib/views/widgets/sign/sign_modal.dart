@@ -4,17 +4,19 @@ import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/providers/sign/sign_up_model.dart';
 import 'package:provider/provider.dart';
 
-void showModal({BuildContext context}) {
+void showSignModal({BuildContext context, String returnUrl = '/', Object arguments}) {
   showModalBottomSheet(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(24.0), topRight: Radius.circular(24.0)),
       ),
       context: context,
       builder: (context) {
         return SignModal(
           onSignIn: () => Navigator.pushNamed(context, '/signin'),
           onSignUp: () {
-            Provider.of<SignUpModel>(context, listen: false).returnUrl = '/';
+            Provider.of<SignUpModel>(context, listen: false)
+            ..returnUrl = returnUrl
+            ..arguments = arguments;
             Navigator.pushNamed(context, '/signup');
           }
         );
