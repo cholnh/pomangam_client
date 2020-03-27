@@ -1,8 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pomangam_client/domains/_bases/entity_auditing.dart';
 import 'package:pomangam_client/domains/deliverysite/detail/delivery_detail_site.dart';
-import 'package:pomangam_client/domains/sign/enum/sex.dart';
-import 'package:pomangam_client/domains/sign/point_rank/point_rank.dart';
+import 'package:pomangam_client/domains/user/enum/sex.dart';
+import 'package:pomangam_client/domains/user/point_rank/point_rank.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pomangam_client/_bases/key/shared_preference_key.dart' as s;
 
@@ -25,17 +25,17 @@ class User extends EntityAuditing {
 
   DateTime birth;
 
-  int point;
-
   int idxFcmToken;
 
-  PointRank pointRank;
+  PointRank userPointRank;
+
+  int userPoint;
 
   User({
     int idx, DateTime registerDate, DateTime modifyDate,
     this.deliveryDetailSite, this.phoneNumber, this.password,
-    this.name, this.nickname, this.sex, this.birth, this.point, this.idxFcmToken,
-    this.pointRank
+    this.name, this.nickname, this.sex, this.birth, this.idxFcmToken,
+    this.userPointRank, this.userPoint
   }): super(idx: idx, registerDate: registerDate, modifyDate: modifyDate);
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -55,7 +55,7 @@ class User extends EntityAuditing {
         nickname: prefs.get(s.userNickname),
         sex: prefs.get(s.userSex) == 'MALE' ? Sex.MALE : Sex.FEMALE,
         birth: DateTime.parse(prefs.get(s.userBirth)),
-        point: prefs.get(s.userPoint)
+        userPoint: prefs.get(s.userPoint)
       );
     } catch (e) {}
     return null;
@@ -69,7 +69,7 @@ class User extends EntityAuditing {
     prefs.setString(s.userNickname, this.nickname);
     prefs.setString(s.userSex, this.sex.toString());
     prefs.setString(s.userBirth, this.birth?.toIso8601String());
-    prefs.setInt(s.userPoint, this.point);
+    prefs.setInt(s.userPoint, this.userPoint);
     prefs.setInt(s.idxDeliveryDetailSite, this.deliveryDetailSite?.idx);
     prefs.setInt(s.idxDeliverySite, this.deliveryDetailSite?.idxDeliverySite);
     return this;

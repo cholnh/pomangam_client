@@ -8,7 +8,7 @@ import 'package:pomangam_client/domains/coupon/coupon.dart';
 import 'package:pomangam_client/domains/payment/cash_receipt/cash_receipt_type.dart';
 import 'package:pomangam_client/domains/payment/payment_page_type.dart';
 import 'package:pomangam_client/domains/payment/payment_type.dart';
-import 'package:pomangam_client/domains/sign/point_rank/point_rank.dart';
+import 'package:pomangam_client/domains/user/point_rank/point_rank.dart';
 import 'package:pomangam_client/providers/cart/cart_model.dart';
 import 'package:pomangam_client/providers/payment/payment_model.dart';
 import 'package:pomangam_client/providers/sign/sign_in_model.dart';
@@ -37,7 +37,7 @@ class _PaymentPageState extends State<PaymentPage> {
     CartModel cartModel = Provider.of<CartModel>(context);
     SignInModel signInModel = Provider.of<SignInModel>(context);
     bool isSignIn = signInModel.isSignIn();
-    PointRank pointRank = signInModel.userInfo.pointRank;
+    PointRank pointRank = signInModel.userInfo.userPointRank;
     int totalPrice = cartModel.cart.totalPrice();
 
     return SafeArea(
@@ -90,8 +90,8 @@ class _PaymentPageState extends State<PaymentPage> {
                         subTitle: isSignIn
                           ? cartModel.usingPoint > 0
                             ? '${StringUtils.comma(cartModel.usingPoint)}포인트 사용'
-                            : signInModel.userInfo.point > 0
-                                ? '${StringUtils.comma(signInModel.userInfo.point)}포인트 사용가능'
+                            : signInModel.userInfo.userPoint > 0
+                                ? '${StringUtils.comma(signInModel.userInfo.userPoint)}포인트 사용가능'
                                 : '포인트 없음'
                           : '로그인이 필요합니다',
                         onSelected: isSignIn

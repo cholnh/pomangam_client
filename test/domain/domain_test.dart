@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:injector/injector.dart';
 import 'package:pomangam_client/_bases/network/api/api.dart';
 import 'package:pomangam_client/domains/deliverysite/detail/delivery_detail_site.dart';
-import 'package:pomangam_client/domains/sign/user.dart';
+import 'package:pomangam_client/domains/user/user.dart';
 
 import '../testable.dart';
 

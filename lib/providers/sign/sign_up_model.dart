@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:injector/injector.dart';
 import 'package:pomangam_client/domains/deliverysite/detail/delivery_detail_site.dart';
-import 'package:pomangam_client/domains/sign/auth_code_result.dart';
-import 'package:pomangam_client/domains/sign/enum/auth_code_state.dart';
-import 'package:pomangam_client/domains/sign/enum/sex.dart';
-import 'package:pomangam_client/domains/sign/enum/sign_view_state.dart';
-import 'package:pomangam_client/domains/sign/user.dart';
+import 'package:pomangam_client/domains/user/auth_code_result.dart';
+import 'package:pomangam_client/domains/user/enum/auth_code_state.dart';
+import 'package:pomangam_client/domains/user/enum/sex.dart';
+import 'package:pomangam_client/domains/user/enum/sign_view_state.dart';
+import 'package:pomangam_client/domains/user/user.dart';
 import 'package:pomangam_client/repositories/sign/sign_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pomangam_client/_bases/key/shared_preference_key.dart' as s;

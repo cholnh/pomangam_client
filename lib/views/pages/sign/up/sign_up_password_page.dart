@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
-import 'package:pomangam_client/domains/sign/user.dart';
+import 'package:pomangam_client/domains/user/user.dart';
 import 'package:pomangam_client/providers/sign/sign_in_model.dart';
 import 'package:pomangam_client/providers/sign/sign_up_model.dart';
 import 'package:pomangam_client/views/widgets/_bases/custom_dialog_utils.dart';

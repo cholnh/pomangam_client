@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:pomangam_client/_bases/initalizer/initializer.dart';
 import 'package:pomangam_client/_bases/network/api/api.dart';
-import 'package:pomangam_client/domains/sign/auth_code_result.dart';
-import 'package:pomangam_client/domains/sign/phone_number.dart';
-import 'package:pomangam_client/domains/sign/user.dart';
+import 'package:pomangam_client/domains/user/auth_code_result.dart';
+import 'package:pomangam_client/domains/user/phone_number.dart';
+import 'package:pomangam_client/domains/user/user.dart';
 
 class SignRepository {
 

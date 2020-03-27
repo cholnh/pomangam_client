@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pomangam_client/domains/sign/enum/sign_view_state.dart';
+import 'package:pomangam_client/domains/user/enum/sign_view_state.dart';
 import 'package:pomangam_client/providers/sign/sign_up_model.dart';
 
 class SignUpFirstItemWidget extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:path/path.dart';
-import 'package:pomangam_client/domains/sign/user.dart';
+import 'package:pomangam_client/domains/user/user.dart';
 import 'package:sqflite/sqflite.dart';
 
 @deprecated
