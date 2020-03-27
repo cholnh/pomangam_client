@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
-import 'package:pomangam_client/domains/payment/payment_page_type.dart';
+import 'package:pomangam_client/views/pages/payment/payment_page_type.dart';
 import 'package:pomangam_client/domains/payment/payment_type.dart';
 import 'package:pomangam_client/providers/cart/cart_model.dart';
 import 'package:pomangam_client/providers/payment/payment_model.dart';

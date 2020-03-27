@@ -11,7 +11,7 @@ class PaymentModel with ChangeNotifier {
   Payment payment = Payment();
 
   bool isReadyPayment() {
-    return payment?.paymentType != null && payment.isPaymentAgree;
+    return payment?.paymentType != null;
   }
 
   Future<void> loadPayment() async {

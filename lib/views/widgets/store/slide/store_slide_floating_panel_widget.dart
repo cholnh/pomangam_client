@@ -3,6 +3,7 @@ import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/util/string_utils.dart';
 import 'package:pomangam_client/providers/cart/cart_model.dart';
 import 'package:pomangam_client/providers/payment/payment_model.dart';
+import 'package:pomangam_client/views/pages/payment/agreement/payment_agreement_page_type.dart';
 import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_panel_body_widget.dart';
 import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_panel_footer_widget.dart';
 import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_panel_header_widget.dart';
@@ -49,6 +50,7 @@ class StoreSlideFloatingPanelWidget extends StatelessWidget {
               builder: (_, model, __) {
                 PaymentModel paymentModel = Provider.of<PaymentModel>(context);
                 bool isPayable = paymentModel.isReadyPayment() && model.isUpdatedOrderableStore && model.isAllOrderable;
+
                 return GestureDetector(
                   child: Opacity(
                     opacity: isPayable ? 1.0 : 0.5,
@@ -74,16 +76,22 @@ class StoreSlideFloatingPanelWidget extends StatelessWidget {
   }
 
   void _saveOrder(BuildContext context) {
-    print('[결제하기 누름]');
-    CartModel cartModel = Provider.of<CartModel>(context, listen: false);
-    cartModel.cart.items.forEach((item) {
-      print('${item.product.productInfo.name} ${item.quantity}개');
-      item.subs.forEach((sub) {
-        print('  - ${sub.productSubInfo.name} ${item.quantity}개');
+    PaymentModel paymentModel = Provider.of<PaymentModel>(context, listen: false);
+    bool isPaymentAgree = paymentModel.payment?.isPaymentAgree == null ? false : paymentModel.payment?.isPaymentAgree;
+    if(isPaymentAgree) {
+      print('[결제하기 누름]');
+      CartModel cartModel = Provider.of<CartModel>(context, listen: false);
+      cartModel.cart.items.forEach((item) {
+        print('${item.product.productInfo.name} ${item.quantity}개');
+        item.subs.forEach((sub) {
+          print('  - ${sub.productSubInfo.name} ${item.quantity}개');
+        });
+        print('요구사항: ${item.requirement}');
+        print('총액: ${item.totalPrice()}');
+        print('------------------------------');
       });
-      print('요구사항: ${item.requirement}');
-      print('총액: ${item.totalPrice()}');
-      print('------------------------------');
-    });
+    } else {
+      Navigator.pushNamed(context, '/payments/agreements', arguments: PaymentAgreementPageType.FROM_CART);
+    }
   }
 }

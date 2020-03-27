@@ -6,7 +6,7 @@ import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/util/string_utils.dart';
 import 'package:pomangam_client/domains/coupon/coupon.dart';
 import 'package:pomangam_client/domains/payment/cash_receipt/cash_receipt_type.dart';
-import 'package:pomangam_client/domains/payment/payment_page_type.dart';
+import 'package:pomangam_client/views/pages/payment/payment_page_type.dart';
 import 'package:pomangam_client/domains/payment/payment_type.dart';
 import 'package:pomangam_client/domains/user/point_rank/point_rank.dart';
 import 'package:pomangam_client/providers/cart/cart_model.dart';
@@ -33,7 +33,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
   @override
   Widget build(BuildContext context) {
-    PaymentPageType paymentPageType = ModalRoute.of(context).settings?.arguments ?? PaymentPageType.FROM_SETTING;
+    PaymentPageType pageType = ModalRoute.of(context).settings?.arguments ?? PaymentPageType.FROM_SETTING;
     CartModel cartModel = Provider.of<CartModel>(context);
     SignInModel signInModel = Provider.of<SignInModel>(context);
     bool isSignIn = signInModel.isSignIn();
@@ -56,7 +56,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   child: CustomScrollView(
                     slivers: <Widget>[
                       SliverToBoxAdapter(
-                        child: paymentPageType == PaymentPageType.FROM_CART
+                        child: pageType == PaymentPageType.FROM_CART
                           ? Center(
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 40.0, bottom: 60.0),
@@ -126,7 +126,7 @@ class _PaymentPageState extends State<PaymentPage> {
                     ],
                   ),
                 ),
-                paymentPageType == PaymentPageType.FROM_CART
+                pageType == PaymentPageType.FROM_CART
                 ? PaymentBottomBar(
                     centerText: '완료',
                     onSelected: () => _onBottomSelected(context),
