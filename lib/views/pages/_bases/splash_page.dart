@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:injector/injector.dart';
@@ -41,16 +40,9 @@ class _SplashPageState extends State<SplashPage> {
             alignment: Alignment.center,
           ),
           Container(
-            child: TypewriterAnimatedTextKit(
-              text: ['${Messages.companyName}'],
-              textStyle: TextStyle(
-                fontSize: 17.0,
-                fontWeight: FontWeight.bold,
-                color: backgroundColor
-              ),
-              textAlign: TextAlign.left,
-              speed: Duration(milliseconds: 300),
-              alignment: AlignmentDirectional.topStart,
+            child: Text(
+              '${Messages.companyName}',
+              style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold, color: backgroundColor)
             ),
             margin: const EdgeInsets.only(bottom: 50),
             alignment: Alignment.bottomCenter,

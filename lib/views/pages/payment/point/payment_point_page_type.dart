@@ -1,0 +1,1 @@
+enum PaymentPointPageType { FROM_PAYMENT, FROM_SETTING }

@@ -29,6 +29,12 @@ class CartModel with ChangeNotifier {
     _storeRepository = Injector.appInstance.getDependency<StoreRepository>();
   }
 
+  int discountPriceUsingCoupons() {
+    int discountPrice = 0;
+    usingCoupons.forEach((usingCoupon) => discountPrice += usingCoupon.discountCost);
+    return discountPrice;
+  }
+
   bool isSameOrderDateTime({
     @required DateTime orderDate,
     @required OrderTime orderTime

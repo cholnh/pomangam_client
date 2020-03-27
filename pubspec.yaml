@@ -63,8 +63,6 @@ dependencies:
 
   sliding_up_panel: ^1.0.0
 
-  animated_text_kit: ^2.0.0
-
   flutter_slidable: ^0.5.4
 
 dev_dependencies:

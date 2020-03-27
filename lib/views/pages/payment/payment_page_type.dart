@@ -1,1 +1,1 @@
-enum PaymentPageType { FROM_CART, FROM_SETTING }
+enum PaymentPageType { FROM_PAYMENT, FROM_SETTING }

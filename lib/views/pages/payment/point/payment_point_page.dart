@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/util/string_utils.dart';
 import 'package:pomangam_client/domains/user/point_log/point_log.dart';
 import 'package:pomangam_client/domains/user/point_log/point_type.dart';
+import 'package:pomangam_client/providers/cart/cart_model.dart';
 import 'package:pomangam_client/providers/point/point_model.dart';
 import 'package:pomangam_client/providers/sign/sign_in_model.dart';
+import 'package:pomangam_client/views/pages/payment/point/payment_point_page_type.dart';
 import 'package:pomangam_client/views/widgets/payment/payment_app_bar.dart';
 import 'package:pomangam_client/views/widgets/payment/point/payment_point_log_item_widget.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +22,8 @@ class PaymentPointPage extends StatefulWidget {
 
 class _PaymentPointPageState extends State<PaymentPointPage> {
 
+  TextEditingController _textEditingController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -26,10 +32,13 @@ class _PaymentPointPageState extends State<PaymentPointPage> {
 
   Future<void> _init() async {
     Provider.of<PointModel>(context, listen: false).fetch();
+    CartModel cartModel = Provider.of<CartModel>(context, listen: false);
+    _textEditingController.text = cartModel.usingPoint.toString();
   }
 
   @override
   Widget build(BuildContext context) {
+    PaymentPointPageType pageType = ModalRoute.of(context).settings?.arguments ?? PaymentPointPageType.FROM_SETTING;
     SignInModel signInModel = Provider.of<SignInModel>(context);
 
     return SafeArea(
@@ -39,11 +48,28 @@ class _PaymentPointPageState extends State<PaymentPointPage> {
           title: '포인트',
           leadingIcon: const Icon(CupertinoIcons.back, color: Colors.black),
         ),
+        bottomNavigationBar: SafeArea(
+          child: GestureDetector(
+            onTap: () => _onSelected(),
+            child: SizedBox(
+              height: 65.0,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  color: primaryColor,
+                  child: Center(
+                    child: Text('적용하기', style: TextStyle(color: backgroundColor, fontWeight: FontWeight.bold, fontSize: 17.0)),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         body: Column(
           children: <Widget>[
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(top: 40.0, bottom: 60.0),
+                padding: EdgeInsets.only(top: 40.0, bottom: pageType == PaymentPointPageType.FROM_PAYMENT ? 40.0 : 90.0),
                 child: Column(
                   children: <Widget>[
                     Row(
@@ -55,6 +81,40 @@ class _PaymentPointPageState extends State<PaymentPointPage> {
                     ),
                     Padding(padding: const EdgeInsets.only(bottom: 5.0)),
                     Text('1원 이상, 1원 단위로 사용 가능', style: TextStyle(fontSize: 13.0, color: subTextColor)),
+                    Padding(padding: const EdgeInsets.only(bottom: 20.0)),
+                    pageType == PaymentPointPageType.FROM_PAYMENT
+                    ? Container(
+                      width: 170.0,
+                      child: TextFormField(
+                        controller: _textEditingController,
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        autofocus: true,
+                        expands: false,
+                        keyboardType: TextInputType.numberWithOptions(signed: true, decimal: false),
+                        cursorColor: primaryColor,
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0, color: primaryColor),
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(signInModel.userInfo.userPoint.toString().length*2),
+                        ],
+                        onFieldSubmitted: (val) {
+                          int usingPoint = int.tryParse(val) ?? 0;
+                          if(usingPoint > signInModel.userInfo.userPoint) {
+                            usingPoint = signInModel.userInfo.userPoint;
+                          }
+                          if(usingPoint <= 0) {
+                            usingPoint = 0;
+                          }
+                          _textEditingController.text = usingPoint.toString();
+                        },
+                        textInputAction: TextInputAction.done,
+                        decoration: InputDecoration(
+                          suffixText: '원 사용',
+                          border: UnderlineInputBorder(),
+                        ),
+                      ),
+                    )
+                    : Container(),
                   ],
                 ),
               ),
@@ -109,10 +169,35 @@ class _PaymentPointPageState extends State<PaymentPointPage> {
                   );
                 }
               ),
-            )
+            ),
           ],
         )
       ),
+    );
+  }
+
+  void _onSelected() {
+    SignInModel signInModel = Provider.of<SignInModel>(context, listen: false);
+    CartModel cartModel = Provider.of<CartModel>(context, listen: false);
+
+    int usingPoint = int.tryParse(_textEditingController.text) ?? 0;
+    if(usingPoint > signInModel.userInfo.userPoint) {
+      usingPoint = signInModel.userInfo.userPoint;
+    }
+    if(usingPoint <= 0) {
+      usingPoint = 0;
+    }
+    cartModel.usingPoint = usingPoint;
+
+    Navigator.pop(context);
+
+    // toast 메시지
+    Fluttertoast.showToast(
+        msg: "적용완료",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        fontSize: titleFontSize
     );
   }
 

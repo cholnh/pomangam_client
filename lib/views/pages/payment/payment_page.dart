@@ -12,6 +12,7 @@ import 'package:pomangam_client/domains/user/point_rank/point_rank.dart';
 import 'package:pomangam_client/providers/cart/cart_model.dart';
 import 'package:pomangam_client/providers/payment/payment_model.dart';
 import 'package:pomangam_client/providers/sign/sign_in_model.dart';
+import 'package:pomangam_client/views/pages/payment/point/payment_point_page_type.dart';
 import 'package:pomangam_client/views/widgets/payment/payment_app_bar.dart';
 import 'package:pomangam_client/views/widgets/payment/payment_bottom_bar.dart';
 import 'package:pomangam_client/views/widgets/payment/payment_item_widget.dart';
@@ -56,7 +57,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   child: CustomScrollView(
                     slivers: <Widget>[
                       SliverToBoxAdapter(
-                        child: pageType == PaymentPageType.FROM_CART
+                        child: pageType == PaymentPageType.FROM_PAYMENT
                           ? Center(
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 40.0, bottom: 60.0),
@@ -95,8 +96,8 @@ class _PaymentPageState extends State<PaymentPage> {
                                 : '포인트 없음'
                           : '로그인이 필요합니다',
                         onSelected: isSignIn
-                          ? () => Navigator.pushNamed(context, '/payments/points')
-                          : () => showSignModal(context: context, returnUrl: '/payments', arguments: PaymentPageType.FROM_CART),
+                          ? () => Navigator.pushNamed(context, '/payments/points', arguments: PaymentPointPageType.FROM_PAYMENT)
+                          : () => showSignModal(context: context, returnUrl: '/payments', arguments: PaymentPageType.FROM_PAYMENT),
                         isActive: isSignIn,
                       ),
                       PaymentItemWidget(
@@ -126,7 +127,7 @@ class _PaymentPageState extends State<PaymentPage> {
                     ],
                   ),
                 ),
-                pageType == PaymentPageType.FROM_CART
+                pageType == PaymentPageType.FROM_PAYMENT
                 ? PaymentBottomBar(
                     centerText: '완료',
                     onSelected: () => _onBottomSelected(context),
