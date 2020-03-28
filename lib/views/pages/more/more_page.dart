@@ -28,37 +28,43 @@ class _MorePageState extends State<MorePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: TabSelector(),
-      body: Center(
-        child: ModalProgressHUD(
-          inAsyncCall: _saving,
-          child: Form(
-            child: Column(
-              children: [
-                SwitchListTile(
-                  title: const Text('Bedroom'),
-                  value: _bedroom,
-                  onChanged: (bool value) {
-                    setState(() {
-                      _bedroom = value;
-                    });
-                  },
-                  secondary: const Icon(Icons.hotel),
-                ),
-                RaisedButton(
-                  onPressed: _submit,
-                  child: Text('Save'),
-                ),
-                Divider(),
-                RaisedButton(
-                  onPressed: () => showSignModal(context: context),
-                  child: Text('Login'),
-                ),
-              ],
+    return WillPopScope(
+      onWillPop: () async {
+        print('뒤로가기');
+        return Future.value(false);
+      },
+      child: Scaffold(
+        bottomNavigationBar: TabSelector(),
+        body: Center(
+          child: ModalProgressHUD(
+            inAsyncCall: _saving,
+            child: Form(
+              child: Column(
+                children: [
+                  SwitchListTile(
+                    title: const Text('Bedroom'),
+                    value: _bedroom,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _bedroom = value;
+                      });
+                    },
+                    secondary: const Icon(Icons.hotel),
+                  ),
+                  RaisedButton(
+                    onPressed: _submit,
+                    child: Text('Save'),
+                  ),
+                  Divider(),
+                  RaisedButton(
+                    onPressed: () => showSignModal(context: context),
+                    child: Text('Login'),
+                  ),
+                ],
+              ),
             ),
-          ),
 
+          ),
         ),
       ),
     );

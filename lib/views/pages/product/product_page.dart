@@ -45,32 +45,46 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: SlidingUpPanel(
-          controller: _panelController,
-          minHeight: 80.0,
-          maxHeight: 250.0,
-          backdropEnabled: true,
-          renderPanelSheet: false,
-          panel: ProductSlideFloatingPanelWidget(),
-          collapsed: ProductSlideFloatingCollapsedWidget(
-            onSelected: () => _panelController.open(),
-          ),
-          onPanelClosed: () => FocusScope.of(context).unfocus(),
-          body: Scaffold(
-            appBar: ProductAppBar(context),
-            body: SmartRefresher(
-              physics: BouncingScrollPhysics(),
-              enablePullDown: true,
-              header: WaterDropMaterialHeader(
-                color: primaryColor,
-                backgroundColor: backgroundColor,
+      child: Material(
+        child: Stack(
+          children: <Widget>[
+            WillPopScope(
+              onWillPop: () async {
+                if(_panelController.isPanelOpen) {
+                  _panelController.close();
+                  return Future.value(false);
+                } else {
+                  return Future.value(true);
+                }
+              },
+              child: Scaffold(
+                appBar: ProductAppBar(context),
+                body: SmartRefresher(
+                  physics: BouncingScrollPhysics(),
+                  enablePullDown: true,
+                  header: WaterDropMaterialHeader(
+                    color: primaryColor,
+                    backgroundColor: backgroundColor,
+                  ),
+                  controller: _refreshController,
+                  onRefresh: _onRefresh,
+                  child: _body(),
+                ),
               ),
-              controller: _refreshController,
-              onRefresh: _onRefresh,
-              child: _body(),
             ),
-          )
+            SlidingUpPanel(
+              controller: _panelController,
+              minHeight: 80.0,
+              maxHeight: 250.0,
+              backdropEnabled: true,
+              renderPanelSheet: false,
+              panel: ProductSlideFloatingPanelWidget(),
+              collapsed: ProductSlideFloatingCollapsedWidget(
+                onSelected: () => _panelController.open(),
+              ),
+              onPanelClosed: () => FocusScope.of(context).unfocus(),
+            ),
+          ],
         ),
       ),
     );
@@ -118,7 +132,7 @@ class _ProductPageState extends State<ProductPage> {
           ),
           ProductSubWidget(),
           SliverToBoxAdapter(
-            child: Container(height: 80.0),
+            child: Container(height: 55.0),
           )
         ],
       );

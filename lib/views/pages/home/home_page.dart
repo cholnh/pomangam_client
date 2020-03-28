@@ -76,10 +76,16 @@ class _HomePageState extends State<HomePage> {
     return Consumer<CartModel>(
       builder: (_, model, child) {
         bool isShowCart = (model.cart?.items?.length ?? 0) != 0;
-        return Scaffold(
-          bottomNavigationBar: TabSelector(),
-          body: SafeArea(
-            child: Stack(
+        return WillPopScope(
+          onWillPop: () async {
+            if(_panelController.isPanelOpen) {
+              _panelController.close();
+            }
+            return Future.value(false);
+          },
+          child: Scaffold(
+            bottomNavigationBar: TabSelector(),
+            body: Stack(
               children: <Widget>[
                 Scaffold(
                   appBar: BaseAppBar(),
@@ -97,10 +103,6 @@ class _HomePageState extends State<HomePage> {
                   panel: StoreSlideFloatingPanelWidget(),
                   collapsed: StoreSlideFloatingCollapsedWidget(
                     onSelected: () => _panelController.open(),
-                  ),
-                  body: Scaffold(
-                    appBar: BaseAppBar(),
-                    body: _body(isShowCart: isShowCart),
                   ),
                 )
                 : Container()
@@ -146,7 +148,7 @@ class _HomePageState extends State<HomePage> {
           ),
           HomeContentsWidget(),
           SliverToBoxAdapter(
-            child: Container(height: isShowCart ? 110.0 : 0.0),
+            child: Container(height: isShowCart ? 55.0 : 0.0),
           )
         ],
       ),

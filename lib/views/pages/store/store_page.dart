@@ -52,9 +52,19 @@ class _StorePageState extends State<StorePage> {
           child: Material(
             child: Stack(
               children: <Widget>[
-                Scaffold(
-                  appBar: StoreAppBar(context),
-                  body: _body(isShowCart: isShowCart),
+                WillPopScope(
+                  onWillPop: () async {
+                    if(_panelController.isPanelOpen) {
+                      _panelController.close();
+                      return Future.value(false);
+                    } else {
+                      return Future.value(true);
+                    }
+                  },
+                  child: Scaffold(
+                    appBar: StoreAppBar(context),
+                    body: _body(isShowCart: isShowCart),
+                  ),
                 ),
                 isShowCart
                 ? SlidingUpPanel(
