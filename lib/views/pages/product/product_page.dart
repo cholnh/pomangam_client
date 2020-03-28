@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/domains/product/product_type.dart';
 import 'package:pomangam_client/providers/deliverysite/delivery_site_model.dart';
@@ -45,46 +46,48 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Material(
-        child: Stack(
-          children: <Widget>[
-            WillPopScope(
-              onWillPop: () async {
-                if(_panelController.isPanelOpen) {
-                  _panelController.close();
-                  return Future.value(false);
-                } else {
-                  return Future.value(true);
-                }
-              },
-              child: Scaffold(
-                appBar: ProductAppBar(context),
-                body: SmartRefresher(
-                  physics: BouncingScrollPhysics(),
-                  enablePullDown: true,
-                  header: WaterDropMaterialHeader(
-                    color: primaryColor,
-                    backgroundColor: backgroundColor,
+      child: Scaffold(
+        body: Material(
+          child: Stack(
+            children: <Widget>[
+              WillPopScope(
+                onWillPop: () async {
+                  if(_panelController.isPanelOpen) {
+                    _panelController.close();
+                    return Future.value(false);
+                  } else {
+                    return Future.value(true);
+                  }
+                },
+                child: Scaffold(
+                  appBar: ProductAppBar(context),
+                  body: SmartRefresher(
+                    physics: BouncingScrollPhysics(),
+                    enablePullDown: true,
+                    header: WaterDropMaterialHeader(
+                      color: primaryColor,
+                      backgroundColor: backgroundColor,
+                    ),
+                    controller: _refreshController,
+                    onRefresh: _onRefresh,
+                    child: _body(),
                   ),
-                  controller: _refreshController,
-                  onRefresh: _onRefresh,
-                  child: _body(),
                 ),
               ),
-            ),
-            SlidingUpPanel(
-              controller: _panelController,
-              minHeight: 80.0,
-              maxHeight: 250.0,
-              backdropEnabled: true,
-              renderPanelSheet: false,
-              panel: ProductSlideFloatingPanelWidget(),
-              collapsed: ProductSlideFloatingCollapsedWidget(
-                onSelected: () => _panelController.open(),
+              SlidingUpPanel(
+                controller: _panelController,
+                minHeight: 80.0,
+                maxHeight: 250.0,
+                backdropEnabled: true,
+                renderPanelSheet: false,
+                panel: ProductSlideFloatingPanelWidget(),
+                collapsed: ProductSlideFloatingCollapsedWidget(
+                  onSelected: () => _panelController.open(),
+                ),
+                onPanelClosed: () => FocusScope.of(context).unfocus(),
               ),
-              onPanelClosed: () => FocusScope.of(context).unfocus(),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
