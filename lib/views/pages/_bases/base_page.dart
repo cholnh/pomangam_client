@@ -13,9 +13,7 @@ class BasePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TabModel tabModel = Provider.of<TabModel>(context);
-    return SafeArea(
-      child: _selectedPage(tabModel.tab),
-    );
+    return _selectedPage(tabModel.tab);
   }
 
   _selectedPage(TabMenu tab) {

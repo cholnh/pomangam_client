@@ -92,17 +92,19 @@ class _HomePageState extends State<HomePage> {
                   body: _body(isShowCart: isShowCart),
                 ),
                 isShowCart
-                ? SlidingUpPanel(
-                  controller: _panelController,
-                  minHeight: 80.0,
-                  maxHeight: 550.0,
-                  backdropEnabled: true,
-                  renderPanelSheet: false,
-                  onPanelOpened: () => _onCartOpen(model),
-                  onPanelClosed: () => _onCartClose(model),
-                  panel: StoreSlideFloatingPanelWidget(),
-                  collapsed: StoreSlideFloatingCollapsedWidget(
-                    onSelected: () => _panelController.open(),
+                ? SafeArea(
+                  child: SlidingUpPanel(
+                    controller: _panelController,
+                    minHeight: 80.0,
+                    maxHeight: 550.0,
+                    backdropEnabled: true,
+                    renderPanelSheet: false,
+                    onPanelOpened: () => _onCartOpen(model),
+                    onPanelClosed: () => _onCartClose(model),
+                    panel: StoreSlideFloatingPanelWidget(),
+                    collapsed: StoreSlideFloatingCollapsedWidget(
+                      onSelected: () => _panelController.open(),
+                    ),
                   ),
                 )
                 : Container()
@@ -115,42 +117,44 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _body({bool isShowCart = false}) {
-    return SmartRefresher(
-      physics: BouncingScrollPhysics(),
-      enablePullDown: true,
-      enablePullUp: true,
-      header: WaterDropMaterialHeader(
-        color: primaryColor,
-        backgroundColor: backgroundColor,
-      ),
-      footer: ClassicFooter(
-        loadStyle: LoadStyle.ShowWhenLoading,
-        noDataText: '',
-        canLoadingText: '',
-        loadingText: '',
-        loadingIcon: Padding(
-          padding: const EdgeInsets.only(top: 20.0),
-          child: CupertinoActivityIndicator(),
+    return SafeArea(
+      child: SmartRefresher(
+        physics: BouncingScrollPhysics(),
+        enablePullDown: true,
+        enablePullUp: true,
+        header: WaterDropMaterialHeader(
+          color: primaryColor,
+          backgroundColor: backgroundColor,
         ),
-        idleText: '',
-        idleIcon: Container(),
-        failedText: '탭하여 다시 시도',
-      ),
-      controller: _refreshController,
-      onRefresh: _onRefresh,
-      onLoading: _onLoading,
-      child: CustomScrollView(
-        key: PmgKeys.deliveryPage,
-        slivers: <Widget>[
-          HomeAdvertisementWidget(),
-          HomeContentsBarWidget(
-              onChangedTime: _onChangedTime
+        footer: ClassicFooter(
+          loadStyle: LoadStyle.ShowWhenLoading,
+          noDataText: '',
+          canLoadingText: '',
+          loadingText: '',
+          loadingIcon: Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: CupertinoActivityIndicator(),
           ),
-          HomeContentsWidget(),
-          SliverToBoxAdapter(
-            child: Container(height: isShowCart ? 55.0 : 0.0),
-          )
-        ],
+          idleText: '',
+          idleIcon: Container(),
+          failedText: '탭하여 다시 시도',
+        ),
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        onLoading: _onLoading,
+        child: CustomScrollView(
+          key: PmgKeys.deliveryPage,
+          slivers: <Widget>[
+            HomeAdvertisementWidget(),
+            HomeContentsBarWidget(
+                onChangedTime: _onChangedTime
+            ),
+            HomeContentsWidget(),
+            SliverToBoxAdapter(
+              child: Container(height: isShowCart ? 55.0 : 0.0),
+            )
+          ],
+        ),
       ),
     );
   }
