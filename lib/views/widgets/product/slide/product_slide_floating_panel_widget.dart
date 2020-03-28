@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:injector/injector.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
-import 'package:pomangam_client/_bases/router/app_router.dart';
 import 'package:pomangam_client/domains/product/product.dart';
 import 'package:pomangam_client/domains/product/sub/product_sub.dart';
 import 'package:pomangam_client/providers/cart/cart_model.dart';
@@ -36,6 +34,7 @@ class _ProductSlideFloatingPanelWidgetState extends State<ProductSlideFloatingPa
       ),
       margin: const EdgeInsets.fromLTRB(10.0, 24.0, 10.0, 0.0),
       child: Stack(
+        alignment: Alignment.bottomCenter,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(15.0, 30.0, 15.0, 0.0),

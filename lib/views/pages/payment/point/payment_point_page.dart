@@ -33,7 +33,7 @@ class _PaymentPointPageState extends State<PaymentPointPage> {
   Future<void> _init() async {
     Provider.of<PointModel>(context, listen: false).fetch();
     CartModel cartModel = Provider.of<CartModel>(context, listen: false);
-    _textEditingController.text = cartModel.usingPoint.toString();
+    _textEditingController.text = cartModel.usingPoint <= 0 ? '' : cartModel.usingPoint.toString();
   }
 
   @override

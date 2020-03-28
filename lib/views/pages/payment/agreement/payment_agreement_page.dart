@@ -20,7 +20,7 @@ class PaymentAgreementPage extends StatefulWidget {
 class _PaymentAgreementPageState extends State<PaymentAgreementPage> {
 
   ScrollController _scrollController = ScrollController();
-  bool isFetched = false;
+  bool isFetched;
 
   @override
   void initState() {
@@ -29,11 +29,16 @@ class _PaymentAgreementPageState extends State<PaymentAgreementPage> {
   }
 
   void _init() async {
+    PolicyModel policyModel = Provider.of<PolicyModel>(context, listen: false)
+    ..htmlPrivacy = null
+    ..htmlTerms = null;
+    isFetched = false;
+
     _scrollController.addListener(() async {
       if(!isFetched) {
         isFetched = true;
-        await Provider.of<PolicyModel>(context, listen: false).privacy();
-        await Provider.of<PolicyModel>(context, listen: false).terms();
+        await policyModel.privacy();
+        await policyModel.terms();
       }
     });
   }

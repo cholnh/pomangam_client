@@ -57,7 +57,7 @@ class _HomeContentsBarWidgetState extends State<HomeContentsBarWidget> {
             child: Row(
               children: <Widget>[
                 Text('$textArrivalTime$textArrivalDate', style: const TextStyle(fontSize: appBarFontSize, color: Colors.black)),
-                Icon(Icons.arrow_drop_down, color: Colors.black)
+                Icon(Icons.arrow_drop_down, color: primaryColor)
               ],
             ),
             onTap: () => _showModal(

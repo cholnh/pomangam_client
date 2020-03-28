@@ -11,7 +11,7 @@ class BaseAppBar extends AppBar {
       child: Row(
         children: <Widget>[
           const Text('한국항공대 기숙사식당', style: TextStyle(fontSize: appBarFontSize, color: Colors.black)),
-          const Icon(Icons.arrow_drop_down, color: Colors.black)
+          const Icon(Icons.arrow_drop_down, color: primaryColor)
         ],
       ),
       onTap: () => print('tab!'),
