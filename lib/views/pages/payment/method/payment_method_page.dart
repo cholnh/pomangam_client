@@ -35,14 +35,14 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
     SignInModel signInModel = Provider.of<SignInModel>(context);
     bool isSignIn = signInModel.isSignIn();
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: PaymentAppBar(
-          context,
-          title: '결제수단',
-          leadingIcon: const Icon(CupertinoIcons.back, color: Colors.black),
-        ),
-        body: Column(
+    return Scaffold(
+      appBar: PaymentAppBar(
+        context,
+        title: '결제수단',
+        leadingIcon: const Icon(CupertinoIcons.back, color: Colors.black),
+      ),
+      body: SafeArea(
+        child: Column(
           children: <Widget>[
             Expanded(
               child: SingleChildScrollView(

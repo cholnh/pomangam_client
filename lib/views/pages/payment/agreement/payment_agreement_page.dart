@@ -47,14 +47,14 @@ class _PaymentAgreementPageState extends State<PaymentAgreementPage> {
   Widget build(BuildContext context) {
     PaymentAgreementPageType pageType = ModalRoute.of(context).settings?.arguments ?? PaymentAgreementPageType.FROM_PAYMENT;
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: PaymentAppBar(
-          context,
-          title: '주문/결제/약관에 관한 동의',
-          leadingIcon: const Icon(CupertinoIcons.back, color: Colors.black),
-        ),
-        body: Column(
+    return Scaffold(
+      appBar: PaymentAppBar(
+        context,
+        title: '주문/결제/약관에 관한 동의',
+        leadingIcon: const Icon(CupertinoIcons.back, color: Colors.black),
+      ),
+      body: SafeArea(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Padding(

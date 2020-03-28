@@ -41,10 +41,10 @@ class _PaymentPageState extends State<PaymentPage> {
     PointRank pointRank = signInModel.userInfo.userPointRank;
     int totalPrice = cartModel.cart.totalPrice();
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: PaymentAppBar(context, title: '결제'),
-        body: Consumer<PaymentModel>(
+    return Scaffold(
+      appBar: PaymentAppBar(context, title: '결제'),
+      body: SafeArea(
+        child: Consumer<PaymentModel>(
           builder: (_, paymentModel, __) {
             PaymentType paymentType = paymentModel.payment?.paymentType;
             CashReceiptType cashReceiptType = paymentModel.payment?.cashReceipt?.cashReceiptType;
@@ -136,8 +136,8 @@ class _PaymentPageState extends State<PaymentPage> {
               ],
             );
           },
-        )
-      ),
+        ),
+      )
     );
   }
 

@@ -67,18 +67,18 @@ class _SignUpPasswordPageState extends State<SignUpPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: WillPopScope(
-        onWillPop: () => Future.value(false), // 뒤로가기 방지
-        child: Scaffold(
-          appBar: SignUpAppBar(
-              context,
-              enableBackButton: false,
-              backgroundColor: mainColor
-          ),
-          bottomNavigationBar: _bottomNavigationBar(),
-          backgroundColor: mainColor,
-          body: Padding(
+    return WillPopScope(
+      onWillPop: () => Future.value(false), // 뒤로가기 방지
+      child: Scaffold(
+        appBar: SignUpAppBar(
+            context,
+            enableBackButton: false,
+            backgroundColor: mainColor
+        ),
+        bottomNavigationBar: _bottomNavigationBar(),
+        backgroundColor: mainColor,
+        body: SafeArea(
+          child: Padding(
             padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
             child: Column(
               children: <Widget>[

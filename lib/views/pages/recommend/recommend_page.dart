@@ -11,11 +11,13 @@ class RecommendPage extends StatelessWidget {
       },
       child: Scaffold(
         bottomNavigationBar: TabSelector(),
-        body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text('recommend page'),
-            )
+        body: SafeArea(
+          child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text('recommend page'),
+              )
+          ),
         ),
       ),
     );

@@ -41,31 +41,31 @@ class _PaymentPointPageState extends State<PaymentPointPage> {
     PaymentPointPageType pageType = ModalRoute.of(context).settings?.arguments ?? PaymentPointPageType.FROM_SETTING;
     SignInModel signInModel = Provider.of<SignInModel>(context);
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: PaymentAppBar(
-          context,
-          title: '포인트',
-          leadingIcon: const Icon(CupertinoIcons.back, color: Colors.black),
-        ),
-        bottomNavigationBar: SafeArea(
-          child: GestureDetector(
-            onTap: () => _onSelected(),
-            child: SizedBox(
-              height: 65.0,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Container(
-                  color: primaryColor,
-                  child: Center(
-                    child: Text('적용하기', style: TextStyle(color: backgroundColor, fontWeight: FontWeight.bold, fontSize: 17.0)),
-                  ),
+    return Scaffold(
+      appBar: PaymentAppBar(
+        context,
+        title: '포인트',
+        leadingIcon: const Icon(CupertinoIcons.back, color: Colors.black),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: GestureDetector(
+          onTap: () => _onSelected(),
+          child: SizedBox(
+            height: 65.0,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                color: primaryColor,
+                child: Center(
+                  child: Text('적용하기', style: TextStyle(color: backgroundColor, fontWeight: FontWeight.bold, fontSize: 17.0)),
                 ),
               ),
             ),
           ),
         ),
-        body: Column(
+      ),
+      body: SafeArea(
+        child: Column(
           children: <Widget>[
             Center(
               child: Padding(
@@ -171,8 +171,8 @@ class _PaymentPointPageState extends State<PaymentPointPage> {
               ),
             ),
           ],
-        )
-      ),
+        ),
+      )
     );
   }
 

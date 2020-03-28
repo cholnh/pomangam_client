@@ -81,12 +81,12 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: SignUpAppBar(context),
-        bottomNavigationBar: _bottomNavigationBar(),
-        backgroundColor: backgroundColor,
-        body: Consumer<SignUpModel> (
+    return Scaffold(
+      appBar: SignUpAppBar(context),
+      bottomNavigationBar: _bottomNavigationBar(),
+      backgroundColor: backgroundColor,
+      body: SafeArea(
+        child: Consumer<SignUpModel> (
           builder: (_, model, child) {
             return Column(
               children: <Widget>[

@@ -77,12 +77,12 @@ class _SignUpAuthCodePageState extends State<SignUpAuthCodePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: SignUpAppBar(context),
-        bottomNavigationBar: _bottomNavigationBar(),
-        backgroundColor: backgroundColor,
-        body: Padding(
+    return Scaffold(
+      appBar: SignUpAppBar(context),
+      bottomNavigationBar: _bottomNavigationBar(),
+      backgroundColor: backgroundColor,
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
           child: Column(
             children: <Widget>[

@@ -51,14 +51,14 @@ class _SignUpNicknamePageState extends State<SignUpNicknamePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: WillPopScope(
-        onWillPop: () => Future.value(false), // 뒤로가기 방지
-        child: Scaffold(
-          appBar: SignUpAppBar(context, enableBackButton: false),
-          bottomNavigationBar: _bottomNavigationBar(),
-          backgroundColor: backgroundColor,
-          body: Padding(
+    return WillPopScope(
+      onWillPop: () => Future.value(false), // 뒤로가기 방지
+      child: Scaffold(
+        appBar: SignUpAppBar(context, enableBackButton: false),
+        bottomNavigationBar: _bottomNavigationBar(),
+        backgroundColor: backgroundColor,
+        body: SafeArea(
+          child: Padding(
             padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
             child: Column(
               children: <Widget>[

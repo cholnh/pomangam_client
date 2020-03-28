@@ -16,12 +16,14 @@ import 'package:pomangam_client/providers/point/point_model.dart';
 import 'package:pomangam_client/providers/policy/policy_model.dart';
 import 'package:pomangam_client/providers/product/product_model.dart';
 import 'package:pomangam_client/providers/product/product_summary_model.dart';
+import 'package:pomangam_client/providers/product/product_view_model.dart';
 import 'package:pomangam_client/providers/product/sub/product_sub_category_model.dart';
 import 'package:pomangam_client/providers/sign/sign_in_model.dart';
 import 'package:pomangam_client/providers/sign/sign_up_model.dart';
 import 'package:pomangam_client/providers/store/store_model.dart';
 import 'package:pomangam_client/providers/store/store_product_category_model.dart';
 import 'package:pomangam_client/providers/store/store_summary_model.dart';
+import 'package:pomangam_client/providers/store/store_view_model.dart';
 import 'package:pomangam_client/providers/tab/tab_model.dart';
 import 'package:pomangam_client/views/pages/_bases/splash_page.dart';
 import 'package:provider/provider.dart';
@@ -56,6 +58,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => PaymentModel(), lazy: true),
         ChangeNotifierProvider(create: (_) => PolicyModel(), lazy: true),
         ChangeNotifierProvider(create: (_) => PointModel(), lazy: true),
+        ChangeNotifierProvider(create: (_) => ProductViewModel(), lazy: true),
+        ChangeNotifierProvider(create: (_) => StoreViewModel(), lazy: true),
 
       ],
       child: MaterialApp(

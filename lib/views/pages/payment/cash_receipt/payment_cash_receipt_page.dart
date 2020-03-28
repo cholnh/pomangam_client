@@ -44,14 +44,14 @@ class _PaymentCashReceiptPageState extends State<PaymentCashReceiptPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: PaymentAppBar(
-          context,
-          title: '현금영수증',
-          leadingIcon: const Icon(CupertinoIcons.back, color: Colors.black),
-        ),
-        body: Column(
+    return Scaffold(
+      appBar: PaymentAppBar(
+        context,
+        title: '현금영수증',
+        leadingIcon: const Icon(CupertinoIcons.back, color: Colors.black),
+      ),
+      body: SafeArea(
+        child: Column(
           children: <Widget>[
             Expanded(
               child: Padding(

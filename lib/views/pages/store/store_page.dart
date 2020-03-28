@@ -8,6 +8,7 @@ import 'package:pomangam_client/providers/order/time/order_time_model.dart';
 import 'package:pomangam_client/providers/product/product_summary_model.dart';
 import 'package:pomangam_client/providers/store/store_model.dart';
 import 'package:pomangam_client/providers/store/store_product_category_model.dart';
+import 'package:pomangam_client/providers/store/store_view_model.dart';
 import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_collapsed_widget.dart';
 import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_panel_widget.dart';
 import 'package:pomangam_client/views/widgets/store/store_app_bar.dart';
@@ -40,6 +41,10 @@ class _StorePageState extends State<StorePage> {
   @override
   void initState() {
     super.initState();
+    StoreViewModel storeViewModel = Provider.of<StoreViewModel>(context, listen: false)
+    ..isWidgetBuild = false;
+    WidgetsBinding.instance.addPostFrameCallback((_)
+      => storeViewModel.widgetBuild(notify: true));
     _init();
   }
 
@@ -48,26 +53,25 @@ class _StorePageState extends State<StorePage> {
     return Consumer<CartModel>(
       builder: (_, model, child) {
         bool isShowCart = (model.cart?.items?.length ?? 0) != 0;
-        return SafeArea(
-          child: Material(
-            child: Stack(
-              children: <Widget>[
-                WillPopScope(
-                  onWillPop: () async {
-                    if(_panelController.isPanelOpen) {
-                      _panelController.close();
-                      return Future.value(false);
-                    } else {
-                      return Future.value(true);
-                    }
-                  },
-                  child: Scaffold(
-                    appBar: StoreAppBar(context),
-                    body: _body(isShowCart: isShowCart),
-                  ),
+        return Material(
+          child: Stack(
+            children: <Widget>[
+              WillPopScope(
+                onWillPop: () async {
+                  if(isShowCart && _panelController.isPanelOpen) {
+                    _panelController.close();
+                    return Future.value(false);
+                  }
+                  return Future.value(true);
+                },
+                child: Scaffold(
+                  appBar: StoreAppBar(context),
+                  body: _body(isShowCart: isShowCart),
                 ),
-                isShowCart
-                ? SlidingUpPanel(
+              ),
+              isShowCart
+              ? SafeArea(
+                child: SlidingUpPanel(
                   controller: _panelController,
                   minHeight: 80.0,
                   maxHeight: 550.0,
@@ -75,14 +79,25 @@ class _StorePageState extends State<StorePage> {
                   renderPanelSheet: false,
                   onPanelOpened: () => _onCartOpen(model),
                   onPanelClosed: () => _onCartClose(model),
-                  panel: StoreSlideFloatingPanelWidget(),
-                  collapsed: StoreSlideFloatingCollapsedWidget(
-                    onSelected: () => _panelController.open(),
+                  panel: Consumer<StoreViewModel>(
+                      builder: (_, model, __) {
+                        if(model.isWidgetBuild) {
+                          return StoreSlideFloatingPanelWidget();
+                        } else {
+                          return Container();
+                        }
+                      }
                   ),
-                )
-                : Container()
-              ],
-            ),
+                  collapsed: StoreSlideFloatingCollapsedWidget(
+                    onSelected: () {
+                      Provider.of<StoreViewModel>(context, listen: false).widgetBuild(notify: true);
+                      _panelController.open();
+                    }
+                  ),
+                ),
+              )
+              : Container()
+            ],
           ),
         );
       }

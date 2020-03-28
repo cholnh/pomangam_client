@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/network/constant/endpoint.dart';
@@ -29,7 +30,16 @@ class ProductCustomImage3Widget extends StatelessWidget {
         int selected = categoryModel.idxSelectedCategory;
         return Consumer<ProductModel>(
           builder: (_, productModel, child) {
-            List<ProductSubCategory> subCategories = productModel.product.productSubCategories;
+            List<ProductSubCategory> subCategories = productModel.product?.productSubCategories;
+            if(subCategories == null) {
+              return Container(
+                height: 180,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: CupertinoActivityIndicator(),
+                ),
+              );
+            }
             if(subCategories.length != 3) {
               return Container(
                 height: 180,

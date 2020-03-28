@@ -18,7 +18,7 @@ class StoreAppBar extends AppBar {
     title: Consumer<StoreModel>(
       builder: (_, model, child) {
         return Text(
-            '${model?.store?.storeInfo?.name ?? ''}',
+            '${model?.summary?.name ?? ''}',
             style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w600)
         );
       },
@@ -40,6 +40,8 @@ class StoreAppBar extends AppBar {
 }
 
 void _onPressed({BuildContext context, StoreModel model}) {
+  if(model.store == null) return;
+
   bool isSignIn = Provider.of<SignInModel>(context, listen: false).isSignIn();
   if(isSignIn) {
     model.likeToggle(

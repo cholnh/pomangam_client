@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
@@ -40,43 +42,43 @@ class StoreDescriptionWidget extends StatelessWidget {
                     )
                   : Container(),
                 isStoreDescriptionOpened
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(padding: EdgeInsets.only(top: 20.0)),
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(padding: EdgeInsets.only(top: 20.0)),
 
-                        // 영업정보
-                        Text('영업 정보', style: TextStyle(fontWeight: FontWeight.bold, fontSize: titleFontSize)),
-                        Padding(padding: EdgeInsets.only(top: 3.0)),
-                        GestureDetector(
-                          onTap: model.store?.storeInfo?.companyPhoneNumber != null
-                            ? () => _launch('${model.store?.storeInfo?.companyPhoneNumber}')
-                            : () {},
-                          child: Row(
-                            children: <Widget>[
-                              Text('전화번호 : ${model.store?.storeInfo?.companyPhoneNumber ?? '미등록'}', style: TextStyle(fontSize: subTitleFontSize)),
-                              Padding(padding: EdgeInsets.only(left: 10.0)),
-                              model.store?.storeInfo?.companyPhoneNumber != null
-                                  ? Text('전화하기', style: TextStyle(color: primaryColor, fontSize: 11.0))
-                                  : Container()
-                            ],
-                          ),
+                      // 영업정보
+                      Text('영업 정보', style: TextStyle(fontWeight: FontWeight.bold, fontSize: titleFontSize)),
+                      Padding(padding: EdgeInsets.only(top: 3.0)),
+                      GestureDetector(
+                        onTap: model.store?.storeInfo?.companyPhoneNumber != null
+                          ? () => _launch('${model.store?.storeInfo?.companyPhoneNumber}')
+                          : () {},
+                        child: Row(
+                          children: <Widget>[
+                            Text('전화번호 : ${model.store?.storeInfo?.companyPhoneNumber ?? '미등록'}', style: TextStyle(fontSize: subTitleFontSize)),
+                            Padding(padding: EdgeInsets.only(left: 10.0)),
+                            model.store?.storeInfo?.companyPhoneNumber != null
+                                ? Text('전화하기', style: TextStyle(color: primaryColor, fontSize: 11.0))
+                                : Container()
+                          ],
                         ),
-                        Text(
-                            '운영시간 : ${_timeFormat(model.store?.storeSchedule?.openTime) ?? ''} ~ ${_timeFormat(model.store?.storeSchedule?.closeTime) ?? ''}',
-                            style: TextStyle(fontSize: subTitleFontSize)
-                        ),
-                        Padding(padding: EdgeInsets.only(top: 20.0)),
+                      ),
+                      Text(
+                          '운영시간 : ${_timeFormat(model.store?.storeSchedule?.openTime) ?? ''} ~ ${_timeFormat(model.store?.storeSchedule?.closeTime) ?? ''}',
+                          style: TextStyle(fontSize: subTitleFontSize)
+                      ),
+                      Padding(padding: EdgeInsets.only(top: 20.0)),
 
-                        // 사업자 정보
-                        Text('사업자 정보', style: TextStyle(fontWeight: FontWeight.bold, fontSize: titleFontSize)),
-                        Padding(padding: EdgeInsets.only(top: 3.0)),
-                        Text('대표자명 : ${model.store?.storeInfo?.ownerName ?? '미등록'}', style: TextStyle(fontSize: subTitleFontSize)),
-                        Text('상호명 : ${model.store?.storeInfo?.companyName ?? '미등록'}', style: TextStyle(fontSize: subTitleFontSize)),
-                        Text('위치 : ${model.store?.storeInfo?.companyLocation ?? '미등록'}', style: TextStyle(fontSize: subTitleFontSize)),
-                      ],
-                    )
-                  : Container()
+                      // 사업자 정보
+                      Text('사업자 정보', style: TextStyle(fontWeight: FontWeight.bold, fontSize: titleFontSize)),
+                      Padding(padding: EdgeInsets.only(top: 3.0)),
+                      Text('대표자명 : ${model.store?.storeInfo?.ownerName ?? '미등록'}', style: TextStyle(fontSize: subTitleFontSize)),
+                      Text('상호명 : ${model.store?.storeInfo?.companyName ?? '미등록'}', style: TextStyle(fontSize: subTitleFontSize)),
+                      Text('위치 : ${model.store?.storeInfo?.companyLocation ?? '미등록'}', style: TextStyle(fontSize: subTitleFontSize)),
+                    ],
+                  )
+                : Container()
               ],
             );
           }

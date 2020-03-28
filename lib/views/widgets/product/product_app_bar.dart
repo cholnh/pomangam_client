@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
-import 'package:pomangam_client/_bases/initalizer/initializer.dart';
 import 'package:pomangam_client/providers/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/providers/product/product_model.dart';
 import 'package:pomangam_client/providers/sign/sign_in_model.dart';
@@ -21,7 +20,7 @@ class ProductAppBar extends AppBar {
         return Column(
           children: <Widget>[
             Text(
-              '${model?.product?.productInfo?.name ?? ''}',
+              '${model?.summary?.name ?? ''}',
               style: TextStyle(color: Colors.black, fontSize: 15.0, fontWeight: FontWeight.w600)
             ),
             Text(
@@ -49,6 +48,8 @@ class ProductAppBar extends AppBar {
 }
 
 void _onPressed({BuildContext context, ProductModel model}) {
+  if(model.product == null) return;
+
   bool isSignIn = Provider.of<SignInModel>(context, listen: false).isSignIn();
   if(isSignIn) {
     DeliverySiteModel deliverySiteModel = Provider.of<DeliverySiteModel>(context, listen: false);

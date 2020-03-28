@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/domains/product/product_type.dart';
 import 'package:pomangam_client/providers/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/providers/product/product_model.dart';
+import 'package:pomangam_client/providers/product/product_view_model.dart';
 import 'package:pomangam_client/providers/product/sub/product_sub_category_model.dart';
 import 'package:pomangam_client/providers/store/store_model.dart';
 import 'package:pomangam_client/views/widgets/product/custom/product_custom_contents_widget.dart';
@@ -40,65 +43,86 @@ class _ProductPageState extends State<ProductPage> {
   @override
   void initState() {
     super.initState();
+    ProductViewModel productViewModel = Provider.of<ProductViewModel>(context, listen: false)
+    ..isWidgetBuild = false;
+    WidgetsBinding.instance.addPostFrameCallback((_)
+      => productViewModel.widgetBuild(notify: true));
     _init();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-
-      child: Scaffold(
-        body: Material(
-          child: Stack(
-            children: <Widget>[
-              WillPopScope(
-                onWillPop: () async {
-                  if(_panelController.isPanelOpen) {
-                    _panelController.close();
-                    return Future.value(false);
-                  } else {
-                    return Future.value(true);
-                  }
-                },
-                child: Scaffold(
-                  appBar: ProductAppBar(context),
-                  body: SmartRefresher(
-                    physics: BouncingScrollPhysics(),
-                    enablePullDown: true,
-                    header: WaterDropMaterialHeader(
-                      color: primaryColor,
-                      backgroundColor: backgroundColor,
-                    ),
-                    controller: _refreshController,
-                    onRefresh: _onRefresh,
-                    child: _body(),
+    return Scaffold(
+      body: Stack(
+          children: <Widget>[
+            WillPopScope(
+              onWillPop: () async {
+                if(_panelController.isPanelOpen) {
+                  _panelController.close();
+                  return Future.value(false);
+                } else {
+                  return Future.value(true);
+                }
+              },
+              child: Scaffold(
+                appBar: ProductAppBar(context),
+                body: SafeArea(
+                  child: Consumer<ProductModel>(
+                    builder: (_, model, __) {
+                      return SmartRefresher(
+                        physics: BouncingScrollPhysics(),
+                        enablePullDown: true,
+                        header: WaterDropMaterialHeader(
+                          color: primaryColor,
+                          backgroundColor: backgroundColor,
+                        ),
+                        controller: _refreshController,
+                        onRefresh: _onRefresh,
+                        child: _body(model.product?.productType)
+                      );
+                    }
                   ),
                 ),
               ),
-              SlidingUpPanel(
+            ),
+            SafeArea(
+              child: SlidingUpPanel(
                 controller: _panelController,
                 minHeight: 80.0,
                 maxHeight: 250.0,
                 backdropEnabled: true,
                 renderPanelSheet: false,
-                panel: ProductSlideFloatingPanelWidget(),
+                panel: Consumer<ProductViewModel>(
+                  builder: (_, model, __) {
+                    if(model.isWidgetBuild) {
+                      return ProductSlideFloatingPanelWidget();
+                    } else {
+                      return Container();
+                    }
+                  }
+                ),
                 collapsed: ProductSlideFloatingCollapsedWidget(
-                  onSelected: () => _panelController.open(),
+                  onSelected: () {
+                    Provider.of<ProductViewModel>(context, listen: false).widgetBuild(notify: true);
+                    _panelController.open();
+                  },
                 ),
                 onPanelClosed: () => FocusScope.of(context).unfocus(),
               ),
-            ],
-          ),
-        ),
+            ),
+          ],
       ),
     );
   }
 
-  Widget _body() {
-    ProductType type = Provider.of<ProductModel>(context).product?.productType;
+  Widget _body(ProductType type) {
     if(type == null) {
-      return CupertinoActivityIndicator();
-    } else if(type != ProductType.NORMAL) {
+      return Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: CupertinoActivityIndicator(),
+      );
+    }
+    else if(type != ProductType.NORMAL) {
       return Column(
         children: <Widget>[
           ProductCustomImageWidget(
