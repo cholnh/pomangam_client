@@ -5,6 +5,7 @@ import 'package:pomangam_client/domains/order/time/order_time.dart';
 import 'package:pomangam_client/providers/cart/cart_model.dart';
 import 'package:pomangam_client/providers/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/providers/order/time/order_time_model.dart';
+import 'package:pomangam_client/providers/sort/home_sort_model.dart';
 import 'package:pomangam_client/providers/store/store_summary_model.dart';
 import 'package:provider/provider.dart';
 
@@ -108,6 +109,7 @@ class HomeTimePickerModalItemWidget extends StatelessWidget {
   void _dialogOk(BuildContext context, OrderTime orderTime, bool cartClear) {
     DeliverySiteModel deliverySiteModel = Provider.of<DeliverySiteModel>(context, listen: false);
     CartModel cartModel = Provider.of<CartModel>(context, listen: false);
+    HomeSortModel homeSortModel = Provider.of<HomeSortModel>(context, listen: false);
 
     // user Date 변경
     DateTime changedOrderDate = model.viewUserOrderDate;
@@ -118,10 +120,11 @@ class HomeTimePickerModalItemWidget extends StatelessWidget {
     Provider.of<StoreSummaryModel>(context, listen: false)
     ..clearWithNotify()
     ..fetch(
-        isForceUpdate: true,
-        dIdx: deliverySiteModel.userDeliverySite?.idx,
-        oIdx: orderTime.idx,
-        oDate: changedOrderDate
+      isForceUpdate: true,
+      dIdx: deliverySiteModel.userDeliverySite?.idx,
+      oIdx: orderTime.idx,
+      oDate: changedOrderDate,
+      sortType: homeSortModel.sortType
     );
 
     // cart 정보 초기화

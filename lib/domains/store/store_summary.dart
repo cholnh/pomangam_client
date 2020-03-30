@@ -37,6 +37,9 @@ class StoreSummary {
   /// 총 리뷰 개수
   int cntReview;
 
+  /// 총 주문 개수
+  int cntOrder;
+
   /// 순서
   int sequence;
 
@@ -71,7 +74,7 @@ class StoreSummary {
   StoreSummary({
     this.idx, this.name, this.description, this.subDescription,
     this.productionInfo, this.quantityOrderable, this.storeSchedule, this.avgStar,
-    this.cntLike, this.cntReview, this.sequence, this.brandImagePath,
+    this.cntLike, this.cntReview, this.cntOrder, this.sequence, this.brandImagePath,
     this.storeImageMainPath, this.storeImageSubPaths, this.promotionType,
     this.promotionValue, this.couponType, this.couponValue
   });

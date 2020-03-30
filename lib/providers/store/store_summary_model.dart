@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:intl/intl.dart';
 import 'package:pomangam_client/domains/_bases/page_request.dart';
+import 'package:pomangam_client/domains/sort/sort_type.dart';
 import 'package:pomangam_client/domains/store/store_quantity_orderable.dart';
 import 'package:pomangam_client/domains/store/store_summary.dart';
 import 'package:pomangam_client/repositories/store/store_repository.dart';
@@ -27,7 +28,8 @@ class StoreSummaryModel with ChangeNotifier {
     bool isForceUpdate = false,
     @required int dIdx,
     @required int oIdx,
-    @required DateTime oDate
+    @required DateTime oDate,
+    @required SortType sortType
   }) async {
     if(!isForceUpdate && hasReachedMax) return;
     hasReachedMax = true; // lock
@@ -40,11 +42,11 @@ class StoreSummaryModel with ChangeNotifier {
         oIdx: oIdx,
         oDate: DateFormat('yyyy-MM-dd').format(oDate),
         pageRequest: PageRequest(
-            page: curPage++,
-            size: size
-        )
+          page: curPage++,
+          size: size,
+        ),
+        sortType: sortType
       );
-      fetched.shuffle();
     } catch(error) {
       print('[Debug] StoreSummaryModel.fetch Error - $error');
       hasReachedMax = true;

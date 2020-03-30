@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:pomangam_client/_bases/network/api/api.dart';
 import 'package:pomangam_client/domains/_bases/page_request.dart';
+import 'package:pomangam_client/domains/sort/sort_type.dart';
 import 'package:pomangam_client/domains/store/store.dart';
 import 'package:pomangam_client/domains/store/store_quantity_orderable.dart';
 import 'package:pomangam_client/domains/store/store_summary.dart';
@@ -21,11 +22,12 @@ class StoreRepository {
     @required int dIdx,
     @required int oIdx,
     @required String oDate,
-    @required PageRequest pageRequest
+    @required PageRequest pageRequest,
+    @required SortType sortType
   }) async => StoreSummary.fromJsonList((
       await api.get(
-          url: '/dsites/$dIdx/stores?oIdx=$oIdx&oDate=$oDate&page=${pageRequest.page}&size=${pageRequest.size}',
-          fallBack: () => findOpeningStores(dIdx: dIdx, oIdx: oIdx, oDate: oDate, pageRequest: pageRequest)
+          url: '/dsites/$dIdx/stores?oIdx=$oIdx&oDate=$oDate&page=${pageRequest.page}&size=${pageRequest.size}&sortType=${sortType.toString().split('.').last}',
+          fallBack: () => findOpeningStores(dIdx: dIdx, oIdx: oIdx, oDate: oDate, pageRequest: pageRequest, sortType: sortType)
       )).data);
 
   Future<int> count({

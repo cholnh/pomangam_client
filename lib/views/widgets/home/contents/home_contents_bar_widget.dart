@@ -6,6 +6,8 @@ import 'package:pomangam_client/_bases/key/pmg_key.dart';
 import 'package:pomangam_client/domains/sort/sort_type.dart';
 import 'package:pomangam_client/providers/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/providers/order/time/order_time_model.dart';
+import 'package:pomangam_client/providers/sort/home_sort_model.dart';
+import 'package:pomangam_client/providers/store/store_summary_model.dart';
 import 'package:pomangam_client/views/widgets/home/sort_picker/home_sort_picker_modal.dart';
 import 'package:pomangam_client/views/widgets/home/time_picker/home_time_picker_modal.dart';
 import 'package:provider/provider.dart';
@@ -13,8 +15,9 @@ import 'package:provider/provider.dart';
 class HomeContentsBarWidget extends StatefulWidget {
 
   final Function onChangedTime;
+  final Function onChangedSort;
 
-  HomeContentsBarWidget({this.onChangedTime});
+  HomeContentsBarWidget({this.onChangedTime, this.onChangedSort});
 
   @override
   _HomeContentsBarWidgetState createState() => _HomeContentsBarWidgetState();
@@ -22,8 +25,8 @@ class HomeContentsBarWidget extends StatefulWidget {
 
 class _HomeContentsBarWidgetState extends State<HomeContentsBarWidget> {
 
-  SortType sortType = SortType.SORT_BY_RECOMMEND_DESC;
   int dIdx;
+  int oIdx;
   DateTime oDate;
 
   @override
@@ -32,6 +35,7 @@ class _HomeContentsBarWidgetState extends State<HomeContentsBarWidget> {
     DeliverySiteModel deliverySiteModel = Provider.of<DeliverySiteModel>(context, listen: false);
     OrderTimeModel orderTimeModel = Provider.of<OrderTimeModel>(context, listen: false);
     dIdx = deliverySiteModel.userDeliverySite?.idx;
+    oIdx = orderTimeModel.userOrderTime?.idx;
     oDate = orderTimeModel.userOrderDate;
   }
 
@@ -67,20 +71,25 @@ class _HomeContentsBarWidgetState extends State<HomeContentsBarWidget> {
         }
       ),
       actions: <Widget>[
-        GestureDetector(
-          onTap: () => _showModal(
-            widget: HomeSortPickerModal(type: sortType, onSelected: _selectSort)
-          ),
-          child: Material(
-            child: Row(
-              children: <Widget>[
-                Center(child: Text('${convertSortTypeToText(sortType)}', style: TextStyle(fontSize: 10.0, color: subTextColor))),
-                Padding(padding: const EdgeInsets.only(right: 3.0)),
-                Icon(Icons.filter_list, color: subTextColor),
-                Padding(padding: const EdgeInsets.only(right: 11.0))
-              ],
-            ),
-          ),
+        Consumer<HomeSortModel>(
+          builder: (_, sortModel, __) {
+            SortType sortType = sortModel.sortType;
+            return GestureDetector(
+              onTap: () => _showModal(
+                  widget: HomeSortPickerModal(type: sortType, onSelected: _selectSort)
+              ),
+              child: Material(
+                child: Row(
+                  children: <Widget>[
+                    Center(child: Text('${convertSortTypeToText(sortType)}', style: TextStyle(fontSize: 10.0, color: subTextColor))),
+                    Padding(padding: const EdgeInsets.only(right: 3.0)),
+                    Icon(Icons.filter_list, color: subTextColor),
+                    Padding(padding: const EdgeInsets.only(right: 11.0))
+                  ],
+                ),
+              )
+            );
+          }
         )
       ],
     );
@@ -100,10 +109,23 @@ class _HomeContentsBarWidgetState extends State<HomeContentsBarWidget> {
     );
   }
 
-  void _selectSort(SortType sortType) {
+  void _selectSort(SortType sortType) async {
     Navigator.pop(context);
-    setState(() {
-      this.sortType = sortType;
-    });
+
+    Provider.of<HomeSortModel>(context, listen: false)
+      .changeSortType(sortType, notify: true);
+
+    // store summary fetch
+    Provider.of<StoreSummaryModel>(context, listen: false)
+    ..clearWithNotify()
+    ..fetch(
+      isForceUpdate: true,
+      dIdx: dIdx,
+      oIdx: oIdx,
+      oDate: oDate,
+      sortType: sortType
+    );
+
+    widget.onChangedSort();
   }
 }

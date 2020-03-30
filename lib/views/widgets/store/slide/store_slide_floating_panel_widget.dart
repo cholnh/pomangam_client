@@ -59,7 +59,7 @@ class StoreSlideFloatingPanelWidget extends StatelessWidget {
                       width: MediaQuery.of(context).size.width,
                       height: 53.0,
                       child: Center(
-                        child: Text('${StringUtils.comma(model.cart.totalPrice())}원 결제하기', style: TextStyle(color: backgroundColor, fontWeight: FontWeight.bold, fontSize: 15.0)),
+                        child: Text('${StringUtils.comma(model.totalPrice())}원 결제하기', style: TextStyle(color: backgroundColor, fontWeight: FontWeight.bold, fontSize: 15.0)),
                       ),
                     ),
                   ),

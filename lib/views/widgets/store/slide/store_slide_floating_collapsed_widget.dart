@@ -14,7 +14,7 @@ class StoreSlideFloatingCollapsedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     CartModel cartModel = Provider.of<CartModel>(context);
     int cartCount = cartModel.cart?.items?.length ?? 0;
-    int totalPrice = cartModel.cart.totalPrice();
+    int totalPrice = cartModel.totalPrice();
     return GestureDetector(
       onTap: onSelected,
       child: Container(

@@ -39,7 +39,7 @@ class _PaymentPageState extends State<PaymentPage> {
     SignInModel signInModel = Provider.of<SignInModel>(context);
     bool isSignIn = signInModel.isSignIn();
     PointRank pointRank = signInModel.userInfo.userPointRank;
-    int totalPrice = cartModel.cart.totalPrice();
+    int totalPrice = cartModel.totalPrice();
 
     return Scaffold(
       appBar: PaymentAppBar(context, title: '결제'),

@@ -16,17 +16,17 @@ class HomeSortPickerModalItemWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: ListTile(
         title: isSelected
-          ? Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Text('${convertSortTypeToText(type)}', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold, color: primaryColor)),
-              const Padding(padding: EdgeInsets.all(3)),
-              const Icon(Icons.check, color: primaryColor, size: 18.0)
-            ],
-          )
-          : Text('${convertSortTypeToText(type)}', style: TextStyle(fontSize: 14.0)),
+            ? Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Text('${convertSortTypeToText(type)}', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold, color: primaryColor)),
+            const Padding(padding: EdgeInsets.all(3)),
+            const Icon(Icons.check, color: primaryColor, size: 18.0)
+          ],
+        )
+            : Text('${convertSortTypeToText(type)}', style: TextStyle(fontSize: 14.0)),
         onTap: () => onSelected(type),
-      ),
+      )
     );
   }
 }

@@ -4,11 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/key/pmg_key.dart';
+import 'package:pomangam_client/domains/sort/sort_type.dart';
 import 'package:pomangam_client/domains/tab/tab_menu.dart';
 import 'package:pomangam_client/providers/advertisement/advertisement_model.dart';
 import 'package:pomangam_client/providers/cart/cart_model.dart';
 import 'package:pomangam_client/providers/deliverysite/delivery_site_model.dart';
 import 'package:pomangam_client/providers/order/time/order_time_model.dart';
+import 'package:pomangam_client/providers/sort/home_sort_model.dart';
 import 'package:pomangam_client/providers/store/store_summary_model.dart';
 import 'package:pomangam_client/providers/tab/tab_model.dart';
 import 'package:pomangam_client/views/widgets/_bases/base_app_bar.dart';
@@ -37,6 +39,7 @@ class _HomePageState extends State<HomePage> {
   int dIdx;
   int oIdx;
   DateTime oDate;
+  SortType sortType;
 
   StreamController _streamController;
   StreamSubscription _streamSubscription;
@@ -147,7 +150,8 @@ class _HomePageState extends State<HomePage> {
           slivers: <Widget>[
             HomeAdvertisementWidget(),
             HomeContentsBarWidget(
-                onChangedTime: _onChangedTime
+              onChangedTime: _onChangedTime,
+              onChangedSort: _onChangedSort,
             ),
             HomeContentsWidget(),
             SliverToBoxAdapter(
@@ -185,6 +189,14 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void _onChangedSort() {
+    if(storeSummaryModel.hasReachedMax) {
+      _refreshController.loadNoData();
+    } else {
+      _refreshController.loadComplete();
+    }
+  }
+
   void _onRefresh() async{
     _refreshController.loadComplete();
     _init();
@@ -195,7 +207,12 @@ class _HomePageState extends State<HomePage> {
     if(storeSummaryModel.hasReachedMax) {
       _refreshController.loadNoData();
     } else {
-      await storeSummaryModel.fetch(dIdx: dIdx, oIdx: oIdx, oDate: oDate);
+      await storeSummaryModel.fetch(
+        dIdx: dIdx,
+        oIdx: oIdx,
+        oDate: oDate,
+        sortType: sortType
+      );
       _refreshController.loadComplete();
     }
   }
@@ -204,11 +221,13 @@ class _HomePageState extends State<HomePage> {
     DeliverySiteModel deliverySiteModel = Provider.of<DeliverySiteModel>(context, listen: false);
     OrderTimeModel orderTimeModel = Provider.of<OrderTimeModel>(context, listen: false);
     AdvertisementModel advertisementModel = Provider.of<AdvertisementModel>(context, listen: false);
+    HomeSortModel homeSortModel = Provider.of<HomeSortModel>(context, listen: false);
 
     // index
     dIdx = deliverySiteModel.userDeliverySite?.idx;
     oIdx = orderTimeModel.userOrderTime?.idx;
     oDate = orderTimeModel.userOrderDate;
+    sortType = homeSortModel.sortType;
 
     // store summary fetch
     storeSummaryModel.clear();
@@ -216,7 +235,8 @@ class _HomePageState extends State<HomePage> {
       isForceUpdate: true,
       dIdx: dIdx,
       oIdx: oIdx,
-      oDate: oDate
+      oDate: oDate,
+      sortType: sortType
     );
 
     // SmartRefresher 상태 초기화

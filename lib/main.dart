@@ -20,6 +20,7 @@ import 'package:pomangam_client/providers/product/product_view_model.dart';
 import 'package:pomangam_client/providers/product/sub/product_sub_category_model.dart';
 import 'package:pomangam_client/providers/sign/sign_in_model.dart';
 import 'package:pomangam_client/providers/sign/sign_up_model.dart';
+import 'package:pomangam_client/providers/sort/home_sort_model.dart';
 import 'package:pomangam_client/providers/store/store_model.dart';
 import 'package:pomangam_client/providers/store/store_product_category_model.dart';
 import 'package:pomangam_client/providers/store/store_summary_model.dart';
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => PointModel(), lazy: true),
         ChangeNotifierProvider(create: (_) => ProductViewModel(), lazy: true),
         ChangeNotifierProvider(create: (_) => StoreViewModel(), lazy: true),
+        ChangeNotifierProvider(create: (_) => HomeSortModel(), lazy: true),
 
       ],
       child: MaterialApp(
