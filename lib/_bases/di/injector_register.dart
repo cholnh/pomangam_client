@@ -8,6 +8,7 @@ import 'package:pomangam_client/_bases/network/repository/authorization_reposito
 import 'package:pomangam_client/_bases/network/repository/resource_repository.dart';
 import 'package:pomangam_client/_bases/router/app_router.dart';
 import 'package:pomangam_client/repositories/advertisement/advertisement_repository.dart';
+import 'package:pomangam_client/repositories/coupon/coupon_repository.dart';
 import 'package:pomangam_client/repositories/delivery/delivery_site_repository.dart';
 import 'package:pomangam_client/repositories/delivery/detail/delivery_detail_site_repository.dart';
 import 'package:pomangam_client/repositories/order/order_repository.dart';
@@ -172,6 +173,15 @@ class InjectorRegister {
       /// Calling it multiple times will return the same instance.
         ..registerDependency<PointRepository>
           ((injector) => PointRepository(
+            api: injector.getDependency<Api>()
+        ))
+
+
+      /// A singleton CouponRepository provider.
+      ///
+      /// Calling it multiple times will return the same instance.
+        ..registerDependency<CouponRepository>
+          ((injector) => CouponRepository(
             api: injector.getDependency<Api>()
         ));
 

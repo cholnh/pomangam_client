@@ -3,11 +3,12 @@ import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 
 class PaymentPointLogItemWidget extends StatelessWidget {
 
+  final int index;
   final String title;
   final String subTitle;
   final String trailingText;
 
-  PaymentPointLogItemWidget({this.title, this.subTitle, this.trailingText});
+  PaymentPointLogItemWidget({this.index, this.title, this.subTitle, this.trailingText});
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,7 @@ class PaymentPointLogItemWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
         children: <Widget>[
+          index == 0 ? Divider(height: 0.5) : Container(),
           ListTile(
             contentPadding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
             title:  Text(

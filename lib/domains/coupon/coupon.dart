@@ -6,6 +6,7 @@ part 'coupon.g.dart';
 @JsonSerializable(nullable: true, explicitToJson: true)
 class Coupon extends EntityAuditing {
 
+  bool isUsed;
   int discountCost;
   String title;
   String code;
@@ -14,15 +15,20 @@ class Coupon extends EntityAuditing {
   DateTime endDate;
 
   Coupon({
-    this.discountCost, this.title, this.code,
+    this.isUsed, this.discountCost, this.title, this.code,
     this.idxUser, this.beginDate, this.endDate
   });
 
   bool isValid() {
     DateTime now = DateTime.now();
-    return beginDate.isBefore(now) && endDate.isAfter(now);
+    return !isUsed && beginDate.isBefore(now) && (endDate == null || endDate.isAfter(now));
   }
 
   Map<String, dynamic> toJson() => _$CouponToJson(this);
   factory Coupon.fromJson(Map<String, dynamic> json) => _$CouponFromJson(json);
+  static List<Coupon> fromJsonList(List<dynamic> jsonList) {
+    List<Coupon> entities = [];
+    jsonList.forEach((map) => entities.add(Coupon.fromJson(map)));
+    return entities;
+  }
 }

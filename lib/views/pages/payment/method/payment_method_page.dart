@@ -51,10 +51,11 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 0.0),
-                      child: Text('내 결제', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
+                      padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 10.0),
+                      child: Text('내 결제', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
                     ),
                     isSignIn ? PaymentMethodUserTypeWidget(
+                      isFirst: true,
                       bankName: '우리카드',
                       bankNumberPreview: '3355**79**55*',
                       isSelected: viewPaymentType == PaymentType.PERIODIC_CREDIT_CARD,
@@ -73,10 +74,11 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                       onSelected: _onAddSelected,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0, bottom: 0.0),
-                      child: Text('일반 결제', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700)),
+                      padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0, bottom: 10.0),
+                      child: Text('일반 결제', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
                     ),
                     PaymentMethodCommonTypeWidget(
+                      isFirst: true,
                       paymentType: PaymentType.COMMON_CREDIT_CARD,
                       isSelected: viewPaymentType == PaymentType.COMMON_CREDIT_CARD,
                       onSelected: () => _onTypeSelected(PaymentType.COMMON_CREDIT_CARD),

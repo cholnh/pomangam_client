@@ -5,13 +5,14 @@ import 'package:pomangam_client/domains/payment/payment_type.dart';
 
 class PaymentMethodUserTypeWidget extends StatelessWidget {
 
+  final bool isFirst;
   final String bankName;
   final String bankNumberPreview;
   final Function onSelected;
   final bool isSelected;
   final PaymentType paymentType;
 
-  PaymentMethodUserTypeWidget({this.bankName, this.bankNumberPreview, this.onSelected, this.isSelected, this.paymentType});
+  PaymentMethodUserTypeWidget({this.isFirst = false, this.bankName, this.bankNumberPreview, this.onSelected, this.isSelected, this.paymentType});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,10 @@ class PaymentMethodUserTypeWidget extends StatelessWidget {
       child: Material(
         child: Column(
           children: <Widget>[
+            isFirst ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Divider(height: 0.5),
+            ) : Container(),
             Slidable(
               actionPane: SlidableDrawerActionPane(),
               actionExtentRatio: 0.25,
@@ -40,7 +45,10 @@ class PaymentMethodUserTypeWidget extends StatelessWidget {
                 ),
               ],
             ),
-            Divider(height: 0.5)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Divider(height: 0.5),
+            )
           ],
         ),
       ),

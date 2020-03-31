@@ -29,6 +29,11 @@ class CartModel with ChangeNotifier {
     _storeRepository = Injector.appInstance.getDependency<StoreRepository>();
   }
 
+  void addCoupon(Coupon coupon) {
+    usingCoupons.clear(); // 중복방지 (기획이 미완성이라 일단 중복방지로 막아둠)
+    usingCoupons.add(coupon);
+  }
+
   int discountPriceUsingCoupons() {
     int discountPrice = 0;
     usingCoupons.forEach((usingCoupon) => discountPrice += usingCoupon.discountCost);
@@ -93,7 +98,8 @@ class CartModel with ChangeNotifier {
       => totalDiscount += usingCoupon.isValid() ? usingCoupon.discountCost : 0);
     usingPromotions.forEach((usingPromotion)
       => totalDiscount += usingPromotion.isValid() ? usingPromotion.discountCost : 0);
-    return cart.totalPrice() - totalDiscount;
+    int totalPrice = cart.totalPrice() - totalDiscount;
+    return totalPrice < 0 ? 0 : totalPrice;
   }
 
   Future<void> updateOrderableStore({

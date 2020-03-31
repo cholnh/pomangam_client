@@ -20,6 +20,8 @@ class OrderRequest {
 
   int usingPoint;
 
+  String usingCouponCode;
+
   Set<int> idxesUsingCoupons = Set();
 
   Set<int> idxesUsingPromotions = Set();
@@ -30,7 +32,7 @@ class OrderRequest {
 
   OrderRequest({
     this.orderDate, this.idxOrderTime, this.idxDeliveryDetailSite,
-    this.idxPayment, this.usingPoint, this.idxesUsingCoupons,
+    this.idxPayment, this.usingPoint, this.usingCouponCode, this.idxesUsingCoupons,
     this.idxesUsingPromotions, this.cashReceipt, this.orderItems
   });
 

@@ -50,7 +50,7 @@ class ProductCustomSubItemWidget extends StatelessWidget {
                 imageUrl: '${Endpoint.serverDomain}/${sub.productImageMainPath}',
                 width: 90,
                 fit: BoxFit.fill,
-                placeholder: (context, url) => CupertinoActivityIndicator(),
+                placeholder: (context, url) => Center(child: CupertinoActivityIndicator()),
                 errorWidget: (context, url, error) => Icon(Icons.error_outline),
               ),
               subtitle: sub?.productSubInfo?.description != null
