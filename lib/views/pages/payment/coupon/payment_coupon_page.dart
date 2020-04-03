@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/providers/coupon/coupon_model.dart';
 import 'package:pomangam_client/providers/sign/sign_in_model.dart';
 import 'package:pomangam_client/views/widgets/payment/coupon/payment_coupon_add_widget.dart';
@@ -24,9 +23,12 @@ class _PaymentCouponPageState extends State<PaymentCouponPage> {
   }
 
   Future<void> _init() async {
+
     isSignIn = Provider.of<SignInModel>(context, listen: false).isSignIn();
     if(isSignIn) {
-      Provider.of<CouponModel>(context, listen: false).fetchAll();
+      Provider.of<CouponModel>(context, listen: false)
+      ..clear()
+      ..fetchAll();
     }
   }
 
@@ -42,8 +44,8 @@ class _PaymentCouponPageState extends State<PaymentCouponPage> {
         child: CustomScrollView(
           physics: BouncingScrollPhysics(),
           slivers: <Widget>[
-            PaymentCouponAddWidget(),
-            isSignIn ? PaymentCouponListWidget() : SliverToBoxAdapter()
+            PaymentCouponAddWidget(isSignIn: isSignIn),
+            PaymentCouponListWidget(isSignIn: isSignIn)
           ],
         ),
       )

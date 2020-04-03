@@ -22,11 +22,40 @@ class CartModel with ChangeNotifier {
   bool isAllOrderable = true;
 
   int usingPoint = 0;
+  Coupon usingCouponCode;
   List<Coupon> usingCoupons = List();
   List<Promotion> usingPromotions = List();
 
   CartModel() {
     _storeRepository = Injector.appInstance.getDependency<StoreRepository>();
+  }
+
+  List<Coupon> getUsingCoupons() {
+    List<Coupon> cpList = List();
+    if(this.usingCouponCode != null) {
+      cpList.add(this.usingCouponCode);
+    }
+    cpList.addAll(this.usingCoupons);
+    return cpList;
+  }
+
+  void cancelCoupon(Coupon coupon, {bool notify = false}) {
+    if(this.usingCouponCode != null && this.usingCouponCode.idx == coupon.idx) {
+      this.usingCouponCode = null;
+      if(notify) {
+        notifyListeners();
+      }
+      return;
+    }
+    for(Coupon usingCoupon in this.usingCoupons) {
+      if(usingCoupon.idx == coupon.idx) {
+        this.usingCoupons.remove(usingCoupon);
+        if(notify) {
+          notifyListeners();
+        }
+        return;
+      }
+    }
   }
 
   void addCoupon(Coupon coupon) {
@@ -36,7 +65,7 @@ class CartModel with ChangeNotifier {
 
   int discountPriceUsingCoupons() {
     int discountPrice = 0;
-    usingCoupons.forEach((usingCoupon) => discountPrice += usingCoupon.discountCost);
+    getUsingCoupons().forEach((usingCoupon) => discountPrice += usingCoupon.discountCost);
     return discountPrice;
   }
 
@@ -69,9 +98,12 @@ class CartModel with ChangeNotifier {
     ));
   }
 
-  void clear({bool notify = false}) {
-    cart.clear();
+  void clear({bool clearItems = true, bool notify = false}) {
+    if(clearItems) {
+      cart.clear();
+    }
     usingPoint = 0;
+    usingCouponCode = null;
     usingCoupons.clear();
     usingPromotions.clear();
 
@@ -94,7 +126,7 @@ class CartModel with ChangeNotifier {
   int totalPrice() {
     int totalDiscount = 0;
     totalDiscount += usingPoint;
-    usingCoupons.forEach((usingCoupon)
+    getUsingCoupons().forEach((usingCoupon)
       => totalDiscount += usingCoupon.isValid() ? usingCoupon.discountCost : 0);
     usingPromotions.forEach((usingPromotion)
       => totalDiscount += usingPromotion.isValid() ? usingPromotion.discountCost : 0);

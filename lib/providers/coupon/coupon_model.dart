@@ -7,7 +7,7 @@ class CouponModel with ChangeNotifier {
 
   CouponRepository _couponRepository;
 
-  List<Coupon> coupons = List();
+  List<Coupon> _coupons = List();
   Coupon searchCoupon;
 
   bool isCouponsFetching = false;
@@ -17,49 +17,62 @@ class CouponModel with ChangeNotifier {
     _couponRepository = Injector.appInstance.getDependency<CouponRepository>();
   }
 
+  List<Coupon> getCoupon() {
+    List<Coupon> cpList = List();
+    if(this.searchCoupon != null) {
+      cpList.add(this.searchCoupon);
+    }
+    cpList.addAll(this._coupons);
+    return cpList;
+  }
+
   Future<void> fetchAll() async {
     isCouponsFetching = true;
     try {
-      this.coupons = await _couponRepository.findAll();
-      print(coupons.length);
+      this._coupons = await _couponRepository.findAll();
     } catch (error) {
       print('[Debug] CouponModel.fetch Error - $error');
-      this.isCouponsFetching = false;
     }
     this.isCouponsFetching = false;
     notifyListeners();
   }
 
-  Future<void> fetchOne({
+  Future<bool> fetchOne({
     @required String code
   }) async {
+    bool isValidCode = false;
     isCouponsSearching = true;
     try {
       this.searchCoupon = await _couponRepository.findByCode(code: code);
+      isValidCode = true;
     } catch (error) {
       print('[Debug] CouponModel.fetchOne Error - $error');
-      this.isCouponsSearching = false;
+      isValidCode = false;
     }
     this.isCouponsSearching = false;
     notifyListeners();
+    return isValidCode;
   }
 
-  Future<void> saveByCode({
+  Future<bool> saveByCode({
     @required String code
   }) async {
+    bool isValidCode = false;
     isCouponsSearching = true;
     try {
       this.searchCoupon = await _couponRepository.saveByCode(code: code);
+      isValidCode = true;
     } catch (error) {
       print('[Debug] CouponModel.saveByCode Error - $error');
-      this.isCouponsSearching = false;
+      isValidCode = false;
     }
     this.isCouponsSearching = false;
     notifyListeners();
+    return isValidCode;
   }
 
   void clear({bool notify = false}) {
-    coupons.clear();
+    _coupons.clear();
     searchCoupon = null;
 
     if(notify) {

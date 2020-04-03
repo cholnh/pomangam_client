@@ -5,6 +5,7 @@ class StringUtils {
   static final RegExp regExpKoreaPhoneNumber = RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)');
   static final RegExp regNum = RegExp(r'[^0-9]');
   static final RegExp regExpNickname = RegExp(r'^[가-힣A-Za-z0-9]{2,10}$');
+  static final RegExp regExpCouponCode = RegExp(r'^[A-Za-z0-9]{8,12}$');
   static final RegExp regComma = new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
 
   static String removeEmojiAndSymbol(String content) {
@@ -20,6 +21,15 @@ class StringUtils {
   static bool isValidKoreaPhoneNumber(String phoneNumber) {
     if(phoneNumber != null && phoneNumber.isNotEmpty) {
       return regExpKoreaPhoneNumber.hasMatch(phoneNumber);
+    }
+    return false;
+  }
+
+  static bool isValidCouponCode(String couponCode) {
+    if(couponCode != null && couponCode.isNotEmpty) {
+      couponCode = couponCode.trim().replaceAll('-', '');
+      print('code: $couponCode / bool: ${regExpCouponCode.hasMatch(couponCode)}');
+      return regExpCouponCode.hasMatch(couponCode);
     }
     return false;
   }

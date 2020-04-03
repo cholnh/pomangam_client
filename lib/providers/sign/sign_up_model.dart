@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pomangam_client/_bases/key/shared_preference_key.dart' as s;
 
 class SignUpModel with ChangeNotifier {
+
   SignRepository _signRepository;
 
   SignViewState state = SignViewState.ready;
@@ -175,7 +176,8 @@ class SignUpModel with ChangeNotifier {
     try {
       return await _signRepository.verifyAuthCodeForJoin(
           phoneNumber: phoneNumber,
-          code: code);
+          code: code
+      );
     } catch(error) {
       return false;
     }

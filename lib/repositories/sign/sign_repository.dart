@@ -23,11 +23,24 @@ class SignRepository {
       url: '/auth/code/join',
       data: PhoneNumber(phoneNumber: phoneNumber).toJson())).data);
 
+  Future<AuthCodeResult> requestAuthCodeForId({
+    @required String phoneNumber
+  }) async => AuthCodeResult.fromJson((await api.post(
+      url: '/auth/code/id',
+      data: PhoneNumber(phoneNumber: phoneNumber).toJson())).data);
+
   Future<bool> verifyAuthCodeForJoin({
     @required String phoneNumber, @required String code
   }) async => (await api.post(
       url: '/auth/check/join',
       data: PhoneNumber(phoneNumber: phoneNumber, code: code).toJson())).data;
+
+  Future<bool> verifyAuthCodeForId({
+    @required String phoneNumber, @required String code
+  }) async => (await api.post(
+      url: '/auth/check/id',
+      data: PhoneNumber(phoneNumber: phoneNumber, code: code).toJson())).data;
+
 
   Future<User> postUser({
     @required User user
@@ -51,5 +64,10 @@ class SignRepository {
     @required String password
   }) => initializer.signIn(phoneNumber: phoneNumber, password: password);
 
-  void signOut() => initializer.signOut();
+  void signOut({bool trySignInGuest = true}) {
+    initializer.signOut();
+    if(trySignInGuest) {
+      initializer.initializeToken();
+    }
+  }
 }

@@ -4,7 +4,7 @@ import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/util/string_utils.dart';
 import 'package:pomangam_client/providers/sign/sign_up_model.dart';
 import 'package:pomangam_client/views/widgets/_bases/custom_dialog_utils.dart';
-import 'package:pomangam_client/views/widgets/sign/up/sign_up_app_bar.dart';
+import 'package:pomangam_client/views/widgets/sign/sign_app_bar.dart';
 import 'package:pomangam_client/views/widgets/sign/up/sign_up_bottom_btn_widget.dart';
 import 'package:pomangam_client/views/widgets/sign/up/sign_up_title_widget.dart';
 import 'package:provider/provider.dart';
@@ -54,7 +54,7 @@ class _SignUpNicknamePageState extends State<SignUpNicknamePage> {
     return WillPopScope(
       onWillPop: () => Future.value(false), // 뒤로가기 방지
       child: Scaffold(
-        appBar: SignUpAppBar(context, enableBackButton: false),
+        appBar: SignAppBar(context, enableBackButton: false),
         bottomNavigationBar: _bottomNavigationBar(),
         backgroundColor: backgroundColor,
         body: SafeArea(

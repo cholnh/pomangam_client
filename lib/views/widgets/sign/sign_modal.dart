@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
+import 'package:pomangam_client/providers/sign/sign_in_model.dart';
 import 'package:pomangam_client/providers/sign/sign_up_model.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +13,12 @@ void showSignModal({BuildContext context, String returnUrl = '/', Object argumen
       context: context,
       builder: (context) {
         return SignModal(
-          onSignIn: () => Navigator.pushNamed(context, '/signin'),
+          onSignIn: () {
+            Provider.of<SignInModel>(context, listen: false)
+            ..returnUrl = returnUrl
+            ..arguments = arguments;
+            Navigator.pushNamed(context, '/signin');
+          },
           onSignUp: () {
             Provider.of<SignUpModel>(context, listen: false)
             ..returnUrl = returnUrl
@@ -36,7 +42,7 @@ class SignModal extends StatelessWidget {
         child: Wrap(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.fromLTRB(15.0, 30.0, 15.0, 30.0),
+              padding: const EdgeInsets.fromLTRB(15.0, 30.0, 15.0, 15.0),
               child: Column(
                 children: <Widget>[
                   Padding(
@@ -62,12 +68,16 @@ class SignModal extends StatelessWidget {
                     onTap: onSignUp,
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
                     child: Divider(color: Colors.black26),
                   ),
                   GestureDetector(
-                    child: Align(
-                      child: Text('기존 계정으로 로그인', style: TextStyle(color: Colors.grey, fontSize: titleFontSize)),
+                    child: Material(
+                      child: Container(
+                        padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 15.0),
+                        width: MediaQuery.of(context).size.width,
+                        child: Center(child: Text('기존 계정으로 로그인', style: TextStyle(color: Colors.grey, fontSize: titleFontSize))),
+                      ),
                     ),
                     onTap: onSignIn,
                   )

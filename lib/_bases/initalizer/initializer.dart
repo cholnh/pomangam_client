@@ -42,7 +42,7 @@ class Initializer {
       successToken = false;
       successModelData = false;
 
-      await signIn(phoneNumber: '01064784899#test', password: '1234');
+      //await signIn(phoneNumber: '01064784899#test', password: '1234');
 
       do {
         successNetwork = successNetwork
@@ -82,6 +82,7 @@ class Initializer {
       log('success', name: 'Initializer.initialize', time: DateTime.now());
     } catch(error) {
       log('fail', name: 'Initializer.initialize', time: DateTime.now(), error: error);
+      onServerError();
     }
   }
 
@@ -180,7 +181,8 @@ class Initializer {
     User user;
     Token token = await api.oauthTokenRepository.issueLoginToken(
         phoneNumber: phoneNumber,
-        password: password);
+        password: password
+    );
 
     if(token != null) {
       token

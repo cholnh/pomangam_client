@@ -7,7 +7,7 @@ import 'package:pomangam_client/domains/user/enum/sex.dart';
 import 'package:pomangam_client/domains/user/enum/sign_view_state.dart';
 import 'package:pomangam_client/providers/sign/sign_up_model.dart';
 import 'package:pomangam_client/views/widgets/_bases/custom_dialog_utils.dart';
-import 'package:pomangam_client/views/widgets/sign/up/sign_up_app_bar.dart';
+import 'package:pomangam_client/views/widgets/sign/sign_app_bar.dart';
 import 'package:pomangam_client/views/widgets/sign/up/sign_up_bottom_btn_widget.dart';
 import 'package:pomangam_client/views/widgets/sign/up/sign_up_first_item_widget.dart';
 import 'package:pomangam_client/views/widgets/sign/up/sign_up_second_item_widget.dart';
@@ -82,7 +82,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SignUpAppBar(context),
+      appBar: SignAppBar(context),
       bottomNavigationBar: _bottomNavigationBar(),
       backgroundColor: backgroundColor,
       body: SafeArea(

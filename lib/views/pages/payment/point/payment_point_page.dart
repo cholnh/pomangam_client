@@ -40,11 +40,12 @@ class _PaymentPointPageState extends State<PaymentPointPage> {
   Widget build(BuildContext context) {
     PaymentPointPageType pageType = ModalRoute.of(context).settings?.arguments ?? PaymentPointPageType.FROM_SETTING;
     SignInModel signInModel = Provider.of<SignInModel>(context);
+    int userPoint = signInModel.userInfo?.userPoint ?? 0;
 
     return Scaffold(
       appBar: PaymentAppBar(
         context,
-        title: '보유포인트 ${StringUtils.comma(signInModel.userInfo.userPoint)}P',
+        title: '보유포인트 ${StringUtils.comma(userPoint)}P',
         leadingIcon: const Icon(CupertinoIcons.back, color: Colors.black),
       ),
       body: SafeArea(
@@ -53,7 +54,7 @@ class _PaymentPointPageState extends State<PaymentPointPage> {
             pageType == PaymentPointPageType.FROM_PAYMENT
             ? PaymentPointAddWidget(
               textEditingController: _textEditingController,
-              userPoint: signInModel.userInfo.userPoint,
+              userPoint: userPoint,
               onSelected: _onSelected,
             )
             : Container(),
@@ -115,8 +116,10 @@ class _PaymentPointPageState extends State<PaymentPointPage> {
     CartModel cartModel = Provider.of<CartModel>(context, listen: false);
 
     int usingPoint = int.tryParse(_textEditingController.text) ?? 0;
-    if(usingPoint > signInModel.userInfo.userPoint) {
-      usingPoint = signInModel.userInfo.userPoint;
+    int userPoint = signInModel.userInfo?.userPoint ?? 0;
+
+    if(usingPoint > userPoint) {
+      usingPoint = userPoint;
     }
     if(usingPoint <= 0) {
       usingPoint = 0;

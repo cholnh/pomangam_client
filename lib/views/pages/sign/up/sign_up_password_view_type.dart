@@ -1,0 +1,1 @@
+enum SignUpPasswordViewType { FROM_SIGN_IN, FROM_SIGN_UP }

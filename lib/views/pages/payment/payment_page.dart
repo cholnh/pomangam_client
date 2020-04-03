@@ -37,9 +37,11 @@ class _PaymentPageState extends State<PaymentPage> {
     PaymentPageType pageType = ModalRoute.of(context).settings?.arguments ?? PaymentPageType.FROM_SETTING;
     CartModel cartModel = Provider.of<CartModel>(context);
     SignInModel signInModel = Provider.of<SignInModel>(context);
+
     bool isSignIn = signInModel.isSignIn();
-    PointRank pointRank = signInModel.userInfo.userPointRank;
+    PointRank pointRank = signInModel.userInfo?.userPointRank;
     int totalPrice = cartModel.totalPrice();
+    List<Coupon> coupons = cartModel.getUsingCoupons();
 
     return Scaffold(
       appBar: PaymentAppBar(context, title: '결제'),
@@ -72,7 +74,9 @@ class _PaymentPageState extends State<PaymentPage> {
                                     ),
                                     Padding(padding: const EdgeInsets.only(bottom: 5.0)),
                                     // Text('(${StringUtils.comma(pointRank.savedPoint(totalPrice))}포인트 적립)', style: TextStyle(fontSize: 13.0, color: subTextColor))
-                                    Text('(결제금액의 ${pointRank.percentSavePoint}% 포인트 적립)', style: TextStyle(fontSize: 13.0, color: subTextColor))
+                                    pointRank != null
+                                        ? Text('(결제금액의 ${pointRank.percentSavePoint}% 포인트 적립)', style: TextStyle(fontSize: 13.0, color: subTextColor))
+                                        : Text('(로그인시 포인트 적립이 가능합니다)', style: TextStyle(fontSize: 13.0, color: subTextColor))
                                   ],
                                 ),
                               ),
@@ -91,8 +95,8 @@ class _PaymentPageState extends State<PaymentPage> {
                         subTitle: isSignIn
                           ? cartModel.usingPoint > 0
                             ? '${StringUtils.comma(cartModel.usingPoint)}포인트 사용'
-                            : signInModel.userInfo.userPoint > 0
-                                ? '${StringUtils.comma(signInModel.userInfo.userPoint)}포인트 사용가능'
+                            : (signInModel.userInfo?.userPoint ?? 0) > 0
+                                ? '${StringUtils.comma(signInModel.userInfo?.userPoint ?? 0)}포인트 사용가능'
                                 : '포인트 없음'
                           : '로그인이 필요합니다',
                         onSelected: isSignIn
@@ -102,11 +106,10 @@ class _PaymentPageState extends State<PaymentPage> {
                       ),
                       PaymentItemWidget(
                         title: '할인쿠폰',
-                        subTitle: cartModel.usingCoupons.length > 0
-                          ? _couponTitle(cartModel.usingCoupons)
+                        subTitle: coupons.length > 0
+                          ? _couponTitle(coupons)
                           : '쿠폰코드를 입력 또는 선택해 주세요',
                         onSelected: () => Navigator.pushNamed(context, '/payments/coupons'),
-                        isActive: isSignIn,
                       ),
                       PaymentItemWidget(
                         title: '현금영수증',

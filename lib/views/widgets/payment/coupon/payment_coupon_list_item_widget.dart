@@ -8,6 +8,8 @@ class PaymentCouponListItemWidget extends StatelessWidget {
   final String date;
   final bool isValid;
   final bool isUsed;
+  final bool isNew;
+  final bool isUsing;
   final Function onCouponSelected;
 
   PaymentCouponListItemWidget({
@@ -16,6 +18,8 @@ class PaymentCouponListItemWidget extends StatelessWidget {
     this.date,
     this.isValid,
     this.isUsed,
+    this.isNew = false,
+    this.isUsing = false,
     this.onCouponSelected
   });
 
@@ -47,12 +51,18 @@ class PaymentCouponListItemWidget extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(
-                                '$title',
-                                style: TextStyle(
-                                    color: !isUsed && isValid ? primaryColor : subTextColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.0),
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    '$title',
+                                    style: TextStyle(
+                                        color: !isUsed && isValid ? primaryColor : subTextColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.0),
+                                  ),
+                                  isNew ? Padding(padding: const EdgeInsets.only(right: 6.0)) : Container(),
+                                  isNew ? Text('new', style: TextStyle(color: primaryColor, fontSize: 11.0, fontWeight: FontWeight.bold)) : Container()
+                                ],
                               ),
                               Padding(padding: const EdgeInsets.only(bottom: 5.0)),
                               Text(
@@ -72,7 +82,7 @@ class PaymentCouponListItemWidget extends StatelessWidget {
                         width: 70.0,
                         child: Center(
                           child: Text(
-                            isUsed ? '사용완료' : isValid ? '사용하기' : '기간만료',
+                            isUsed ? '사용완료' : isValid ? isUsing ? '사용취소' : '사용하기' : '기간만료',
                             style: TextStyle(
                                 fontSize: 12.0,
                                 color: !isUsed && isValid ? primaryColor : subTextColor,

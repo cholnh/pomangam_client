@@ -56,13 +56,13 @@ class StoreSlideFloatingPanelFooterWidget extends StatelessWidget {
 
   String _pointText(CartModel model) {
     return model.usingPoint > 0
-      ? '포인트 ${StringUtils.comma(model.usingPoint)}원 사용' + (model.usingCoupons.length > 0 ? ', ' : '')
+      ? '포인트 ${StringUtils.comma(model.usingPoint)}원 사용'
       : '';
   }
 
   String _couponText(CartModel model) {
-    return model.usingCoupons.length > 0
-        ? '쿠폰 ${StringUtils.comma(model.discountPriceUsingCoupons())}원 사용'
+    return model.getUsingCoupons().length > 0
+        ? (model.usingPoint > 0 ? ', ' : '') + '쿠폰 ${StringUtils.comma(model.discountPriceUsingCoupons())}원 사용'
         : '';
   }
 
