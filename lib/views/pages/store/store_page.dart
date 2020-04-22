@@ -82,7 +82,9 @@ class _StorePageState extends State<StorePage> {
                   panel: Consumer<StoreViewModel>(
                       builder: (_, model, __) {
                         if(model.isWidgetBuild) {
-                          return StoreSlideFloatingPanelWidget();
+                          return StoreSlideFloatingPanelWidget(
+                            onSaveOrder: _onSaveOrder,
+                          );
                         } else {
                           return Container();
                         }
@@ -102,6 +104,13 @@ class _StorePageState extends State<StorePage> {
         );
       }
     );
+  }
+
+  void _onSaveOrder() async {
+    await _panelController.close();
+
+    // Todo. 부트페이 화면 show
+    Navigator.pushNamed(context, '/payments/bootpays');
   }
 
   Widget _body({bool isShowCart = false}) {

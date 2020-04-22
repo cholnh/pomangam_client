@@ -178,6 +178,7 @@ class OauthTokenRepository {
         }
       }
     } catch(e) {
+      print(e);
       return ServerHealth.UNKNOWN;
     }
     return ServerHealth.UNKNOWN;

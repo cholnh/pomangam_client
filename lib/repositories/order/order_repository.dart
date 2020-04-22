@@ -10,9 +10,9 @@ class OrderRepository {
 
   Future<OrderResponse> saveOrder({
     @required OrderRequest orderRequest
-  }) async => (await api.post(
+  }) async => OrderResponse.fromJson((await api.post(
       url: '/orders',
-      data: orderRequest.toJson())).data;
+      data: orderRequest.toJson())).data);
 
   Future<bool> verify({
     @required int oIdx

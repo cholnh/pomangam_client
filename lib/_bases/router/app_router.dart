@@ -4,6 +4,7 @@ import 'package:pomangam_client/views/pages/_bases/error_page.dart';
 import 'package:pomangam_client/views/pages/_bases/not_found_page.dart';
 import 'package:pomangam_client/views/pages/deliverysite/delivery_site_page.dart';
 import 'package:pomangam_client/views/pages/payment/agreement/payment_agreement_page.dart';
+import 'package:pomangam_client/views/pages/payment/bootpay/bootpay_page.dart';
 import 'package:pomangam_client/views/pages/payment/cash_receipt/payment_cash_receipt_page.dart';
 import 'package:pomangam_client/views/pages/payment/coupon/payment_coupon_page.dart';
 import 'package:pomangam_client/views/pages/payment/method/payment_method_add_page.dart';
@@ -218,6 +219,16 @@ class AppRouter extends Router {
         transitionType: TransitionType.cupertino
     );
 
+
+    /// A BootPayPage router path.
+    ///
+    /// Returns the page specified in the handler.
+    super.define("/payments/bootpays",
+        handler: Handler(handlerFunc: (context, params) {
+          return BootPayPage();
+        }),
+        transitionType: TransitionType.cupertino
+    );
 
   }
 }

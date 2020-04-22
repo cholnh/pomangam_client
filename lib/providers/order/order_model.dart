@@ -16,10 +16,13 @@ class OrderModel with ChangeNotifier {
     _orderRepository = Injector.appInstance.getDependency<OrderRepository>();
   }
 
-  Future<void> saveOrder({
+  Future<OrderResponse> saveOrder({
     @required OrderRequest orderRequest
   }) async {
     this.isSaving = true;
+    this.orderResponse = null;
+    notifyListeners();
+
     try {
       this.orderResponse = await _orderRepository.saveOrder(orderRequest: orderRequest);
     } catch (error) {
@@ -28,6 +31,7 @@ class OrderModel with ChangeNotifier {
     }
     this.isSaving = false;
     notifyListeners();
+    return this.orderResponse;
   }
 
   Future<void> verify({

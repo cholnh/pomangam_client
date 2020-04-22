@@ -22,4 +22,9 @@ class OrderItemResponse extends EntityAuditing {
 
   Map<String, dynamic> toJson() => _$OrderItemResponseToJson(this);
   factory OrderItemResponse.fromJson(Map<String, dynamic> json) => _$OrderItemResponseFromJson(json);
+
+  @override
+  String toString() {
+    return '[OrderItemResponse]\n\nnameStore: $nameStore\nnameProduct: $nameProduct\nsaleCost: $saleCost\nquantity: $quantity\nrequirement: $requirement\n\n$orderItemSubs';
+  }
 }

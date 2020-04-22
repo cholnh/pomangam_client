@@ -28,7 +28,6 @@ class StringUtils {
   static bool isValidCouponCode(String couponCode) {
     if(couponCode != null && couponCode.isNotEmpty) {
       couponCode = couponCode.trim().replaceAll('-', '');
-      print('code: $couponCode / bool: ${regExpCouponCode.hasMatch(couponCode)}');
       return regExpCouponCode.hasMatch(couponCode);
     }
     return false;

@@ -21,7 +21,6 @@ class OrderResponse extends EntityAuditing {
 
   // 결제 정보
   int usingPoint;
-  String usingCouponCode;
   List<Coupon> usingCoupons = List();
   List<Promotion> usingPromotions = List();
   int savedPoint;
@@ -41,15 +40,15 @@ class OrderResponse extends EntityAuditing {
 
   // 받는 시간
   int idxOrderTime;
-  DateTime arrivalTime;
-  DateTime additionalTime;
+  String arrivalTime;
+  String additionalTime;
 
   List<OrderItemResponse> orderItems = List();
 
   OrderResponse({
     int idx, DateTime registerDate, DateTime modifyDate,
     this.orderType, this.boxNumber, this.paymentType,
-    this.ordererType, this.usingPoint, this.usingCouponCode, this.usingCoupons,
+    this.ordererType, this.usingPoint, this.usingCoupons,
     this.usingPromotions, this.savedPoint, this.cashReceipt, this.totalCost,
     this.discountCost, this.paymentCost, this.idxDeliverySite,
     this.idxDeliveryDetailSite, this.nameDeliverySite,
@@ -62,6 +61,6 @@ class OrderResponse extends EntityAuditing {
 
   @override
   String toString() {
-    return 'OrderResponse{orderType: $orderType, boxNumber: $boxNumber, paymentType: $paymentType, ordererType: $ordererType, usingPoint: $usingPoint, usingCoupons: $usingCoupons, usingPromotions: $usingPromotions, savedPoint: $savedPoint, cashReceipt: $cashReceipt, totalCost: $totalCost, discountCost: $discountCost, paymentCost: $paymentCost, idxDeliverySite: $idxDeliverySite, idxDeliveryDetailSite: $idxDeliveryDetailSite, nameDeliverySite: $nameDeliverySite, nameDeliveryDetailSite: $nameDeliveryDetailSite, orderDate: $orderDate, idxOrderTime: $idxOrderTime, arrivalTime: $arrivalTime, additionalTime: $additionalTime, orderItems: $orderItems}';
+    return '[OrderResponse]\n\norderType: $orderType\nboxNumber: $boxNumber\npaymentType: $paymentType\nordererType: $ordererType\nusingPoint: $usingPoint\nusingCoupons: $usingCoupons\nusingPromotions: $usingPromotions\nsavedPoint: $savedPoint\ncashReceipt: $cashReceipt\ntotalCost: $totalCost\ndiscountCost: $discountCost\npaymentCost: $paymentCost\nidxDeliverySite: $idxDeliverySite\nidxDeliveryDetailSite: $idxDeliveryDetailSite\nnameDeliverySite: $nameDeliverySite\nnameDeliveryDetailSite: $nameDeliveryDetailSite\norderDate: $orderDate\nidxOrderTime: $idxOrderTime\narrivalTime: $arrivalTime\nadditionalTime: $additionalTime\n\n$orderItems';
   }
 }

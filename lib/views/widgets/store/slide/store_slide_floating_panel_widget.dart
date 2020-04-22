@@ -1,15 +1,25 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pomangam_client/_bases/constants/pomangam_theme.dart';
 import 'package:pomangam_client/_bases/util/string_utils.dart';
+import 'package:pomangam_client/domains/cart/cart.dart';
+import 'package:pomangam_client/domains/order/order_request.dart';
 import 'package:pomangam_client/providers/cart/cart_model.dart';
+import 'package:pomangam_client/providers/order/order_model.dart';
 import 'package:pomangam_client/providers/payment/payment_model.dart';
 import 'package:pomangam_client/views/pages/payment/agreement/payment_agreement_page_type.dart';
 import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_panel_body_widget.dart';
 import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_panel_footer_widget.dart';
 import 'package:pomangam_client/views/widgets/store/slide/store_slide_floating_panel_header_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pomangam_client/_bases/key/shared_preference_key.dart' as s;
 
 class StoreSlideFloatingPanelWidget extends StatelessWidget {
+
+  final Function onSaveOrder;
+
+  StoreSlideFloatingPanelWidget({this.onSaveOrder});
 
   @override
   Widget build(BuildContext context) {
@@ -46,50 +56,74 @@ class StoreSlideFloatingPanelWidget extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: Consumer<CartModel>(
-              builder: (_, model, __) {
-                PaymentModel paymentModel = Provider.of<PaymentModel>(context);
-                bool isPayable = paymentModel.isReadyPayment() && model.isUpdatedOrderableStore && model.isAllOrderable;
+            child: Consumer<OrderModel>(
+              builder: (_, orderModel, __) {
+                bool isSaving = orderModel.isSaving;
+                return Consumer<CartModel>(
+                  builder: (_, cartModel, __) {
+                    PaymentModel paymentModel = Provider.of<PaymentModel>(context);
+                    bool isPayable = paymentModel.isReadyPayment() && cartModel.isUpdatedOrderableStore && cartModel.isAllOrderable;
 
-                return GestureDetector(
-                  child: Opacity(
-                    opacity: isPayable ? 1.0 : 0.5,
-                    child: Container(
-                      color: primaryColor,
-                      width: MediaQuery.of(context).size.width,
-                      height: 53.0,
-                      child: Center(
-                        child: Text('${StringUtils.comma(model.totalPrice())}원 결제하기', style: TextStyle(color: backgroundColor, fontWeight: FontWeight.bold, fontSize: 15.0)),
+                    return GestureDetector(
+                      child: Opacity(
+                        opacity: !isSaving && isPayable ? 1.0 : 0.5,
+                        child: Container(
+                          color: primaryColor,
+                          width: MediaQuery.of(context).size.width,
+                          height: 53.0,
+                          child: Center(
+                            child: isSaving
+                              ? CupertinoActivityIndicator()
+                              : Text('${StringUtils.comma(cartModel.totalPrice())}원 결제하기', style: TextStyle(color: backgroundColor, fontWeight: FontWeight.bold, fontSize: 15.0)),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  onTap: isPayable
-                    ? () => _saveOrder(context)
-                    : () {},
+                      onTap: !isSaving && isPayable
+                          ? () => _saveOrder(context)
+                          : () {},
+                    );
+                  }
                 );
-              },
-            ),
+              }
+            )
           )
         ],
       ),
     );
   }
 
-  void _saveOrder(BuildContext context) {
+  void _saveOrder(BuildContext context) async {
+    OrderModel orderModel = Provider.of<OrderModel>(context, listen: false);
+    if(orderModel.isSaving) return;
+
     PaymentModel paymentModel = Provider.of<PaymentModel>(context, listen: false);
     bool isPaymentAgree = paymentModel.payment?.isPaymentAgree == null ? false : paymentModel.payment?.isPaymentAgree;
     if(isPaymentAgree) {
-      print('[결제하기 누름]');
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
       CartModel cartModel = Provider.of<CartModel>(context, listen: false);
-      cartModel.cart.items.forEach((item) {
-        print('${item.product.productInfo.name} ${item.quantity}개');
-        item.subs.forEach((sub) {
-          print('  - ${sub.productSubInfo.name} ${item.quantity}개');
-        });
-        print('요구사항: ${item.requirement}');
-        print('총액: ${item.totalPrice()}');
-        print('------------------------------');
-      });
+      Cart cart = cartModel.cart;
+
+      OrderRequest orderRequest = OrderRequest(
+          orderDate: cart.orderDate,
+          idxFcmToken: prefs.get(s.idxFcmToken),
+          idxOrderTime: cart.orderTime.idx,
+          idxDeliveryDetailSite: cart.detail.idx,
+          paymentType: paymentModel.payment.paymentType,
+          usingPoint: cartModel.usingPoint,
+          usingCouponCode: cartModel.usingCouponCode?.code,
+          idxesUsingCoupons: cartModel.usingCoupons.map((coupon) => coupon.idx).toSet(),
+          idxesUsingPromotions: cartModel.usingPromotions.map((promotion) => promotion.idx).toSet(),
+          cashReceipt: paymentModel.payment.cashReceipt?.cashReceiptNumber,
+          cashReceiptType: paymentModel.payment.cashReceipt?.cashReceiptType,
+          orderItems: cart.orderItems()
+      );
+      cartModel.clear();
+      await orderModel.saveOrder(orderRequest: orderRequest);
+
+      onSaveOrder();
     } else {
       Navigator.pushNamed(context, '/payments/agreements', arguments: PaymentAgreementPageType.FROM_CART);
     }

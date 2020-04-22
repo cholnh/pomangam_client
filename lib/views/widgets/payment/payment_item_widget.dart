@@ -29,17 +29,14 @@ class PaymentItemWidget extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      SizedBox(
-                        height: 40.0,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text('$title', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
-                            Padding(padding: const EdgeInsets.only(bottom: 4.0)),
-                            subTitle != null ? Text('$subTitle', style: TextStyle(fontSize: 13.0, color: subTextColor)) : Container()
-                          ],
-                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text('$title', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                          Padding(padding: const EdgeInsets.only(bottom: 4.0)),
+                          subTitle != null ? Text('$subTitle', style: TextStyle(fontSize: 13.0, color: subTextColor)) : Container()
+                        ],
                       ),
                       trailing
                     ],

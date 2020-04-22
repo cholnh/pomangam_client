@@ -104,7 +104,9 @@ class _HomePageState extends State<HomePage> {
                     renderPanelSheet: false,
                     onPanelOpened: () => _onCartOpen(model),
                     onPanelClosed: () => _onCartClose(model),
-                    panel: StoreSlideFloatingPanelWidget(),
+                    panel: StoreSlideFloatingPanelWidget(
+                      onSaveOrder: _onSaveOrder,
+                    ),
                     collapsed: StoreSlideFloatingCollapsedWidget(
                       onSelected: () => _panelController.open(),
                     ),
@@ -117,6 +119,13 @@ class _HomePageState extends State<HomePage> {
         );
       }
     );
+  }
+
+  void _onSaveOrder() async {
+    await _panelController.close();
+
+    // Todo. 부트페이 화면 show
+    Navigator.pushNamed(context, '/payments/bootpays');
   }
 
   Widget _body({bool isShowCart = false}) {

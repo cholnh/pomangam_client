@@ -46,12 +46,14 @@ class ProductCustomSubItemWidget extends StatelessWidget {
           child: ListTile(
               selected: sub.isSelected,
               contentPadding: EdgeInsets.only(left: 0.0, right: 15.0),
-              leading: CachedNetworkImage(
-                imageUrl: '${Endpoint.serverDomain}/${sub.productImageMainPath}',
+              leading: SizedBox(
                 width: 90,
-                fit: BoxFit.fill,
-                placeholder: (context, url) => Center(child: CupertinoActivityIndicator()),
-                errorWidget: (context, url, error) => Icon(Icons.error_outline),
+                child: CachedNetworkImage(
+                  imageUrl: '${Endpoint.serverDomain}/${sub.productImageMainPath}',
+                  fit: BoxFit.fill,
+                  placeholder: (context, url) => Center(child: CupertinoActivityIndicator()),
+                  errorWidget: (context, url, error) => Icon(Icons.error_outline),
+                ),
               ),
               subtitle: sub?.productSubInfo?.description != null
                   ? Text('${sub.productSubInfo.description} ${sub.productSubInfo?.subDescription ?? ''}', style: TextStyle(fontSize: subTitleFontSize))

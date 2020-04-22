@@ -1,3 +1,4 @@
+import 'package:pomangam_client/domains/order/item/sub/order_item_sub_request.dart';
 import 'package:pomangam_client/domains/product/product.dart';
 import 'package:pomangam_client/domains/product/sub/product_sub.dart';
 import 'package:pomangam_client/domains/store/store.dart';
@@ -32,5 +33,14 @@ class CartItem {
       total += sub?.salePrice ?? 0;
     });
     return total * quantity;
+  }
+
+  List<OrderItemSubRequest> orderSubItems() {
+    return subs.map((sub) {
+      return OrderItemSubRequest(
+        idxProductSub: sub.idx,
+        quantity: quantity
+      );
+    }).toList();
   }
 }
